@@ -1,5 +1,7 @@
 # Telegram Mini Apps React Template
 
+[中文说明 / Getting Started (ZH-CN)](./README.zh-CN.md)
+
 This template demonstrates how developers can implement a single-page
 application on the Telegram Mini Apps platform using the following technologies
 and libraries:
