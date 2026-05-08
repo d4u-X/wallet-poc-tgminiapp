@@ -104,7 +104,7 @@ export const MnemonicVerifyPage: FC = () => {
         <WalletScreenHeader
           title="助记词验证"
           rightSlot={
-            <span className="pointer-events-none select-none text-base font-semibold text-transparent">
+            <span className="select-none text-base font-semibold text-wallet-text-muted opacity-80">
               跳过
             </span>
           }
@@ -112,12 +112,12 @@ export const MnemonicVerifyPage: FC = () => {
 
         <form className="flex flex-col" onSubmit={onSubmit}>
           <div className="flex flex-col px-5 pb-44 pt-2">
-            <div className="flex gap-8 border-b border-wallet-border">
+            <div className="flex border-b border-wallet-border">
               <button
                 type="button"
                 onClick={() => setTab('random')}
                 className={clsx(
-                  '-mb-px border-b-2 pb-2.5 text-base font-semibold transition-colors',
+                  '-mb-px w-16 border-b-2 pb-2.5 text-base font-semibold transition-colors',
                   tab === 'random'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -129,7 +129,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('full')}
                 className={clsx(
-                  '-mb-px border-b-2 pb-2.5 text-base font-semibold transition-colors',
+                  '-mb-px ml-8 w-16 border-b-2 pb-2.5 text-base font-semibold transition-colors',
                   tab === 'full'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -145,7 +145,7 @@ export const MnemonicVerifyPage: FC = () => {
                   {randomVerifyIndices.map((i) => (
                     <div key={i} className="flex flex-col gap-3">
                       <p className="text-base font-semibold text-wallet-text">第{i + 1}个单词</p>
-                      <div className="flex gap-3">
+                      <div className="flex gap-[13px]">
                         {(randomOptions[i] ?? []).map((opt) => (
                           <button
                             key={opt}
@@ -157,7 +157,7 @@ export const MnemonicVerifyPage: FC = () => {
                               }))
                             }
                             className={clsx(
-                              'min-h-11 flex-1 rounded border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
+                              'min-h-[42px] flex-1 rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
                               randomPicks[i] === opt
                                 ? 'border-white bg-white/10 text-wallet-text'
                                 : 'border-wallet-choice-border text-wallet-text',
@@ -179,7 +179,7 @@ export const MnemonicVerifyPage: FC = () => {
                         return (
                           <div
                             key={idx}
-                            className="flex h-11 flex-1 items-center gap-2 rounded border-[0.5px] border-wallet-border-strong px-2"
+                            className="flex h-11 flex-1 items-center gap-2 rounded-[10px] border-[0.5px] border-wallet-border-strong px-2"
                           >
                             <span className="w-5 shrink-0 text-center text-sm text-wallet-text-muted">
                               {String(idx + 1).padStart(2, '0')}

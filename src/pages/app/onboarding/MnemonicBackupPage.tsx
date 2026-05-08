@@ -8,20 +8,12 @@ import { WalletInfoBanner } from '@/components/wallet/WalletInfoBanner.tsx';
 import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 import { WalletPrimaryButton } from '@/components/wallet/WalletPrimaryButton.tsx';
 import { WalletScreenHeader } from '@/components/wallet/WalletScreenHeader.tsx';
+import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
 
 import {
   useOnboardingGuard,
   useOnboardingMock,
 } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
-
-function EyeSmall() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <ellipse cx="12" cy="12" rx="9" ry="5.5" stroke="white" strokeWidth="1.4" />
-      <circle cx="12" cy="12" r="2.5" fill="white" />
-    </svg>
-  );
-}
 
 export const MnemonicBackupPage: FC = () => {
   const navigate = useNavigate();
@@ -49,11 +41,16 @@ export const MnemonicBackupPage: FC = () => {
       <WalletLayout>
         <WalletScreenHeader title="备份助记词" />
         <div className="flex flex-col px-5 pb-48 pt-2">
-          <WalletInfoBanner>
+          <WalletInfoBanner
+            iconSrc={FIGMA_WELCOME.warning}
+            textClassName="text-[12px] leading-[17px]"
+          >
             助记词是恢复钱包的唯一方式，丢失将无法找回资产。请勿截图或拍照，建议手抄在纸上并妥善保管。
           </WalletInfoBanner>
 
-          <h3 className="mt-8 text-lg font-semibold text-wallet-text">您的助记词</h3>
+          <h3 className="mt-8 text-[25px] font-semibold leading-[25px] text-wallet-text">
+            您的助记词
+          </h3>
 
           <div className="mt-4 flex flex-col gap-4">
             {rows.map((pair, rowIdx) => (
@@ -61,7 +58,7 @@ export const MnemonicBackupPage: FC = () => {
                 {pair.map(([idx, w]) => (
                   <div
                     key={idx}
-                    className="flex h-11 flex-1 items-center gap-2 rounded border-[0.5px] border-wallet-border-strong px-2"
+                    className="flex h-11 flex-1 items-center gap-2 rounded-[10px] border-[0.5px] border-wallet-border-strong px-2"
                   >
                     <span className="w-5 shrink-0 text-center text-sm text-wallet-text-muted">
                       {String(idx + 1).padStart(2, '0')}
@@ -79,9 +76,9 @@ export const MnemonicBackupPage: FC = () => {
           <button
             type="button"
             onClick={() => setHidden((v) => !v)}
-            className="mt-4 flex w-fit items-center gap-1 rounded-[var(--radius-wallet-pill)] bg-wallet-surface-muted px-4 py-2 text-sm font-semibold text-wallet-text"
+            className="mt-4 flex h-8 w-[80px] items-center justify-center gap-1 rounded-[40px] bg-wallet-surface-muted px-2 text-sm font-semibold text-wallet-text"
           >
-            <EyeSmall />
+            <img src={FIGMA_WELCOME.eye} alt="" className="size-4 object-contain" />
             {hidden ? '显示' : '隐藏'}
           </button>
         </div>

@@ -47,55 +47,56 @@ export const OnboardingWelcomePage: FC = () => {
   return (
     <Page back={false}>
       <WalletLayout className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -left-28 -top-36 size-[120vw] opacity-40">
-          <div className="relative size-full rotate-90">
+        <div className="pointer-events-none absolute -left-[54px] -top-[126px] h-[585px] w-[482px] opacity-60">
+          <div className="relative h-full w-full">
             <img
               src={FIGMA_WELCOME.heroDecoration}
               alt=""
-              className="absolute inset-0 size-full max-w-none object-cover"
+              className="absolute inset-0 h-full w-full max-w-none object-cover"
             />
             <div
-              className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(19,19,19,0)_0%,#131313_75%)]"
+              className="absolute inset-0 bg-[radial-gradient(circle_at_55%_38%,rgba(19,19,19,0)_0%,rgba(19,19,19,0.16)_40%,#131313_78%)]"
               aria-hidden
             />
           </div>
         </div>
 
-        <div className="relative flex flex-col px-5 pb-8 pt-14">
-          <div className="flex flex-col items-center gap-5">
+        <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[76px]">
+          <div className="flex flex-col items-center gap-[27px]">
             <div className="flex flex-col items-center gap-5">
+              <img src={FIGMA_WELCOME.logoMark} alt="" className="h-16 w-16 object-contain" />
               <img
-                src={FIGMA_WELCOME.logoMark}
+                src={FIGMA_WELCOME.logoWordmark}
                 alt=""
-                className="size-16 rounded-2xl object-cover"
+                className="h-[22px] w-16 object-contain"
               />
-              <div className="flex items-end justify-center gap-1">
-                {FIGMA_WELCOME.logoD4.map((src) => (
-                  <img key={src} src={src} alt="" className="h-[22px] w-auto object-contain" />
-                ))}
-              </div>
             </div>
-            <p className="max-w-[218px] text-center text-base text-wallet-text-secondary">
+            <p className="max-w-[218px] text-center text-base font-normal leading-[22px] text-wallet-text-secondary">
               安全、去中心化的多链钱包
             </p>
           </div>
 
-          <div className="mt-10 flex flex-col gap-6">
+          <div className="mt-[230px] flex flex-col gap-[24px]">
             {FEATURES.map((row) => (
-              <div key={row.title} className="flex gap-3">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-wallet-card)] bg-wallet-surface-icon">
-                  <img src={row.icon} alt="" className="size-5 object-contain" />
+              <div key={row.title} className="flex items-start gap-3">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-wallet-surface-icon">
+                  <img src={row.icon} alt="" className="size-5 max-w-none object-contain" />
                 </div>
-                <div className="flex min-w-0 flex-col gap-1">
-                  <p className="text-base font-medium text-wallet-text">{row.title}</p>
-                  <p className="text-xs text-wallet-text-secondary">{row.subtitle}</p>
+                <div className="flex min-w-0 flex-col gap-1 pt-0.5">
+                  <p className="text-base font-medium leading-[22px] text-wallet-text">
+                    {row.title}
+                  </p>
+                  <p className="text-xs leading-[17px] text-wallet-text-secondary">
+                    {row.subtitle}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-auto flex flex-col gap-4 pt-16">
+          <div className="mt-auto flex flex-col gap-4 pt-8">
             <WalletPrimaryButton
+              className="h-12 rounded-[40px] text-base font-semibold"
               onClick={() => {
                 beginOnboarding();
                 navigate('/onboarding/password');
@@ -104,6 +105,7 @@ export const OnboardingWelcomePage: FC = () => {
               创建新钱包
             </WalletPrimaryButton>
             <WalletSecondaryButton
+              className="h-12 rounded-[40px] border border-wallet-border bg-wallet-surface-icon text-base font-semibold"
               onClick={() => {
                 setImportHint(true);
               }}
@@ -115,7 +117,7 @@ export const OnboardingWelcomePage: FC = () => {
             ) : null}
           </div>
 
-          <p className="mt-6 text-center text-xs leading-relaxed text-wallet-text-secondary">
+          <p className="mx-auto mt-6 max-w-[244px] text-center text-xs leading-[17px] text-wallet-text-secondary">
             <span>继续即表示您同意我们的</span>{' '}
             <button
               type="button"

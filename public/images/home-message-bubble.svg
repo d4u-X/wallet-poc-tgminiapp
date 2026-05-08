@@ -1,0 +1,8 @@
+<svg width="29" height="28" viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 8.84961H18C19.1874 8.84961 20.1504 9.81261 20.1504 11V19C20.1504 20.1874 19.1874 21.1504 18 21.1504H13.3135L13.1445 21.2285L8.06348 23.5732C7.96421 23.6191 7.85087 23.5467 7.85059 23.4375V21.1504H6C4.81274 21.1502 3.85062 20.1873 3.85059 19L3.84961 11C3.84961 9.81262 4.81262 8.84965 6 8.84961Z" stroke="white" stroke-width="1.7"/>
+<rect x="7.5" y="14" width="2" height="2" fill="white"/>
+<rect x="11" y="14" width="2" height="2" fill="white"/>
+<rect x="14.5" y="14" width="2" height="2" fill="white"/>
+<rect x="13" width="16" height="16" rx="8" fill="#257CFF"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Poppins" font-size="10" letter-spacing="0em"><tspan x="17.5" y="11.5">9</tspan></text>
+</svg>

@@ -98,99 +98,39 @@ const MOCK_TX: TxRowData[] = [
 
 function ShieldBannerIcon() {
   return (
-    <div className="relative size-5 shrink-0 overflow-hidden">
-      <img
-        src={WALLET_HOME_ASSETS.shieldBannerA}
-        alt=""
-        className="absolute left-1/2 top-1/2 h-[15px] w-[13px] -translate-x-1/2 -translate-y-1/2"
-      />
-      <img
-        src={WALLET_HOME_ASSETS.shieldBannerB}
-        alt=""
-        className="absolute left-1/2 top-[calc(50%-1px)] h-1 w-2 -translate-x-1/2"
-      />
-    </div>
+    <img src={WALLET_HOME_ASSETS.shieldBanner} alt="" className="size-5 shrink-0 object-contain" />
   );
 }
 
 function ShieldCongratsIcon() {
   return (
-    <div className="relative size-4 shrink-0 overflow-hidden">
-      <img
-        src={WALLET_HOME_ASSETS.shieldCongratsA}
-        alt=""
-        className="absolute left-1/2 top-1/2 h-3 w-[11px] -translate-x-1/2 -translate-y-1/2"
-      />
-      <img
-        src={WALLET_HOME_ASSETS.shieldCongratsB}
-        alt=""
-        className="absolute left-1/2 top-[calc(50%-1px)] h-1 w-[7px] -translate-x-1/2"
-      />
-    </div>
+    <img
+      src={WALLET_HOME_ASSETS.shieldCongrats}
+      alt=""
+      className="size-4 shrink-0 object-contain"
+    />
   );
 }
 
 function TransferArrowIcon({ dir }: { dir: 'in' | 'out' }) {
   return (
-    <div className={clsx('flex size-5 items-center justify-center', dir === 'in' && 'rotate-180')}>
-      <div className="flex-none rotate-45">
-        <div className="relative h-[15px] w-[14px]">
-          <img src={WALLET_HOME_ASSETS.transferArrow} alt="" className="size-full object-contain" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function GiftOutlineIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M4 10h16v12H4V10z" stroke="white" strokeWidth="1.7" strokeLinejoin="round" />
-      <path d="M12 10V22" stroke="white" strokeWidth="1.7" />
-      <path
-        d="M8 10c0-2 1.5-4 4-4s4 2 4 4"
-        stroke="white"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-      <path d="M4 10h16" stroke="white" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
+    <img
+      src={dir === 'in' ? WALLET_HOME_ASSETS.txArrowIn : WALLET_HOME_ASSETS.txArrow}
+      alt=""
+      className="size-6 object-contain"
+    />
   );
 }
 
 function TxLeadIcon({ icon }: { icon: TxIconKind }) {
   if (icon.kind === 'progress') {
     return (
-      <div className="relative size-10 shrink-0">
-        <img
-          src={WALLET_HOME_ASSETS.txRingBg}
-          alt=""
-          className="absolute inset-0 size-10 max-w-none"
-        />
-        <img
-          src={WALLET_HOME_ASSETS.txRingFg}
-          alt=""
-          className="absolute inset-0 size-10 max-w-none"
-        />
-        <span className="absolute inset-0 flex items-center justify-center text-[14px] font-medium text-[#257cff]">
-          {icon.label}
-        </span>
-        <img
-          src={WALLET_HOME_ASSETS.txRingDot}
-          alt=""
-          className="absolute left-1/2 top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 max-w-none"
-        />
-      </div>
+      <img src={WALLET_HOME_ASSETS.txProgress} alt="" className="size-10 shrink-0 object-contain" />
     );
   }
   if (icon.kind === 'arrow') {
     return (
-      <div className="relative flex size-10 shrink-0 items-center justify-center">
-        <img
-          src={WALLET_HOME_ASSETS.txRingBg}
-          alt=""
-          className="absolute inset-0 size-10 max-w-none"
-        />
+      <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-wallet-surface-muted">
         <TransferArrowIcon dir={icon.dir} />
       </div>
     );
@@ -198,12 +138,7 @@ function TxLeadIcon({ icon }: { icon: TxIconKind }) {
   const src =
     icon.tone === 'yellow' ? WALLET_HOME_ASSETS.warningYellow : WALLET_HOME_ASSETS.warningRed;
   return (
-    <div className="relative flex size-10 shrink-0 items-center justify-center">
-      <img
-        src={WALLET_HOME_ASSETS.txRingBg}
-        alt=""
-        className="absolute inset-0 size-10 max-w-none"
-      />
+    <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-wallet-surface-muted">
       <img src={src} alt="" className="relative size-6 object-contain" />
     </div>
   );
@@ -243,21 +178,6 @@ function QuickAction({ label, children }: { label: string; children: ReactNode }
   );
 }
 
-function ProfileTabGlyph({ muted }: { muted: boolean }) {
-  const c = muted ? 'rgba(255,255,255,0.4)' : '#ffffff';
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="8.5" y="5" width="7" height="8" rx="3.5" fill={c} />
-      <path
-        d="M4 20c1.2-3.2 4.3-5 8-5s6.8 1.8 8 5"
-        stroke={c}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 export const WalletHomePage: FC = () => {
   const { resetOnboarding } = useOnboardingMock();
 
@@ -271,16 +191,12 @@ export const WalletHomePage: FC = () => {
     <Page back={false}>
       <WalletLayout className="relative overflow-hidden pb-0">
         {/* Hex grid hero — Figma 476:12552 */}
-        <div className="pointer-events-none absolute left-1/2 top-0 z-0 h-[320px] w-full max-w-[430px] -translate-x-1/2 overflow-hidden">
-          <div className="absolute left-1/2 top-0 flex h-[375px] w-[320px] -translate-x-1/2 items-center justify-center rotate-90 opacity-20">
-            <div className="relative h-[375px] w-[320px] overflow-hidden">
-              <img
-                src={WALLET_HOME_ASSETS.hexGrid}
-                alt=""
-                className="absolute left-[-42%] top-[-93%] h-[216%] w-[142%] max-w-none object-cover"
-              />
-            </div>
-          </div>
+        <div className="pointer-events-none absolute left-0 top-0 z-0 h-[320px] w-full overflow-hidden">
+          <img
+            src={WALLET_HOME_ASSETS.hexGrid}
+            alt=""
+            className="absolute left-0 top-0 h-[320px] w-full max-w-none object-cover"
+          />
           <div
             className="absolute inset-0 bg-gradient-to-b from-transparent via-[#131313]/70 to-[#131313]"
             aria-hidden
@@ -292,7 +208,7 @@ export const WalletHomePage: FC = () => {
           <header className="flex h-11 items-center justify-between px-5 pt-1">
             <button
               type="button"
-              className="flex items-center gap-1 rounded-[50px] text-base font-semibold text-white"
+              className="flex items-center gap-1 rounded-[50px] text-[19px] font-semibold text-white"
             >
               Wallet 1
               <span className="flex size-4 rotate-90 items-center justify-center">
@@ -327,10 +243,10 @@ export const WalletHomePage: FC = () => {
           </div>
 
           {/* Assets + quick actions — Figma 476:12571 */}
-          <section className="flex flex-col items-center gap-8 px-5 pb-2 pt-6">
+          <section className="flex flex-col items-center gap-8 px-5 pb-2 pt-[22px]">
             <div className="flex w-full flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-2">
-                <p className="text-[14px] text-white/60">全部资产</p>
+                <p className="text-[16px] leading-4 text-white/60">全部资产</p>
                 <button
                   type="button"
                   className="flex items-end gap-1 text-left"
@@ -357,23 +273,29 @@ export const WalletHomePage: FC = () => {
               </div>
             </div>
 
-            <div className="flex w-full gap-3">
+            <div className="flex w-full gap-[13px]">
               <QuickAction label="收款">
-                <div className="rotate-180">
-                  <TransferArrowIcon dir="out" />
-                </div>
+                <TransferArrowIcon dir="in" />
               </QuickAction>
               <QuickAction label="支付">
-                <TransferArrowIcon dir="out" />
+                <img
+                  src={WALLET_HOME_ASSETS.quickTransfer}
+                  alt=""
+                  className="size-6 object-contain"
+                />
               </QuickAction>
               <QuickAction label="邀请">
-                <GiftOutlineIcon />
+                <img
+                  src={WALLET_HOME_ASSETS.quickInvite}
+                  alt=""
+                  className="size-6 object-contain"
+                />
               </QuickAction>
               <QuickAction label="客服">
                 <img
-                  src={WALLET_HOME_ASSETS.headset}
+                  src={WALLET_HOME_ASSETS.quickSupport}
                   alt=""
-                  className="size-5 max-w-none object-contain"
+                  className="size-6 object-contain"
                 />
               </QuickAction>
             </div>
@@ -440,7 +362,11 @@ export const WalletHomePage: FC = () => {
               <span className="text-[10px] text-[rgba(255,255,255,0.4)]">订单</span>
             </button>
             <button type="button" className="flex flex-1 flex-col items-center gap-0.5 py-1">
-              <ProfileTabGlyph muted />
+              <img
+                src={WALLET_HOME_ASSETS.tabProfile}
+                alt=""
+                className="size-6 max-w-none object-contain opacity-90"
+              />
               <span className="text-[10px] text-[rgba(255,255,255,0.4)]">个人</span>
             </button>
           </nav>

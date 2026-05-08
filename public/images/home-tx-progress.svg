@@ -1,0 +1,5 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="20" cy="20" r="20" fill="white" fill-opacity="0.1"/>
+<path d="M39 20C39 23.9433 37.7731 27.789 35.4893 31.0037C33.2056 34.2184 29.9782 36.6429 26.2547 37.941C22.5311 39.2391 18.496 39.3465 14.7086 38.2483C10.9213 37.1501 7.56952 34.9008 5.11799 31.8121C2.66647 28.7234 1.23669 24.9485 1.02691 21.0108C0.817123 17.073 1.83773 13.1676 3.94722 9.83594C6.0567 6.50429 9.15053 3.91153 12.7997 2.41716C16.4489 0.922794 20.4727 0.600866 24.3131 1.49602" stroke="#257CFF" stroke-width="2"/>
+<text fill="#257CFF" style="white-space: pre" xml:space="preserve" font-family="SF Pro Display" font-size="14" letter-spacing="0px"><tspan x="9" y="25.4766">2/3</tspan></text>
+</svg>
