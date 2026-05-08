@@ -1,0 +1,36 @@
+---
+description: How to hand off Figma screens for efficient implementation in this TG Mini App
+globs: src/pages/app/**/*.tsx
+alwaysApply: false
+---
+
+# Figma → Code collaboration (this repo)
+
+When asking the agent to build or adjust a screen, include **all** of the following that you can. More context = fewer wrong assumptions.
+
+## 1. Design source
+- **Figma file URL** with **`node-id=`** (exact frame or component to implement).
+- If multiple states exist (empty / loading / error / dark): list which variants to ship in this iteration.
+
+## 2. Behaviour & data
+- **User actions** (tap targets, navigation, back behaviour vs Telegram native back).
+- **Data**: API shape, mock JSON, or “static for now” — and whether values are sensitive (never paste real keys in chat).
+- **TON / wallet**: which flows use `@tonconnect/ui-react` vs read-only display.
+
+## 3. Telegram Mini App constraints (non-negotiable)
+- **Colours**: product screens use **wallet design tokens from Figma** (central theme), not Telegram host palette.
+- External links must use **`openLink`** from `@tma.js/sdk-react` (already wrapped in `Link` for external URLs).
+- Respect **safe areas** and compact height: avoid fixed full-viewport heights that ignore `viewport` / content inset when specified in design.
+- **Back button** is managed in `Page`; set `back={false}` only for true root screens.
+
+## 4. Acceptance
+- One sentence **“done when”** (e.g. “pixel-match at 375px width, English copy from Figma”).
+- Optional: screenshot or “compare to node X” for visual QA.
+
+## 5. Suggested message template (copy-paste)
+
+Implement the screen at Figma `https://figma.com/design/<fileKey>/...?node-id=<id>`.
+Route: `/wallet` (add in `routes.tsx`).
+Stack: Tailwind + existing `Page` + TMA SDK as needed.
+States: default + empty wallet.
+Done when: layout matches Figma at 375px; uses wallet design tokens; validates in Telegram WebView (safe area + back).

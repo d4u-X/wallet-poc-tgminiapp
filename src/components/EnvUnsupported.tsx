@@ -1,33 +1,30 @@
-import { Placeholder, AppRoot } from '@telegram-apps/telegram-ui';
 import { retrieveLaunchParams, isColorDark, isRGB } from '@tma.js/sdk-react';
 import { useMemo } from 'react';
 
 export function EnvUnsupported() {
-  const [platform, isDark] = useMemo(() => {
+  const isDark = useMemo(() => {
     try {
       const lp = retrieveLaunchParams();
       const { bg_color: bgColor } = lp.tgWebAppThemeParams;
-      return [lp.tgWebAppPlatform, bgColor && isRGB(bgColor) ? isColorDark(bgColor) : false];
+      return bgColor && isRGB(bgColor) ? isColorDark(bgColor) : false;
     } catch {
-      return ['android', false];
+      return false;
     }
   }, []);
 
   return (
-    <AppRoot
-      appearance={isDark ? 'dark' : 'light'}
-      platform={['macos', 'ios'].includes(platform) ? 'ios' : 'base'}
+    <div
+      className="flex min-h-screen flex-col items-center justify-center gap-4 p-8 text-center"
+      style={{
+        backgroundColor: isDark ? '#17212b' : '#f4f4f5',
+        color: isDark ? '#f5f5f5' : '#000000',
+      }}
     >
-      <Placeholder
-        header="Oops"
-        description="You are using too old Telegram client to run this application"
-      >
-        <img
-          alt="Telegram sticker"
-          src="https://xelene.me/telegram.gif"
-          style={{ display: 'block', width: '144px', height: '144px' }}
-        />
-      </Placeholder>
-    </AppRoot>
+      <img alt="Telegram sticker" src="https://xelene.me/telegram.gif" className="block size-36" />
+      <h1 className="text-xl font-semibold">Oops</h1>
+      <p className="text-sm opacity-60">
+        You are using too old Telegram client to run this application
+      </p>
+    </div>
   );
 }

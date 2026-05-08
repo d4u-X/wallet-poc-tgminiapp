@@ -37,7 +37,7 @@
 
 ### 1.2 线上部署（以“你自己的域名”为例）
 
-1) 修改站点基础路径（非常重要）
+1. 修改站点基础路径（非常重要）
 
 - 如果你部署到根域名，如 `https://miniapp.example.com/`，建议把 [vite.config.ts](./vite.config.ts) 的 `base` 改为 `/`
 - 如果你部署到子路径，如 `https://example.com/my-miniapp/`，则 `base` 应为 `/my-miniapp/`
@@ -49,12 +49,12 @@
 
 部署到你自己的域名时，这两处都应该改成你自己的实际地址/路径（否则静态资源路径会错）。
 
-2) 配置 TON Connect 清单（如你用不到 TON Connect 也建议先了解）
+2. 配置 TON Connect 清单（如你用不到 TON Connect 也建议先了解）
 
 - 编辑 [public/tonconnect-manifest.json](./public/tonconnect-manifest.json)
 - manifest 里的 `url/iconUrl/name` 要与你的域名匹配
 
-3) 构建并发布
+3. 构建并发布
 
 ```bash
 pnpm install
@@ -74,7 +74,7 @@ pnpm run build
 
 常见做法有两种（选其一即可）：
 
-1) BotFather 直接配置 Mini App（推荐新手按官方流程走）
+1. BotFather 直接配置 Mini App（推荐新手按官方流程走）
 
 - 在 BotFather 中进入你的 Bot 的 Mini App 管理（官方流程会引导设置：App 名称、描述、图标、URL、域名等）
 - URL 填写你部署后的 HTTPS 地址（例如 `https://miniapp.example.com/`）
@@ -82,7 +82,7 @@ pnpm run build
 参考官方：创建 Mini App 的指南  
 https://docs.telegram-mini-apps.com/platform/creating-new-app
 
-2) 用 Bot 菜单按钮打开 Web App（适合你只想先跑起来）
+2. 用 Bot 菜单按钮打开 Web App（适合你只想先跑起来）
 
 - 在 BotFather 给 Bot 设置菜单按钮（Menu Button），把 Web App URL 指向你的站点
 - 或者在你自己的 Bot 后端调用 Bot API `setChatMenuButton` 设置 web_app
@@ -108,14 +108,14 @@ https://docs.telegram-mini-apps.com/platform/creating-new-app
 
 按启动链路理解最省时间：
 
-1) 应用入口：[src/index.tsx](./src/index.tsx)
+1. 应用入口：[src/index.tsx](./src/index.tsx)
 
 - 读取 Launch Params（`retrieveLaunchParams()`）
 - 决定是否开启 debug / Eruda
 - 调用 `init()` 初始化 Telegram SDK
 - 最终挂载 React 根组件 `Root`
 
-2) SDK 初始化：[src/init.ts](./src/init.ts)
+2. SDK 初始化：[src/init.ts](./src/init.ts)
 
 - `setDebug()` + `initSDK()` 初始化 tma.js
 - iOS/Android 且 debug 时加载 Eruda
@@ -126,22 +126,21 @@ https://docs.telegram-mini-apps.com/platform/creating-new-app
   - `miniApp.mount()` + `themeParams.mount()` + `themeParams.bindCssVars()`
   - `viewport.mount()` + `viewport.bindCssVars()`
 
-3) React 根组件：[src/components/Root.tsx](./src/components/Root.tsx)
+3. React 根组件：[src/components/Root.tsx](./src/components/Root.tsx)
 
 - ErrorBoundary
 - TonConnectUIProvider（读取 [public/tonconnect-manifest.json](./public/tonconnect-manifest.json)）
 
-4) 路由与 UI 根容器：[src/components/App.tsx](./src/components/App.tsx)
+4. 路由与 UI 根容器：[src/components/App.tsx](./src/components/App.tsx)
 
-- Telegram UI 的 `AppRoot`（适配深色/浅色、平台风格）
+- Tailwind + `miniApp.isDark`（`dark` class）适配 Telegram 深浅色
 - `HashRouter`（静态托管友好，不依赖服务端 rewrite）
 - 路由表来自 [src/navigation/routes.tsx](./src/navigation/routes.tsx)
 
-5) 示例页面（可当作你业务页面的参考）
+5. 页面目录说明
 
-- 首页入口列表：[src/pages/IndexPage/IndexPage.tsx](./src/pages/IndexPage/IndexPage.tsx)
-- TON Connect 示例：[src/pages/TONConnectPage/TONConnectPage.tsx](./src/pages/TONConnectPage/TONConnectPage.tsx)
-- Launch/InitData/Theme 示例页：[src/pages](./src/pages)
+- **正式产品页**：放在 [src/pages/app](./src/pages/app)（入口欢迎页 [OnboardingWelcomePage.tsx](./src/pages/app/onboarding/OnboardingWelcomePage.tsx)、主页 [WalletHomePage.tsx](./src/pages/app/WalletHomePage.tsx)）
+- **旧版模板 Demo**（仅调试用）：放在 [src/pages/demo](./src/pages/demo)，路由前缀为 **`#/demo/...`**
 
 ---
 
@@ -178,20 +177,20 @@ pnpm run dev:https
 
 真机调试的推荐方案：
 
-1) 本地跑 http（不需要自签名证书）
+1. 本地跑 http（不需要自签名证书）
 
 ```bash
 pnpm run dev --host
 ```
 
-2) 用隧道服务把本地端口映射成公网 https（任选一个）
+2. 用隧道服务把本地端口映射成公网 https（任选一个）
 
 - Cloudflare Tunnel：
   - `cloudflared tunnel --url http://localhost:5173`
 - ngrok：
   - `ngrok http 5173`
 
-3) 把隧道生成的 `https://xxxx` URL 配到 Bot 的 Mini App URL 上，然后从 Telegram 打开。
+3. 把隧道生成的 `https://xxxx` URL 配到 Bot 的 Mini App URL 上，然后从 Telegram 打开。
 
 ### 3.4 关键调试点
 
@@ -210,20 +209,19 @@ pnpm run dev --host
 
 ### 4.1 新增一个页面（最小改动）
 
-1) 新建页面组件（示例命名）
+1. 新建页面组件（示例命名）
 
-- 新建 `src/pages/MyPage/MyPage.tsx`
+- 新建 `src/pages/app/MyPage/MyPage.tsx`（或 `src/pages/app/MyPage.tsx`）
 - 按现有页面的写法使用 [Page](./src/components/Page.tsx) 来接入返回按钮行为
 
-2) 加到路由表
+2. 加到路由表
 
 - 编辑 [src/navigation/routes.tsx](./src/navigation/routes.tsx)
-- 增加一条 `{ path: '/my-page', Component: MyPage, title: 'My Page' }`
+- 增加一条 `{ path: '/my-page', Component: MyPage }`（`lazy` 或同步均可，与现有写法一致）
 
-3) 在首页加入口（可选）
+3. 从其它页面加入口（可选）
 
-- 编辑 [src/pages/IndexPage/IndexPage.tsx](./src/pages/IndexPage/IndexPage.tsx)
-- 增加一个 `Link` 到 `/my-page`
+- 在对应 `src/pages/app/**` 页面里增加 `Link` 到 `/my-page`
 
 ### 4.2 放业务逻辑的“推荐位置”
 
@@ -253,4 +251,3 @@ pnpm run dev --host
 - 站点必须是公网 https（iOS/Android 尤其严格）
 - TON Connect manifest 的 URL/icon/name 已改为你自己的
 - 生产环境不要依赖 [mockEnv.ts](./src/mockEnv.ts) 的行为
-

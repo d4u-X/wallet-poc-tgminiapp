@@ -1,20 +1,17 @@
 import type { RGB as RGBType } from '@tma.js/sdk-react';
-import type { FC } from 'react';
+import type { ComponentPropsWithoutRef, FC } from 'react';
+import { clsx } from 'clsx';
 
-import { bem } from '@/css/bem.ts';
-import { classNames } from '@/css/classnames.ts';
-
-import './RGB.css';
-
-const [b, e] = bem('rgb');
-
-export type RGBProps = JSX.IntrinsicElements['div'] & {
+export type RGBProps = ComponentPropsWithoutRef<'span'> & {
   color: RGBType;
 };
 
 export const RGB: FC<RGBProps> = ({ color, className, ...rest }) => (
-  <span {...rest} className={classNames(b(), className)}>
-    <i className={e('icon')} style={{ backgroundColor: color }}/>
+  <span {...rest} className={clsx('inline-flex items-center gap-1.5', className)}>
+    <i
+      className="inline-block size-[18px] shrink-0 rounded-full border border-black/20"
+      style={{ backgroundColor: color }}
+    />
     {color}
   </span>
 );

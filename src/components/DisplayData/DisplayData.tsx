@@ -1,21 +1,14 @@
 import { isRGB } from '@tma.js/sdk-react';
-import { Cell, Checkbox, Section } from '@telegram-apps/telegram-ui';
 import type { FC, ReactNode } from 'react';
+import { clsx } from 'clsx';
 
 import { RGB } from '@/components/RGB/RGB.tsx';
 import { Link } from '@/components/Link/Link.tsx';
-import { bem } from '@/css/bem.ts';
 
-import './DisplayData.css';
-
-const [, e] = bem('display-data');
-
-export type DisplayDataRow =
-  & { title: string }
-  & (
+export type DisplayDataRow = { title: string } & (
   | { type: 'link'; value?: string }
   | { value: ReactNode }
-  )
+);
 
 export interface DisplayDataProps {
   header?: ReactNode;
@@ -24,39 +17,54 @@ export interface DisplayDataProps {
 }
 
 export const DisplayData: FC<DisplayDataProps> = ({ header, rows }) => (
-  <Section header={header}>
-    {rows.map((item, idx) => {
-      let valueNode: ReactNode;
+  <div className="mb-4 last:mb-0">
+    {header && <p className="px-4 pb-1.5 text-[13px] font-medium text-tg-subtitle">{header}</p>}
+    <div className="mx-4 overflow-hidden rounded-xl bg-tg-section-bg">
+      {rows.map((item, idx) => {
+        let valueNode: ReactNode;
 
-      if (item.value === undefined) {
-        valueNode = <i>empty</i>;
-      } else {
-        if ('type' in item) {
-          valueNode = <Link to={item.value}>Open</Link>;
+        if (item.value === undefined) {
+          valueNode = <i className="text-tg-hint">empty</i>;
+        } else if ('type' in item) {
+          valueNode = (
+            <Link to={item.value ?? ''} className="text-tg-link">
+              Open
+            </Link>
+          );
         } else if (typeof item.value === 'string') {
-          valueNode = isRGB(item.value)
-            ? <RGB color={item.value}/>
-            : item.value;
+          valueNode = isRGB(item.value) ? <RGB color={item.value} /> : item.value;
         } else if (typeof item.value === 'boolean') {
-          valueNode = <Checkbox checked={item.value} disabled/>;
+          valueNode = (
+            <span
+              className={clsx(
+                'rounded px-1.5 py-0.5 text-xs font-semibold',
+                item.value
+                  ? 'bg-green-500/15 text-green-600 dark:text-green-400'
+                  : 'bg-red-500/15 text-red-600 dark:text-red-400',
+              )}
+            >
+              {String(item.value)}
+            </span>
+          );
         } else {
           valueNode = item.value;
         }
-      }
 
-      return (
-        <Cell
-          className={e('line')}
-          subhead={item.title}
-          readOnly
-          multiline={true}
-          key={idx}
-        >
-          <span className={e('line-value')}>
-            {valueNode}
-          </span>
-        </Cell>
-      );
-    })}
-  </Section>
+        return (
+          <div
+            key={idx}
+            className={clsx(
+              'flex items-start gap-3 px-4 py-3',
+              idx < rows.length - 1 && 'border-b border-tg-separator',
+            )}
+          >
+            <span className="min-w-0 flex-1 text-[13px] text-tg-subtitle">{item.title}</span>
+            <span className="min-w-0 flex-[2] break-all text-right text-[13px] text-tg-text">
+              {valueNode}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
 );

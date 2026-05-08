@@ -1,0 +1,53 @@
+---
+description: Project-wide stack, conventions and quality rules
+alwaysApply: true
+---
+
+# Project: Wallet TG Mini App
+
+## Stack (never deviate from this)
+- **React 18** + **TypeScript** (strict mode)
+- **Vite 6** with `@vitejs/plugin-react-swc`
+- **Tailwind CSS v4** (`@tailwindcss/vite`) — NO plain CSS files, NO BEM, NO CSS modules
+- **`@tma.js/sdk-react`** for Telegram Mini App SDK
+- **`@tonconnect/ui-react`** for TON wallet
+- **`react-router-dom` v6** HashRouter for navigation
+- **`clsx`** for conditional class names
+- **pnpm** as package manager
+
+## Product vs demo code
+- **Production UI** lives under `src/pages/app/` (Figma-driven screens). Register routes in `src/navigation/routes.tsx`.
+- **Archived template demo** lives under `src/pages/demo/` at **`/demo/*`** only.
+- **Runtime** is always a Telegram Mini App (`init.ts`: viewport, back button, `openLink`, etc.). **Visual theme for product screens uses the wallet design system from Figma**, not Telegram host palette (`--tg-theme-*`).
+
+## Closed loop A (wallet creation) — product decisions
+- Single **design token theme** (CSS variables + Tailwind); reuse across all app pages.
+- Steps **5 and 6** are one screen: **two tabs** (random verify vs full verify).
+- Step **3**: mnemonic hidden until user action → **click to reveal**.
+- **Backup is mandatory** (no skip in design); flow **4 → verify → 7**.
+- **Early milestone**: UI + **mock** state only; real crypto/storage comes later.
+
+## File & component rules
+- One named export per file; no default exports
+- File name = export name (e.g. `WalletPage.tsx` → `export const WalletPage`)
+- Props: typed inline or as `interface XxxProps` in same file
+- Always use `@/` path alias (never relative `../../`)
+
+## TypeScript rules
+- `strict: true` is on — every value must be typed, no `any`
+- Prefer `type` for unions/intersections, `interface` for object shapes
+- Never suppress type errors with `// @ts-ignore`
+
+## Tailwind & styling
+- **Product (`src/pages/app/**`)**: use **wallet design tokens** only (semantic names from Figma: background, surface, primary, text primary/secondary, borders, error, etc.). Define once in a central theme file and map into `@theme inline` — **no ad-hoc hex in JSX** except rare one-offs aligned with design.
+- **Demo (`src/pages/demo/**`)**: may keep legacy `tg-*` classes until migrated.
+- Never use `@apply`; extract a React component instead
+
+## Code quality
+- No unused variables or imports (TS `noUnusedLocals` + `noUnusedParameters`)
+- No `console.log` in production code (use `console.info`/`warn` with clear context)
+- All async functions must handle errors (never swallow exceptions silently)
+
+## Commit messages (Conventional Commits)
+`feat` | `fix` | `refactor` | `chore` | `docs` | `test` | `perf` | `style`
+Example: `feat: add balance display on home page`

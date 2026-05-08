@@ -1,10 +1,51 @@
-import type { ComponentType, JSX } from 'react';
+import { lazy, type ComponentType, type JSX } from 'react';
 
-import { IndexPage } from '@/pages/IndexPage/IndexPage';
-import { InitDataPage } from '@/pages/InitDataPage.tsx';
-import { LaunchParamsPage } from '@/pages/LaunchParamsPage.tsx';
-import { ThemeParamsPage } from '@/pages/ThemeParamsPage.tsx';
-import { TONConnectPage } from '@/pages/TONConnectPage/TONConnectPage';
+const OnboardingWelcomePage = lazy(() =>
+  import('@/pages/app/onboarding/OnboardingWelcomePage.tsx').then((m) => ({
+    default: m.OnboardingWelcomePage,
+  })),
+);
+const OnboardingPasswordPage = lazy(() =>
+  import('@/pages/app/onboarding/OnboardingPasswordPage.tsx').then((m) => ({
+    default: m.OnboardingPasswordPage,
+  })),
+);
+const MnemonicGeneratePage = lazy(() =>
+  import('@/pages/app/onboarding/MnemonicGeneratePage.tsx').then((m) => ({
+    default: m.MnemonicGeneratePage,
+  })),
+);
+const MnemonicBackupPage = lazy(() =>
+  import('@/pages/app/onboarding/MnemonicBackupPage.tsx').then((m) => ({
+    default: m.MnemonicBackupPage,
+  })),
+);
+const MnemonicVerifyPage = lazy(() =>
+  import('@/pages/app/onboarding/MnemonicVerifyPage.tsx').then((m) => ({
+    default: m.MnemonicVerifyPage,
+  })),
+);
+const WalletHomePage = lazy(() =>
+  import('@/pages/app/WalletHomePage.tsx').then((m) => ({ default: m.WalletHomePage })),
+);
+
+const DemoHubPage = lazy(() =>
+  import('@/pages/demo/IndexPage/DemoHubPage.tsx').then((m) => ({ default: m.DemoHubPage })),
+);
+const InitDataPage = lazy(() =>
+  import('@/pages/demo/InitDataPage.tsx').then((m) => ({ default: m.InitDataPage })),
+);
+const LaunchParamsPage = lazy(() =>
+  import('@/pages/demo/LaunchParamsPage.tsx').then((m) => ({ default: m.LaunchParamsPage })),
+);
+const ThemeParamsPage = lazy(() =>
+  import('@/pages/demo/ThemeParamsPage.tsx').then((m) => ({ default: m.ThemeParamsPage })),
+);
+const TONConnectPage = lazy(() =>
+  import('@/pages/demo/TONConnectPage/TONConnectPage.tsx').then((m) => ({
+    default: m.TONConnectPage,
+  })),
+);
 
 interface Route {
   path: string;
@@ -13,13 +54,20 @@ interface Route {
   icon?: JSX.Element;
 }
 
+/** Product onboarding + home first; `/demo/*` is legacy TMA playground. */
 export const routes: Route[] = [
-  { path: '/', Component: IndexPage },
-  { path: '/init-data', Component: InitDataPage, title: 'Init Data' },
-  { path: '/theme-params', Component: ThemeParamsPage, title: 'Theme Params' },
-  { path: '/launch-params', Component: LaunchParamsPage, title: 'Launch Params' },
+  { path: '/', Component: OnboardingWelcomePage },
+  { path: '/home', Component: WalletHomePage },
+  { path: '/onboarding/password', Component: OnboardingPasswordPage },
+  { path: '/onboarding/mnemonic/generate', Component: MnemonicGeneratePage },
+  { path: '/onboarding/mnemonic/backup', Component: MnemonicBackupPage },
+  { path: '/onboarding/mnemonic/verify', Component: MnemonicVerifyPage },
+  { path: '/demo', Component: DemoHubPage },
+  { path: '/demo/init-data', Component: InitDataPage, title: 'Init Data' },
+  { path: '/demo/theme-params', Component: ThemeParamsPage, title: 'Theme Params' },
+  { path: '/demo/launch-params', Component: LaunchParamsPage, title: 'Launch Params' },
   {
-    path: '/ton-connect',
+    path: '/demo/ton-connect',
     Component: TONConnectPage,
     title: 'TON Connect',
     icon: (

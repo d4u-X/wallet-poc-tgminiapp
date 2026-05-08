@@ -1,0 +1,25 @@
+/*
+ * Wallet product theme — values from Figma (file JCrkQdOPlBNyZKIUjIxBBs).
+ * Do not use --tg-theme-* on product screens.
+ */
+@theme inline {
+  --color-wallet-canvas: #131313;
+  --color-wallet-surface: #131313;
+  --color-wallet-surface-muted: rgb(255 255 255 / 0.05);
+  --color-wallet-surface-icon: rgb(255 255 255 / 0.1);
+  --color-wallet-border: rgb(255 255 255 / 0.1);
+  --color-wallet-border-strong: rgb(255 255 255 / 0.2);
+  --color-wallet-choice-border: rgb(255 240 240 / 0.1);
+  --color-wallet-text: #ffffff;
+  --color-wallet-text-secondary: rgb(255 255 255 / 0.6);
+  --color-wallet-text-muted: rgb(255 255 255 / 0.4);
+  --color-wallet-primary-btn: #ffffff;
+  --color-wallet-primary-btn-text: #000000;
+  --color-wallet-accent-green: #00ff9d;
+  --color-wallet-accent-green-muted: rgb(0 255 157 / 0.15);
+  --color-wallet-danger: #ff453a;
+  --color-wallet-warning: #ffcc00;
+  --radius-wallet-pill: 40px;
+  --radius-wallet-field: 12px;
+  --radius-wallet-card: 8px;
+}

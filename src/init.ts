@@ -12,6 +12,8 @@ import {
   backButton,
 } from '@tma.js/sdk-react';
 
+import { scheduleErudaInit } from '@/helpers/loadEruda.ts';
+
 /**
  * Initializes the application and configures its dependencies.
  */
@@ -24,11 +26,9 @@ export async function init(options: {
   setDebug(options.debug);
   initSDK();
 
-  // Add Eruda if needed.
-  options.eruda && void import('eruda').then(({ default: eruda }) => {
-    eruda.init();
-    eruda.position({ x: window.innerWidth - 50, y: 0 });
-  });
+  if (options.eruda) {
+    scheduleErudaInit();
+  }
 
   // Telegram for macOS has a ton of bugs, including cases, when the client doesn't
   // even response to the "web_app_request_theme" method. It also generates an incorrect
