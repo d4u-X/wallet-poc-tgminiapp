@@ -130,7 +130,11 @@ function TxLeadIcon({ icon }: { icon: TxIconKind }) {
   }
   if (icon.kind === 'arrow') {
     return (
-      <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-wallet-surface-muted">
+      <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)]">
+        <div
+          className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
+          aria-hidden
+        />
         <TransferArrowIcon dir={icon.dir} />
       </div>
     );
@@ -138,7 +142,11 @@ function TxLeadIcon({ icon }: { icon: TxIconKind }) {
   const src =
     icon.tone === 'yellow' ? WALLET_HOME_ASSETS.warningYellow : WALLET_HOME_ASSETS.warningRed;
   return (
-    <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-wallet-surface-muted">
+    <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)]">
+      <div
+        className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
+        aria-hidden
+      />
       <img src={src} alt="" className="relative size-6 object-contain" />
     </div>
   );
@@ -157,12 +165,47 @@ function TagPill({ spec }: { spec: TagSpec }) {
   return (
     <span
       className={clsx(
-        'inline-flex h-4 max-h-[18px] shrink-0 items-center justify-center rounded-[30px] px-1.5 text-[10px] leading-none',
+        'inline-flex h-[18px] max-h-[18px] shrink-0 items-center justify-center rounded-[30px] px-1.5 text-[10px] font-medium leading-none',
         cls,
       )}
     >
       {spec.text}
     </span>
+  );
+}
+
+function TabButton({ active, icon, label }: { active: boolean; icon: string; label: string }) {
+  return (
+    <button
+      type="button"
+      className={clsx(
+        'relative flex flex-1 flex-col items-center gap-0.5 rounded-[999px] py-1 transition-opacity',
+        active ? 'opacity-100' : 'opacity-90',
+      )}
+    >
+      {active ? (
+        <span
+          className="pointer-events-none absolute inset-x-2 top-0 h-[34px] rounded-[999px] bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_100%)]"
+          aria-hidden
+        />
+      ) : null}
+      <img
+        src={icon}
+        alt=""
+        className={clsx(
+          'relative size-6 max-w-none object-contain',
+          active ? 'opacity-100' : 'opacity-90',
+        )}
+      />
+      <span
+        className={clsx(
+          'relative text-[10px] leading-none',
+          active ? 'font-medium text-white' : 'text-[rgba(255,255,255,0.4)]',
+        )}
+      >
+        {label}
+      </span>
+    </button>
   );
 }
 
@@ -316,24 +359,30 @@ export const WalletHomePage: FC = () => {
           {/* Transactions — flat rows like Figma 476:12609 */}
           <section className="flex flex-col gap-7 px-5 py-4">
             <h2 className="text-lg font-semibold text-white">最近交易</h2>
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-[22px]">
               {MOCK_TX.map((tx) => (
-                <li key={tx.id} className="flex items-center justify-between gap-3">
+                <li key={tx.id} className="flex min-h-10 items-center justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3">
                     <TxLeadIcon icon={tx.icon} />
                     <div className="flex min-w-0 flex-col gap-1">
                       <div className="flex flex-wrap items-center gap-1">
-                        <span className="text-base font-medium text-white">{tx.title}</span>
+                        <span className="text-[15px] font-medium leading-5 text-white">
+                          {tx.title}
+                        </span>
                         {tx.tags.map((t) => (
                           <TagPill key={t.text} spec={t} />
                         ))}
                       </div>
-                      <p className="text-xs text-[rgba(255,255,255,0.6)]">{tx.subtitle}</p>
+                      <p className="text-[12px] leading-4 text-[rgba(255,255,255,0.6)]">
+                        {tx.subtitle}
+                      </p>
                     </div>
                   </div>
                   <div className="shrink-0 text-right leading-none">
-                    <p className="text-base font-medium text-white">{tx.amount}</p>
-                    <p className="mt-1 text-xs text-[rgba(255,255,255,0.6)]">{tx.unit}</p>
+                    <p className="text-[15px] font-medium leading-5 text-white">{tx.amount}</p>
+                    <p className="mt-1 text-[12px] leading-4 text-[rgba(255,255,255,0.6)]">
+                      {tx.unit}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -354,33 +403,20 @@ export const WalletHomePage: FC = () => {
         {/* Floating tab bar + home indicator — Figma 476:12721 + Tab */}
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center bg-wallet-canvas">
           <nav
-            className="pointer-events-auto mb-2 flex h-[60px] w-[295px] max-w-[calc(100%-40px)] items-center justify-between rounded-[170px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] px-3.5 backdrop-blur-[7px]"
+            className="pointer-events-auto relative mb-2 flex h-[60px] w-[295px] max-w-[calc(100%-40px)] items-center justify-between overflow-hidden rounded-[170px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] px-3.5 backdrop-blur-[7px]"
             aria-label="主导航"
           >
-            <button type="button" className="flex flex-1 flex-col items-center gap-0.5 py-1">
-              <img
-                src={WALLET_HOME_ASSETS.tabHomeActive}
-                alt=""
-                className="size-6 max-w-none object-contain"
-              />
-              <span className="text-[10px] text-white">首页</span>
-            </button>
-            <button type="button" className="flex flex-1 flex-col items-center gap-0.5 py-1">
-              <img
-                src={WALLET_HOME_ASSETS.tabOrders}
-                alt=""
-                className="size-6 max-w-none object-contain opacity-90"
-              />
-              <span className="text-[10px] text-[rgba(255,255,255,0.4)]">订单</span>
-            </button>
-            <button type="button" className="flex flex-1 flex-col items-center gap-0.5 py-1">
-              <img
-                src={WALLET_HOME_ASSETS.tabProfile}
-                alt=""
-                className="size-6 max-w-none object-contain opacity-90"
-              />
-              <span className="text-[10px] text-[rgba(255,255,255,0.4)]">个人</span>
-            </button>
+            <div
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.02)_100%)]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-x-8 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
+              aria-hidden
+            />
+            <TabButton active icon={WALLET_HOME_ASSETS.tabHomeActive} label="首页" />
+            <TabButton active={false} icon={WALLET_HOME_ASSETS.tabOrders} label="订单" />
+            <TabButton active={false} icon={WALLET_HOME_ASSETS.tabProfile} label="个人" />
           </nav>
           <div className="pointer-events-auto w-full">
             <WalletHomeIndicator />
