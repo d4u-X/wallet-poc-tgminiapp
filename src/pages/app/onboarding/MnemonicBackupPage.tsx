@@ -52,7 +52,11 @@ export const MnemonicBackupPage: FC = () => {
             您的助记词
           </h3>
 
-          <div className="relative mt-4 flex flex-col gap-4 rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+          <div className="relative mt-4 flex flex-col gap-4 rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+            <div
+              className="pointer-events-none absolute left-1/2 top-0 h-[48px] w-[220px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.06),rgba(255,255,255,0)_75%)] blur-[16px]"
+              aria-hidden
+            />
             {rows.map((pair, rowIdx) => (
               <div key={rowIdx} className="flex gap-4">
                 {pair.map(([idx, w]) => (
@@ -76,7 +80,7 @@ export const MnemonicBackupPage: FC = () => {
           <button
             type="button"
             onClick={() => setHidden((v) => !v)}
-            className="mt-4 flex h-8 w-[80px] items-center justify-center gap-1 rounded-[40px] bg-wallet-surface-muted px-2 text-sm font-semibold text-wallet-text"
+            className="mt-4 flex h-8 w-[84px] items-center justify-center gap-1 rounded-[40px] border border-[rgba(255,255,255,0.08)] bg-wallet-surface-muted px-2 text-sm font-semibold text-wallet-text"
           >
             <img src={FIGMA_WELCOME.eye} alt="" className="size-4 object-contain" />
             {hidden ? '显示' : '隐藏'}

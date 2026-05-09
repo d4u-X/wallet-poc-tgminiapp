@@ -54,6 +54,8 @@ export const OnboardingPasswordPage: FC = () => {
               type="password"
               autoComplete="new-password"
               placeholder="至少8位字符"
+              labelClassName="text-[16px] leading-5"
+              inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
               value={pw}
               onChange={(ev) => setPw(ev.target.value)}
               error={pwError}
@@ -64,6 +66,8 @@ export const OnboardingPasswordPage: FC = () => {
               type="password"
               autoComplete="new-password"
               placeholder="再次输入密码"
+              labelClassName="text-[16px] leading-5"
+              inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
               value={confirm}
               onChange={(ev) => setConfirm(ev.target.value)}
               error={matchError}

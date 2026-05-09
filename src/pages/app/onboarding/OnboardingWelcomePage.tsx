@@ -76,14 +76,22 @@ export const OnboardingWelcomePage: FC = () => {
             </p>
           </div>
 
-          <div className="relative mt-[230px] flex flex-col gap-[24px]">
+          <div className="relative mt-[220px] flex flex-col gap-[24px]">
             <div
-              className="pointer-events-none absolute inset-x-0 top-[-14px] bottom-[-14px] rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.025)_0%,rgba(255,255,255,0)_100%)]"
+              className="pointer-events-none absolute inset-x-0 top-[-18px] bottom-[-18px] rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.028)_0%,rgba(255,255,255,0.01)_24%,rgba(255,255,255,0)_100%)]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute left-0 right-0 top-[-24px] mx-auto h-[84px] w-[250px] rounded-[999px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),rgba(255,255,255,0)_70%)] blur-[28px]"
               aria-hidden
             />
             {FEATURES.map((row) => (
-              <div key={row.title} className="relative flex items-start gap-3">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-wallet-surface-icon">
+              <div key={row.title} className="relative flex items-start gap-3 rounded-[14px]">
+                <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-wallet-surface-icon">
+                  <div
+                    className="pointer-events-none absolute inset-x-1 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
+                    aria-hidden
+                  />
                   <img src={row.icon} alt="" className="size-5 max-w-none object-contain" />
                 </div>
                 <div className="flex min-w-0 flex-col gap-1 pt-0.5">
@@ -109,7 +117,7 @@ export const OnboardingWelcomePage: FC = () => {
               创建新钱包
             </WalletPrimaryButton>
             <WalletSecondaryButton
-              className="h-12 rounded-[40px] border border-wallet-border bg-wallet-surface-icon text-base font-semibold"
+              className="h-12 rounded-[40px] border border-[rgba(255,255,255,0.1)] bg-wallet-surface-icon text-base font-semibold"
               onClick={() => {
                 setImportHint(true);
               }}
@@ -117,7 +125,11 @@ export const OnboardingWelcomePage: FC = () => {
               导入已有钱包
             </WalletSecondaryButton>
             {importHint ? (
-              <p className="text-center text-xs text-wallet-text-muted">导入流程即将开放（Mock）</p>
+              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft px-3 py-2.5">
+                <p className="text-center text-xs leading-[17px] text-wallet-text-muted">
+                  导入流程即将开放（Mock）
+                </p>
+              </div>
             ) : null}
           </div>
 

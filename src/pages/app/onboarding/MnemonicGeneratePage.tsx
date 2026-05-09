@@ -56,6 +56,10 @@ export const MnemonicGeneratePage: FC = () => {
               className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_36%)]"
               aria-hidden
             />
+            <div
+              className="pointer-events-none absolute left-1/2 top-6 h-16 w-[180px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),rgba(255,255,255,0)_72%)] blur-[20px]"
+              aria-hidden
+            />
             {!revealed ? (
               <div className="relative flex max-w-[196px] flex-col items-center gap-3 px-4">
                 <img src={FIGMA_WELCOME.eye} alt="" className="size-12 object-contain" />
@@ -92,7 +96,7 @@ export const MnemonicGeneratePage: FC = () => {
               className="max-w-[303px]"
               onClick={() => navigate('/onboarding/mnemonic/backup')}
             >
-              下一步，验证助记词
+              下一步，备份助记词
             </WalletPrimaryButton>
           ) : (
             <div className="h-12 w-[303px]" aria-hidden />

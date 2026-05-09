@@ -103,10 +103,16 @@ export const MnemonicVerifyPage: FC = () => {
       <WalletLayout>
         <WalletScreenHeader
           title="助记词验证"
+          rightSlotClassName="min-w-[44px]"
           rightSlot={
-            <span className="select-none text-base font-semibold text-wallet-text-muted opacity-80">
+            <button
+              type="button"
+              disabled
+              className="select-none text-[16px] font-semibold leading-none text-wallet-text-muted opacity-80"
+              aria-disabled="true"
+            >
               跳过
-            </span>
+            </button>
           }
         />
 
@@ -117,7 +123,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('random')}
                 className={clsx(
-                  '-mb-px w-16 border-b-2 pb-2.5 text-base font-semibold transition-colors',
+                  '-mb-px w-[72px] border-b-2 pb-2.5 text-base font-semibold transition-colors',
                   tab === 'random'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -129,7 +135,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('full')}
                 className={clsx(
-                  '-mb-px ml-8 w-16 border-b-2 pb-2.5 text-base font-semibold transition-colors',
+                  '-mb-px ml-8 w-[72px] border-b-2 pb-2.5 text-base font-semibold transition-colors',
                   tab === 'full'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -160,8 +166,8 @@ export const MnemonicVerifyPage: FC = () => {
                               className={clsx(
                                 'min-h-[42px] flex-1 rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
                                 randomPicks[i] === opt
-                                  ? 'border-white bg-white/10 text-wallet-text'
-                                  : 'border-wallet-choice-border text-wallet-text',
+                                  ? 'border-white bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] text-wallet-text'
+                                  : 'border-wallet-choice-border bg-[rgba(255,255,255,0.02)] text-wallet-text',
                               )}
                             >
                               {opt}
