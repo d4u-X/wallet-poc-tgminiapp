@@ -39,7 +39,11 @@ export const OnboardingPasswordPage: FC = () => {
       <WalletLayout>
         <WalletScreenHeader title="创建钱包" />
         <div className="flex min-h-[calc(100vh-44px)] flex-col px-[22px] pb-8 pt-10">
-          <div className="flex flex-col gap-[8px]">
+          <div className="relative flex flex-col gap-[8px]">
+            <div
+              className="pointer-events-none absolute left-0 top-[-12px] h-[76px] w-[220px] rounded-[999px] bg-[radial-gradient(circle_at_0%_50%,rgba(255,255,255,0.05),rgba(255,255,255,0)_78%)] blur-[22px]"
+              aria-hidden
+            />
             <h2 className="text-[32px] font-semibold leading-[34px] text-wallet-text">
               设置安全密码
             </h2>
@@ -49,33 +53,35 @@ export const OnboardingPasswordPage: FC = () => {
           </div>
 
           <form className="mt-11 flex flex-1 flex-col" onSubmit={onSubmit}>
-            <WalletTextField
-              label="设置密码"
-              type="password"
-              autoComplete="new-password"
-              placeholder="至少8位字符"
-              labelClassName="text-[16px] leading-5"
-              inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
-              value={pw}
-              onChange={(ev) => setPw(ev.target.value)}
-              error={pwError}
-            />
-            <WalletTextField
-              className="mt-8"
-              label="确认密码"
-              type="password"
-              autoComplete="new-password"
-              placeholder="再次输入密码"
-              labelClassName="text-[16px] leading-5"
-              inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
-              value={confirm}
-              onChange={(ev) => setConfirm(ev.target.value)}
-              error={matchError}
-            />
+            <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-3 py-3">
+              <WalletTextField
+                label="设置密码"
+                type="password"
+                autoComplete="new-password"
+                placeholder="至少8位字符"
+                labelClassName="text-[16px] leading-5"
+                inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
+                value={pw}
+                onChange={(ev) => setPw(ev.target.value)}
+                error={pwError}
+              />
+              <WalletTextField
+                className="mt-8"
+                label="确认密码"
+                type="password"
+                autoComplete="new-password"
+                placeholder="再次输入密码"
+                labelClassName="text-[16px] leading-5"
+                inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
+                value={confirm}
+                onChange={(ev) => setConfirm(ev.target.value)}
+                error={matchError}
+              />
+            </div>
 
             <WalletInfoBanner
               iconSrc={FIGMA_WELCOME.warning}
-              className="mt-auto mb-10 border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft"
+              className="mt-auto mb-10 border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
               textClassName="text-[12px] leading-[17px]"
             >
               密码无法找回，请务必牢记。建议使用包含大小写字母、数字和特殊符号的强密码。

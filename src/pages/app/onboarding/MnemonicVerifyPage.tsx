@@ -118,7 +118,11 @@ export const MnemonicVerifyPage: FC = () => {
 
         <form className="flex flex-col" onSubmit={onSubmit}>
           <div className="flex flex-col px-5 pb-44 pt-2">
-            <div className="flex border-b border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)]">
+            <div className="relative flex border-b border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)]">
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.22),rgba(255,255,255,0))]"
+                aria-hidden
+              />
               <button
                 type="button"
                 onClick={() => setTab('random')}
@@ -147,7 +151,11 @@ export const MnemonicVerifyPage: FC = () => {
 
             <div className="mt-6 flex flex-col gap-6">
               {tab === 'random' ? (
-                <div className="rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                <div className="relative rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                  <div
+                    className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[190px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.07),rgba(255,255,255,0)_75%)] blur-[18px]"
+                    aria-hidden
+                  />
                   <div className="flex flex-col gap-8">
                     {randomVerifyIndices.map((i) => (
                       <div key={i} className="flex flex-col gap-3">
@@ -164,12 +172,16 @@ export const MnemonicVerifyPage: FC = () => {
                                 }))
                               }
                               className={clsx(
-                                'min-h-[42px] flex-1 rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
+                                'relative min-h-[42px] flex-1 overflow-hidden rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
                                 randomPicks[i] === opt
                                   ? 'border-white bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] text-wallet-text'
                                   : 'border-wallet-choice-border bg-[rgba(255,255,255,0.02)] text-wallet-text',
                               )}
                             >
+                              <span
+                                className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.18),rgba(255,255,255,0))]"
+                                aria-hidden
+                              />
                               {opt}
                             </button>
                           ))}
@@ -179,7 +191,11 @@ export const MnemonicVerifyPage: FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                <div className="relative rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                  <div
+                    className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[190px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.07),rgba(255,255,255,0)_75%)] blur-[18px]"
+                    aria-hidden
+                  />
                   <div className="flex flex-col gap-4">
                     {Array.from({ length: 6 }, (_, row) => (
                       <div key={row} className="flex gap-4">
@@ -188,8 +204,12 @@ export const MnemonicVerifyPage: FC = () => {
                           return (
                             <div
                               key={idx}
-                              className="flex h-11 flex-1 items-center gap-2 rounded-[10px] border-[0.5px] border-wallet-border-strong px-2"
+                              className="relative flex h-11 flex-1 items-center gap-2 overflow-hidden rounded-[10px] border-[0.5px] border-wallet-border-strong bg-[rgba(255,255,255,0.015)] px-2"
                             >
+                              <div
+                                className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.18),rgba(255,255,255,0))]"
+                                aria-hidden
+                              />
                               <span className="w-5 shrink-0 text-center text-sm text-wallet-text-muted">
                                 {String(idx + 1).padStart(2, '0')}
                               </span>

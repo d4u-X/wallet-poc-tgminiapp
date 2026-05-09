@@ -60,11 +60,29 @@ export const OnboardingWelcomePage: FC = () => {
             />
           </div>
         </div>
+        <div
+          className="pointer-events-none absolute left-1/2 top-[56px] h-[180px] w-[240px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),rgba(255,255,255,0)_72%)] blur-[40px]"
+          aria-hidden
+        />
 
         <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[76px]">
-          <div className="flex flex-col items-center gap-[27px]">
-            <div className="flex flex-col items-center gap-5">
-              <img src={FIGMA_WELCOME.logoMark} alt="" className="h-16 w-16 object-contain" />
+          <div className="relative flex flex-col items-center gap-[27px]">
+            <div
+              className="pointer-events-none absolute left-1/2 top-[6px] h-[92px] w-[92px] -translate-x-1/2 rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0)_100%)]"
+              aria-hidden
+            />
+            <div className="relative flex flex-col items-center gap-5">
+              <div className="relative flex h-16 w-16 items-center justify-center rounded-[20px]">
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_100%)]"
+                  aria-hidden
+                />
+                <img
+                  src={FIGMA_WELCOME.logoMark}
+                  alt=""
+                  className="relative h-16 w-16 object-contain"
+                />
+              </div>
               <img
                 src={FIGMA_WELCOME.logoWordmark}
                 alt=""
@@ -76,7 +94,7 @@ export const OnboardingWelcomePage: FC = () => {
             </p>
           </div>
 
-          <div className="relative mt-[220px] flex flex-col gap-[24px]">
+          <div className="relative mt-[214px] flex flex-col gap-[24px]">
             <div
               className="pointer-events-none absolute inset-x-0 top-[-18px] bottom-[-18px] rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.028)_0%,rgba(255,255,255,0.01)_24%,rgba(255,255,255,0)_100%)]"
               aria-hidden
@@ -106,9 +124,13 @@ export const OnboardingWelcomePage: FC = () => {
             ))}
           </div>
 
-          <div className="mt-auto flex flex-col gap-4 pt-8">
+          <div className="relative mt-auto flex flex-col gap-4 pt-8">
+            <div
+              className="pointer-events-none absolute inset-x-0 top-2 bottom-[-10px] rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)]"
+              aria-hidden
+            />
             <WalletPrimaryButton
-              className="h-12 rounded-[40px] text-base font-semibold"
+              className="relative h-12 rounded-[40px] text-base font-semibold shadow-[0_10px_30px_rgba(255,255,255,0.06)]"
               onClick={() => {
                 beginOnboarding();
                 navigate('/onboarding/password');
@@ -117,7 +139,7 @@ export const OnboardingWelcomePage: FC = () => {
               创建新钱包
             </WalletPrimaryButton>
             <WalletSecondaryButton
-              className="h-12 rounded-[40px] border border-[rgba(255,255,255,0.1)] bg-wallet-surface-icon text-base font-semibold"
+              className="relative h-12 rounded-[40px] border border-[rgba(255,255,255,0.1)] bg-wallet-surface-icon text-base font-semibold"
               onClick={() => {
                 setImportHint(true);
               }}
@@ -133,7 +155,7 @@ export const OnboardingWelcomePage: FC = () => {
             ) : null}
           </div>
 
-          <p className="mx-auto mt-6 max-w-[244px] text-center text-xs leading-[17px] text-wallet-text-secondary">
+          <p className="mx-auto mt-5 max-w-[244px] text-center text-xs leading-[17px] text-wallet-text-secondary">
             <span>继续即表示您同意我们的</span>{' '}
             <button
               type="button"
