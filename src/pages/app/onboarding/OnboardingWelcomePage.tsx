@@ -61,12 +61,12 @@ export const OnboardingWelcomePage: FC = () => {
           </div>
         </div>
         <div
-          className="pointer-events-none absolute left-1/2 top-[56px] h-[180px] w-[240px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),rgba(255,255,255,0)_72%)] blur-[40px]"
+          className="pointer-events-none absolute left-1/2 top-[52px] h-[196px] w-[256px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.085),rgba(255,255,255,0)_72%)] blur-[42px]"
           aria-hidden
         />
 
-        <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[76px]">
-          <div className="relative flex flex-col items-center gap-[27px]">
+        <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[74px]">
+          <div className="relative flex flex-col items-center gap-[25px]">
             <div
               className="pointer-events-none absolute left-1/2 top-[6px] h-[92px] w-[92px] -translate-x-1/2 rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0)_100%)]"
               aria-hidden
@@ -94,9 +94,9 @@ export const OnboardingWelcomePage: FC = () => {
             </p>
           </div>
 
-          <div className="relative mt-[214px] flex flex-col gap-[24px]">
+          <div className="relative mt-[198px] flex flex-col gap-[22px] px-0.5">
             <div
-              className="pointer-events-none absolute inset-x-0 top-[-18px] bottom-[-18px] rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.028)_0%,rgba(255,255,255,0.01)_24%,rgba(255,255,255,0)_100%)]"
+              className="pointer-events-none absolute inset-x-[-4px] top-[-18px] bottom-[-18px] rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0.012)_24%,rgba(255,255,255,0)_100%)]"
               aria-hidden
             />
             <div
@@ -104,7 +104,10 @@ export const OnboardingWelcomePage: FC = () => {
               aria-hidden
             />
             {FEATURES.map((row) => (
-              <div key={row.title} className="relative flex items-start gap-3 rounded-[14px]">
+              <div
+                key={row.title}
+                className="relative flex items-start gap-3 rounded-[14px] px-0.5"
+              >
                 <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-wallet-surface-icon">
                   <div
                     className="pointer-events-none absolute inset-x-1 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
@@ -124,13 +127,17 @@ export const OnboardingWelcomePage: FC = () => {
             ))}
           </div>
 
-          <div className="relative mt-auto flex flex-col gap-4 pt-8">
+          <div className="relative mt-auto flex flex-col gap-[14px] pt-8">
             <div
-              className="pointer-events-none absolute inset-x-0 top-2 bottom-[-10px] rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)]"
+              className="pointer-events-none absolute inset-x-[-4px] top-0 bottom-[-12px] rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.006)_38%,rgba(255,255,255,0)_100%)]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.16),rgba(255,255,255,0))]"
               aria-hidden
             />
             <WalletPrimaryButton
-              className="relative h-12 rounded-[40px] text-base font-semibold shadow-[0_10px_30px_rgba(255,255,255,0.06)]"
+              className="relative h-12 rounded-[40px] text-base font-semibold shadow-[0_12px_32px_rgba(255,255,255,0.05)]"
               onClick={() => {
                 beginOnboarding();
                 navigate('/onboarding/password');
@@ -159,7 +166,7 @@ export const OnboardingWelcomePage: FC = () => {
             <span>继续即表示您同意我们的</span>{' '}
             <button
               type="button"
-              className="underline decoration-solid underline-offset-2"
+              className="text-wallet-text underline decoration-solid underline-offset-2"
               onClick={() => openLink('https://telegram.org/tos')}
             >
               服务条款
@@ -167,7 +174,7 @@ export const OnboardingWelcomePage: FC = () => {
             <span>和</span>{' '}
             <button
               type="button"
-              className="underline decoration-solid underline-offset-2"
+              className="text-wallet-text underline decoration-solid underline-offset-2"
               onClick={() => openLink('https://telegram.org/privacy')}
             >
               隐私政策

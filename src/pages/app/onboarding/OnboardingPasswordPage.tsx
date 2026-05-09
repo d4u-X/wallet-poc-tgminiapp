@@ -52,8 +52,12 @@ export const OnboardingPasswordPage: FC = () => {
             </p>
           </div>
 
-          <form className="mt-11 flex flex-1 flex-col" onSubmit={onSubmit}>
-            <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-3 py-3">
+          <form className="mt-10 flex flex-1 flex-col" onSubmit={onSubmit}>
+            <div className="relative rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.022)_0%,rgba(255,255,255,0)_100%)] px-3 py-3.5">
+              <div
+                className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.16),rgba(255,255,255,0))]"
+                aria-hidden
+              />
               <WalletTextField
                 label="设置密码"
                 type="password"
@@ -81,13 +85,17 @@ export const OnboardingPasswordPage: FC = () => {
 
             <WalletInfoBanner
               iconSrc={FIGMA_WELCOME.warning}
-              className="mt-auto mb-10 border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
+              className="mt-auto mb-[88px] border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
               textClassName="text-[12px] leading-[17px]"
             >
               密码无法找回，请务必牢记。建议使用包含大小写字母、数字和特殊符号的强密码。
             </WalletInfoBanner>
 
-            <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center bg-wallet-canvas px-9 pb-[max(24px,env(safe-area-inset-bottom))] pt-4">
+            <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center bg-wallet-canvas px-9 pb-[max(24px,env(safe-area-inset-bottom))] pt-3">
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-[linear-gradient(180deg,rgba(19,19,19,0.01)_0%,rgba(19,19,19,0.94)_100%)]"
+                aria-hidden
+              />
               <WalletPrimaryButton type="submit" className="max-w-[303px]">
                 创建钱包
               </WalletPrimaryButton>

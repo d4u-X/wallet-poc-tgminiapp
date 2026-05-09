@@ -127,7 +127,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('random')}
                 className={clsx(
-                  '-mb-px w-[72px] border-b-2 pb-2.5 text-base font-semibold transition-colors',
+                  '-mb-px w-[78px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
                   tab === 'random'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -139,7 +139,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('full')}
                 className={clsx(
-                  '-mb-px ml-8 w-[72px] border-b-2 pb-2.5 text-base font-semibold transition-colors',
+                  '-mb-px ml-7 w-[78px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
                   tab === 'full'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -151,16 +151,18 @@ export const MnemonicVerifyPage: FC = () => {
 
             <div className="mt-6 flex flex-col gap-6">
               {tab === 'random' ? (
-                <div className="relative rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2 py-3">
                   <div
-                    className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[190px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.07),rgba(255,255,255,0)_75%)] blur-[18px]"
+                    className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
                   />
-                  <div className="flex flex-col gap-8">
+                  <div className="flex flex-col gap-7">
                     {randomVerifyIndices.map((i) => (
                       <div key={i} className="flex flex-col gap-3">
-                        <p className="text-base font-semibold text-wallet-text">第{i + 1}个单词</p>
-                        <div className="flex gap-[13px]">
+                        <p className="text-[15px] font-semibold leading-5 text-wallet-text">
+                          第{i + 1}个单词
+                        </p>
+                        <div className="flex gap-3">
                           {(randomOptions[i] ?? []).map((opt) => (
                             <button
                               key={opt}
@@ -172,9 +174,9 @@ export const MnemonicVerifyPage: FC = () => {
                                 }))
                               }
                               className={clsx(
-                                'relative min-h-[42px] flex-1 overflow-hidden rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
+                                'relative min-h-11 flex-1 overflow-hidden rounded-[11px] border px-2.5 py-2.5 text-center text-[15px] font-semibold capitalize transition-colors',
                                 randomPicks[i] === opt
-                                  ? 'border-white bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] text-wallet-text'
+                                  ? 'border-white bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] text-wallet-text shadow-[0_8px_20px_rgba(255,255,255,0.025)]'
                                   : 'border-wallet-choice-border bg-[rgba(255,255,255,0.02)] text-wallet-text',
                               )}
                             >
@@ -191,26 +193,26 @@ export const MnemonicVerifyPage: FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="relative rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2 py-3">
                   <div
-                    className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[190px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.07),rgba(255,255,255,0)_75%)] blur-[18px]"
+                    className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
                   />
                   <div className="flex flex-col gap-4">
                     {Array.from({ length: 6 }, (_, row) => (
-                      <div key={row} className="flex gap-4">
+                      <div key={row} className="flex gap-3.5">
                         {[0, 1].map((col) => {
                           const idx = row * 2 + col;
                           return (
                             <div
                               key={idx}
-                              className="relative flex h-11 flex-1 items-center gap-2 overflow-hidden rounded-[10px] border-[0.5px] border-wallet-border-strong bg-[rgba(255,255,255,0.015)] px-2"
+                              className="relative flex h-12 flex-1 items-center gap-2.5 overflow-hidden rounded-[11px] border-[0.5px] border-wallet-border-strong bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.01)_100%)] px-2.5"
                             >
                               <div
                                 className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.18),rgba(255,255,255,0))]"
                                 aria-hidden
                               />
-                              <span className="w-5 shrink-0 text-center text-sm text-wallet-text-muted">
+                              <span className="w-6 shrink-0 text-center text-sm text-wallet-text-muted">
                                 {String(idx + 1).padStart(2, '0')}
                               </span>
                               <div className="h-4 w-px shrink-0 bg-white/20" aria-hidden />
@@ -219,7 +221,7 @@ export const MnemonicVerifyPage: FC = () => {
                                 spellCheck={false}
                                 inputMode="text"
                                 aria-label={`第 ${idx + 1} 个单词`}
-                                className="min-w-0 flex-1 bg-transparent text-base font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
+                                className="min-w-0 flex-1 bg-transparent text-[15px] font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
                                 placeholder=""
                                 value={fullInputs[idx] ?? ''}
                                 onChange={(ev) =>
@@ -248,11 +250,15 @@ export const MnemonicVerifyPage: FC = () => {
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 z-10 flex flex-col items-center bg-wallet-canvas pb-[env(safe-area-inset-bottom)] pt-3">
+            <div
+              className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-[linear-gradient(180deg,rgba(19,19,19,0.02)_0%,rgba(19,19,19,0.92)_100%)]"
+              aria-hidden
+            />
             <button
               type="submit"
               disabled={!canSubmit}
               className={clsx(
-                'flex h-12 w-full max-w-[303px] items-center justify-center rounded-[var(--radius-wallet-pill)] text-base font-semibold transition-colors',
+                'relative flex h-12 w-full max-w-[303px] items-center justify-center rounded-[var(--radius-wallet-pill)] text-base font-semibold transition-colors',
                 canSubmit
                   ? 'bg-wallet-primary-btn text-wallet-primary-btn-text'
                   : 'cursor-not-allowed bg-white/5 text-[rgba(255,255,255,0.2)]',
