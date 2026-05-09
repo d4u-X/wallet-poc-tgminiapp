@@ -127,31 +127,43 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('random')}
                 className={clsx(
-                  '-mb-px w-[76px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
+                  'relative -mb-px w-[76px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
                   tab === 'random'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
                 )}
               >
                 随机验证
+                {tab === 'random' ? (
+                  <span
+                    className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-11 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
+                    aria-hidden
+                  />
+                ) : null}
               </button>
               <button
                 type="button"
                 onClick={() => setTab('full')}
                 className={clsx(
-                  '-mb-px ml-6 w-[76px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
+                  'relative -mb-px ml-6 w-[76px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
                   tab === 'full'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
                 )}
               >
                 完整验证
+                {tab === 'full' ? (
+                  <span
+                    className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-11 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
+                    aria-hidden
+                  />
+                ) : null}
               </button>
             </div>
 
             <div className="mt-6 flex flex-col gap-6">
               {tab === 'random' ? (
-                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2.5 py-3.5">
+                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2.5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
                   <div
                     className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
@@ -193,7 +205,7 @@ export const MnemonicVerifyPage: FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2.5 py-3.5">
+                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2.5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
                   <div
                     className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
@@ -254,13 +266,21 @@ export const MnemonicVerifyPage: FC = () => {
               className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-[linear-gradient(180deg,rgba(19,19,19,0.02)_0%,rgba(19,19,19,0.92)_100%)]"
               aria-hidden
             />
+            <div
+              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.12),rgba(255,255,255,0))]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute left-1/2 top-0 h-14 w-[248px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.055),rgba(255,255,255,0)_72%)] blur-[20px]"
+              aria-hidden
+            />
             <button
               type="submit"
               disabled={!canSubmit}
               className={clsx(
                 'relative flex h-12 w-full max-w-[303px] items-center justify-center rounded-[var(--radius-wallet-pill)] text-base font-semibold transition-colors',
                 canSubmit
-                  ? 'bg-wallet-primary-btn text-wallet-primary-btn-text'
+                  ? 'bg-wallet-primary-btn text-wallet-primary-btn-text shadow-[0_14px_34px_rgba(255,255,255,0.05)]'
                   : 'cursor-not-allowed bg-white/5 text-[rgba(255,255,255,0.2)]',
               )}
             >
