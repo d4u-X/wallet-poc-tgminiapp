@@ -39,7 +39,7 @@ export const OnboardingPasswordPage: FC = () => {
       <WalletLayout>
         <WalletScreenHeader title="创建钱包" />
         <div className="flex min-h-[calc(100vh-44px)] flex-col px-[22px] pb-8 pt-10">
-          <div className="relative flex flex-col gap-[8px]">
+          <div className="relative flex max-w-[290px] flex-col gap-[10px]">
             <div
               className="pointer-events-none absolute left-0 top-[-12px] h-[76px] w-[220px] rounded-[999px] bg-[radial-gradient(circle_at_0%_50%,rgba(255,255,255,0.05),rgba(255,255,255,0)_78%)] blur-[22px]"
               aria-hidden
@@ -47,12 +47,12 @@ export const OnboardingPasswordPage: FC = () => {
             <h2 className="text-[32px] font-semibold leading-[34px] text-wallet-text">
               设置安全密码
             </h2>
-            <p className="text-sm leading-5 text-wallet-text-secondary">
+            <p className="max-w-[248px] text-sm leading-5 text-wallet-text-secondary">
               此密码用于加密您的私钥，请妥善保管
             </p>
           </div>
 
-          <form className="mt-10 flex flex-1 flex-col" onSubmit={onSubmit}>
+          <form className="mt-9 flex flex-1 flex-col" onSubmit={onSubmit}>
             <div className="relative rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.022)_0%,rgba(255,255,255,0)_100%)] px-3 py-3.5">
               <div
                 className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.16),rgba(255,255,255,0))]"
@@ -83,13 +83,19 @@ export const OnboardingPasswordPage: FC = () => {
               />
             </div>
 
-            <WalletInfoBanner
-              iconSrc={FIGMA_WELCOME.warning}
-              className="mt-auto mb-[88px] border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
-              textClassName="text-[12px] leading-[17px]"
-            >
-              密码无法找回，请务必牢记。建议使用包含大小写字母、数字和特殊符号的强密码。
-            </WalletInfoBanner>
+            <div className="relative mt-auto mb-[92px]">
+              <div
+                className="pointer-events-none absolute inset-x-6 top-[-10px] h-10 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05),rgba(255,255,255,0)_75%)] blur-[16px]"
+                aria-hidden
+              />
+              <WalletInfoBanner
+                iconSrc={FIGMA_WELCOME.warning}
+                className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
+                textClassName="text-[12px] leading-[17px]"
+              >
+                密码无法找回，请务必牢记。建议使用包含大小写字母、数字和特殊符号的强密码。
+              </WalletInfoBanner>
+            </div>
 
             <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center bg-wallet-canvas px-9 pb-[max(24px,env(safe-area-inset-bottom))] pt-3">
               <div

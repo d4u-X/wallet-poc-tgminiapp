@@ -68,7 +68,7 @@ export const OnboardingWelcomePage: FC = () => {
         <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[74px]">
           <div className="relative flex flex-col items-center gap-[25px]">
             <div
-              className="pointer-events-none absolute left-1/2 top-[6px] h-[92px] w-[92px] -translate-x-1/2 rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0)_100%)]"
+              className="pointer-events-none absolute left-1/2 top-[4px] h-[96px] w-[96px] -translate-x-1/2 rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.055)_0%,rgba(255,255,255,0)_100%)]"
               aria-hidden
             />
             <div className="relative flex flex-col items-center gap-5">
@@ -127,7 +127,7 @@ export const OnboardingWelcomePage: FC = () => {
             ))}
           </div>
 
-          <div className="relative mt-auto flex flex-col gap-[14px] pt-8">
+          <div className="relative mt-auto flex flex-col gap-[14px] pt-[30px]">
             <div
               className="pointer-events-none absolute inset-x-[-4px] top-0 bottom-[-12px] rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.006)_38%,rgba(255,255,255,0)_100%)]"
               aria-hidden
@@ -162,24 +162,30 @@ export const OnboardingWelcomePage: FC = () => {
             ) : null}
           </div>
 
-          <p className="mx-auto mt-5 max-w-[244px] text-center text-xs leading-[17px] text-wallet-text-secondary">
-            <span>继续即表示您同意我们的</span>{' '}
-            <button
-              type="button"
-              className="text-wallet-text underline decoration-solid underline-offset-2"
-              onClick={() => openLink('https://telegram.org/tos')}
-            >
-              服务条款
-            </button>{' '}
-            <span>和</span>{' '}
-            <button
-              type="button"
-              className="text-wallet-text underline decoration-solid underline-offset-2"
-              onClick={() => openLink('https://telegram.org/privacy')}
-            >
-              隐私政策
-            </button>
-          </p>
+          <div className="relative mx-auto mt-5 max-w-[248px] px-1">
+            <div
+              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.12),rgba(255,255,255,0))]"
+              aria-hidden
+            />
+            <p className="pt-3 text-center text-xs leading-[17px] text-wallet-text-secondary">
+              <span>继续即表示您同意我们的</span>{' '}
+              <button
+                type="button"
+                className="text-wallet-text underline decoration-solid underline-offset-2"
+                onClick={() => openLink('https://telegram.org/tos')}
+              >
+                服务条款
+              </button>{' '}
+              <span>和</span>{' '}
+              <button
+                type="button"
+                className="text-wallet-text underline decoration-solid underline-offset-2"
+                onClick={() => openLink('https://telegram.org/privacy')}
+              >
+                隐私政策
+              </button>
+            </p>
+          </div>
 
           {import.meta.env.DEV ? (
             <Link
