@@ -170,7 +170,7 @@ function QuickAction({ label, children }: { label: string; children: ReactNode }
   return (
     <button
       type="button"
-      className="flex h-[72px] min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[20px] border border-white bg-[rgba(255,255,255,0.1)] py-2 text-white"
+      className="flex h-[72px] min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[20px] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] py-2 text-white"
     >
       <div className="flex size-6 items-center justify-center">{children}</div>
       <span className="text-xs font-medium leading-none">{label}</span>
@@ -244,20 +244,20 @@ export const WalletHomePage: FC = () => {
 
           {/* Assets + quick actions — Figma 476:12571 */}
           <section className="flex flex-col items-center gap-8 px-5 pb-2 pt-[22px]">
-            <div className="relative flex w-full flex-col items-center gap-4 overflow-hidden rounded-[28px] border border-[rgba(255,255,255,0.06)] bg-wallet-surface-glass px-5 py-6">
+            <div className="relative flex w-full flex-col items-center gap-4">
               <div
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(255,255,255,0.12),rgba(255,255,255,0)_42%),linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_48%)]"
+                className="pointer-events-none absolute left-1/2 top-[-14px] h-[172px] w-[252px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.1),rgba(255,255,255,0)_60%)] blur-[34px]"
                 aria-hidden
               />
               <div
-                className="pointer-events-none absolute left-1/2 top-[-76px] h-[170px] w-[250px] -translate-x-1/2 rounded-full bg-white/6 blur-[64px]"
+                className="pointer-events-none absolute left-1/2 top-[8px] h-[96px] w-[214px] -translate-x-1/2 rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_48%,rgba(255,255,255,0)_100%)]"
                 aria-hidden
               />
               <div
-                className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.28),rgba(255,255,255,0))]"
+                className="pointer-events-none absolute left-1/2 top-[8px] h-px w-[174px] -translate-x-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.28),rgba(255,255,255,0))]"
                 aria-hidden
               />
-              <div className="relative flex flex-col items-center gap-2">
+              <div className="relative flex w-[214px] flex-col items-center gap-2 pt-[2px]">
                 <p className="text-[16px] leading-4 text-white/60">全部资产</p>
                 <button
                   type="button"
@@ -354,7 +354,7 @@ export const WalletHomePage: FC = () => {
         {/* Floating tab bar + home indicator — Figma 476:12721 + Tab */}
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center bg-wallet-canvas">
           <nav
-            className="pointer-events-auto mb-2 flex h-[60px] w-[295px] max-w-[calc(100%-40px)] items-center justify-between rounded-[170px] border-t-[0.5px] border-white bg-[rgba(255,255,255,0.05)] px-3.5 backdrop-blur-[7px]"
+            className="pointer-events-auto mb-2 flex h-[60px] w-[295px] max-w-[calc(100%-40px)] items-center justify-between rounded-[170px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] px-3.5 backdrop-blur-[7px]"
             aria-label="主导航"
           >
             <button type="button" className="flex flex-1 flex-col items-center gap-0.5 py-1">
