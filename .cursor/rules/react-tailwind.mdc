@@ -17,8 +17,8 @@ interface MyComponentProps {
 }
 
 export const MyComponent: FC<MyComponentProps> = ({ title, className }) => (
-  <div className={clsx('rounded-xl bg-tg-section-bg px-4 py-3', className)}>
-    <p className="text-[15px] font-medium text-tg-text">{title}</p>
+  <div className={clsx('rounded-[12px] bg-wallet-surface-muted px-4 py-3', className)}>
+    <p className="text-[15px] font-medium text-wallet-text">{title}</p>
   </div>
 );
 ```
@@ -40,13 +40,13 @@ export const MyPage: FC = () => (
 ## Telegram-style section (list card)
 ```tsx
 <section>
-  <p className="px-4 pb-1.5 text-[13px] font-medium uppercase tracking-wide text-tg-subtitle">
+  <p className="px-4 pb-1.5 text-[13px] font-medium uppercase tracking-wide text-wallet-text-secondary">
     Section Title
   </p>
-  <div className="mx-4 overflow-hidden rounded-xl bg-tg-section-bg divide-y divide-tg-separator">
+  <div className="mx-4 divide-y overflow-hidden rounded-xl border border-wallet-border bg-wallet-surface-muted">
     {/* rows */}
   </div>
-  <p className="px-4 pt-2 text-[13px] text-tg-hint">Footer note.</p>
+  <p className="px-4 pt-2 text-[13px] text-wallet-text-muted">Footer note.</p>
 </section>
 ```
 
@@ -54,12 +54,12 @@ export const MyPage: FC = () => (
 ```tsx
 <Link
   to="/route"
-  className="flex items-center gap-3 px-4 py-3 no-underline hover:bg-black/5 active:bg-black/10 transition-colors"
+  className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-white/5 active:bg-white/10"
 >
   {/* optional icon */}
   <div className="min-w-0 flex-1">
-    <p className="text-[15px] font-medium text-tg-text">Label</p>
-    <p className="truncate text-[13px] text-tg-subtitle">Subtitle</p>
+    <p className="text-[15px] font-medium text-wallet-text">Label</p>
+    <p className="truncate text-[13px] text-wallet-text-secondary">Subtitle</p>
   </div>
   {/* optional chevron */}
 </Link>
@@ -69,17 +69,17 @@ export const MyPage: FC = () => (
 ```tsx
 <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 p-8 text-center">
   <img src={...} className="block size-36" alt="..." />
-  <h2 className="text-lg font-semibold text-tg-text">Title</h2>
-  <p className="text-sm text-tg-hint">Description</p>
+  <h2 className="text-lg font-semibold text-wallet-text">Title</h2>
+  <p className="text-sm text-wallet-text-secondary">Description</p>
 </div>
 ```
 
 ## Hooks rules
 - Hooks only at the top of function components — never inside loops or conditions
-- `useCallback` for any function passed as prop
-- `useMemo` for expensive derived values (not for trivial ones)
+- Use `useCallback` when referential stability matters, not mechanically for every handler
+- Use `useMemo` for expensive derived values (not for trivial ones)
 - Prefer `useSignal` from `@tma.js/sdk-react` over manual subscriptions to TMA events
 
 ## Dark mode
 - The `dark` class is set on the root `<div>` by `App.tsx` based on `miniApp.isDark`
-- Use `dark:` prefix sparingly — prefer TG theme tokens which auto-adapt
+- Use `dark:` prefix sparingly — prefer wallet design tokens on product screens and TG tokens only on legacy demo screens

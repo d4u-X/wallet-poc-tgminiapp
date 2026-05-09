@@ -52,7 +52,7 @@ export const MnemonicBackupPage: FC = () => {
             您的助记词
           </h3>
 
-          <div className="mt-4 flex flex-col gap-4">
+          <div className="relative mt-4 flex flex-col gap-4 rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
             {rows.map((pair, rowIdx) => (
               <div key={rowIdx} className="flex gap-4">
                 {pair.map(([idx, w]) => (

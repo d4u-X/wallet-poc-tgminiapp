@@ -50,10 +50,14 @@ export const MnemonicGeneratePage: FC = () => {
               setRevealed(true);
               revealMnemonic();
             }}
-            className="mt-4 flex min-h-[310px] w-full flex-col items-center justify-center rounded-[12px] bg-wallet-surface-muted ring-1 ring-wallet-border"
+            className="relative mt-4 flex min-h-[310px] w-full flex-col items-center justify-center overflow-hidden rounded-[12px] bg-wallet-surface-muted ring-1 ring-wallet-border"
           >
+            <div
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_36%)]"
+              aria-hidden
+            />
             {!revealed ? (
-              <div className="flex max-w-[196px] flex-col items-center gap-3 px-4">
+              <div className="relative flex max-w-[196px] flex-col items-center gap-3 px-4">
                 <img src={FIGMA_WELCOME.eye} alt="" className="size-12 object-contain" />
                 <p className="text-center text-sm font-semibold leading-5 text-[rgba(255,255,255,0.8)]">
                   点击查看助记词
@@ -62,7 +66,7 @@ export const MnemonicGeneratePage: FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="grid w-full grid-cols-2 gap-x-[17px] gap-y-3 px-4 py-5">
+              <div className="relative grid w-full grid-cols-2 gap-x-[17px] gap-y-3 px-4 py-5">
                 {words.map((w, i) => (
                   <div
                     key={`${i}-${w}`}

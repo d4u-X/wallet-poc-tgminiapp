@@ -8,7 +8,7 @@ alwaysApply: true
 ## Stack (never deviate from this)
 - **React 18** + **TypeScript** (strict mode)
 - **Vite 6** with `@vitejs/plugin-react-swc`
-- **Tailwind CSS v4** (`@tailwindcss/vite`) — NO plain CSS files, NO BEM, NO CSS modules
+- **Tailwind CSS v4** (`@tailwindcss/vite`) with a small number of central theme/entry CSS files (`src/index.css`, `src/styles/**`) — NO CSS modules, NO BEM
 - **`@tma.js/sdk-react`** for Telegram Mini App SDK
 - **`@tonconnect/ui-react`** for TON wallet
 - **`react-router-dom` v6** HashRouter for navigation
@@ -42,6 +42,7 @@ alwaysApply: true
 - **Product (`src/pages/app/**`)**: use **wallet design tokens** only (semantic names from Figma: background, surface, primary, text primary/secondary, borders, error, etc.). Define once in a central theme file and map into `@theme inline` — **no ad-hoc hex in JSX** except rare one-offs aligned with design.
 - **Demo (`src/pages/demo/**`)**: may keep legacy `tg-*` classes until migrated.
 - Never use `@apply`; extract a React component instead
+- Static assets from `public/` must be referenced through `publicUrl(...)` so Vite `base` works in dev and deploy environments
 
 ## Code quality
 - No unused variables or imports (TS `noUnusedLocals` + `noUnusedParameters`)

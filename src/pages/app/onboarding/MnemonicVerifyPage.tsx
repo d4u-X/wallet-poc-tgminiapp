@@ -112,7 +112,7 @@ export const MnemonicVerifyPage: FC = () => {
 
         <form className="flex flex-col" onSubmit={onSubmit}>
           <div className="flex flex-col px-5 pb-44 pt-2">
-            <div className="flex border-b border-wallet-border">
+            <div className="flex border-b border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)]">
               <button
                 type="button"
                 onClick={() => setTab('random')}
@@ -141,71 +141,75 @@ export const MnemonicVerifyPage: FC = () => {
 
             <div className="mt-6 flex flex-col gap-6">
               {tab === 'random' ? (
-                <div className="flex flex-col gap-8">
-                  {randomVerifyIndices.map((i) => (
-                    <div key={i} className="flex flex-col gap-3">
-                      <p className="text-base font-semibold text-wallet-text">第{i + 1}个单词</p>
-                      <div className="flex gap-[13px]">
-                        {(randomOptions[i] ?? []).map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() =>
-                              setRandomPicks((prev) => ({
-                                ...prev,
-                                [i]: opt,
-                              }))
-                            }
-                            className={clsx(
-                              'min-h-[42px] flex-1 rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
-                              randomPicks[i] === opt
-                                ? 'border-white bg-white/10 text-wallet-text'
-                                : 'border-wallet-choice-border text-wallet-text',
-                            )}
-                          >
-                            {opt}
-                          </button>
-                        ))}
+                <div className="rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                  <div className="flex flex-col gap-8">
+                    {randomVerifyIndices.map((i) => (
+                      <div key={i} className="flex flex-col gap-3">
+                        <p className="text-base font-semibold text-wallet-text">第{i + 1}个单词</p>
+                        <div className="flex gap-[13px]">
+                          {(randomOptions[i] ?? []).map((opt) => (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() =>
+                                setRandomPicks((prev) => ({
+                                  ...prev,
+                                  [i]: opt,
+                                }))
+                              }
+                              className={clsx(
+                                'min-h-[42px] flex-1 rounded-[10px] border px-2 py-2.5 text-center text-base font-semibold capitalize transition-colors',
+                                randomPicks[i] === opt
+                                  ? 'border-white bg-white/10 text-wallet-text'
+                                  : 'border-wallet-choice-border text-wallet-text',
+                              )}
+                            >
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ) : (
-                <div className="flex flex-col gap-4">
-                  {Array.from({ length: 6 }, (_, row) => (
-                    <div key={row} className="flex gap-4">
-                      {[0, 1].map((col) => {
-                        const idx = row * 2 + col;
-                        return (
-                          <div
-                            key={idx}
-                            className="flex h-11 flex-1 items-center gap-2 rounded-[10px] border-[0.5px] border-wallet-border-strong px-2"
-                          >
-                            <span className="w-5 shrink-0 text-center text-sm text-wallet-text-muted">
-                              {String(idx + 1).padStart(2, '0')}
-                            </span>
-                            <div className="h-4 w-px shrink-0 bg-white/20" aria-hidden />
-                            <input
-                              autoComplete="off"
-                              spellCheck={false}
-                              inputMode="text"
-                              aria-label={`第 ${idx + 1} 个单词`}
-                              className="min-w-0 flex-1 bg-transparent text-base font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
-                              placeholder=""
-                              value={fullInputs[idx] ?? ''}
-                              onChange={(ev) =>
-                                setFullInputs((prev) => {
-                                  const next = [...prev];
-                                  next[idx] = ev.target.value;
-                                  return next;
-                                })
-                              }
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ))}
+                <div className="rounded-[16px] bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] px-1 py-2">
+                  <div className="flex flex-col gap-4">
+                    {Array.from({ length: 6 }, (_, row) => (
+                      <div key={row} className="flex gap-4">
+                        {[0, 1].map((col) => {
+                          const idx = row * 2 + col;
+                          return (
+                            <div
+                              key={idx}
+                              className="flex h-11 flex-1 items-center gap-2 rounded-[10px] border-[0.5px] border-wallet-border-strong px-2"
+                            >
+                              <span className="w-5 shrink-0 text-center text-sm text-wallet-text-muted">
+                                {String(idx + 1).padStart(2, '0')}
+                              </span>
+                              <div className="h-4 w-px shrink-0 bg-white/20" aria-hidden />
+                              <input
+                                autoComplete="off"
+                                spellCheck={false}
+                                inputMode="text"
+                                aria-label={`第 ${idx + 1} 个单词`}
+                                className="min-w-0 flex-1 bg-transparent text-base font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
+                                placeholder=""
+                                value={fullInputs[idx] ?? ''}
+                                onChange={(ev) =>
+                                  setFullInputs((prev) => {
+                                    const next = [...prev];
+                                    next[idx] = ev.target.value;
+                                    return next;
+                                  })
+                                }
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

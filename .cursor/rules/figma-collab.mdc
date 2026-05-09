@@ -22,6 +22,7 @@ When asking the agent to build or adjust a screen, include **all** of the follow
 - External links must use **`openLink`** from `@tma.js/sdk-react` (already wrapped in `Link` for external URLs).
 - Respect **safe areas** and compact height: avoid fixed full-viewport heights that ignore `viewport` / content inset when specified in design.
 - **Back button** is managed in `Page`; set `back={false}` only for true root screens.
+- Any Figma-exported static asset placed under `public/` must be referenced with `publicUrl(...)`, never hard-coded as `"/images/..."`.
 
 ## 4. Acceptance
 - One sentence **“done when”** (e.g. “pixel-match at 375px width, English copy from Figma”).

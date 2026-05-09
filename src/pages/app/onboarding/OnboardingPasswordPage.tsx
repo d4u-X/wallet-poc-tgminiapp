@@ -71,7 +71,7 @@ export const OnboardingPasswordPage: FC = () => {
 
             <WalletInfoBanner
               iconSrc={FIGMA_WELCOME.warning}
-              className="mt-auto mb-10"
+              className="mt-auto mb-10 border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft"
               textClassName="text-[12px] leading-[17px]"
             >
               密码无法找回，请务必牢记。建议使用包含大小写字母、数字和特殊符号的强密码。

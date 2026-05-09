@@ -244,8 +244,20 @@ export const WalletHomePage: FC = () => {
 
           {/* Assets + quick actions — Figma 476:12571 */}
           <section className="flex flex-col items-center gap-8 px-5 pb-2 pt-[22px]">
-            <div className="flex w-full flex-col items-center gap-4">
-              <div className="flex flex-col items-center gap-2">
+            <div className="relative flex w-full flex-col items-center gap-4 overflow-hidden rounded-[28px] border border-[rgba(255,255,255,0.06)] bg-wallet-surface-glass px-5 py-6">
+              <div
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(255,255,255,0.12),rgba(255,255,255,0)_42%),linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_48%)]"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute left-1/2 top-[-76px] h-[170px] w-[250px] -translate-x-1/2 rounded-full bg-white/6 blur-[64px]"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.28),rgba(255,255,255,0))]"
+                aria-hidden
+              />
+              <div className="relative flex flex-col items-center gap-2">
                 <p className="text-[16px] leading-4 text-white/60">全部资产</p>
                 <button
                   type="button"
@@ -265,7 +277,7 @@ export const WalletHomePage: FC = () => {
                   </span>
                 </button>
               </div>
-              <div className="flex items-center gap-0.5">
+              <div className="relative flex items-center gap-0.5">
                 <ShieldCongratsIcon />
                 <p className="text-[14px]" style={{ color: HOME_GREEN_MSG }}>
                   恭喜！你的所有资产均已安全。

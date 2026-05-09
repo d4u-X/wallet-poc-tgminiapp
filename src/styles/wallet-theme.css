@@ -7,6 +7,8 @@
   --color-wallet-surface: #131313;
   --color-wallet-surface-muted: rgb(255 255 255 / 0.05);
   --color-wallet-surface-icon: rgb(255 255 255 / 0.1);
+  --color-wallet-surface-soft: rgb(255 255 255 / 0.04);
+  --color-wallet-surface-glass: rgb(255 255 255 / 0.03);
   --color-wallet-border: rgb(255 255 255 / 0.1);
   --color-wallet-border-strong: rgb(255 255 255 / 0.2);
   --color-wallet-choice-border: rgb(255 240 240 / 0.1);

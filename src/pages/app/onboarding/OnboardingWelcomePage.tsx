@@ -76,9 +76,13 @@ export const OnboardingWelcomePage: FC = () => {
             </p>
           </div>
 
-          <div className="mt-[230px] flex flex-col gap-[24px]">
+          <div className="relative mt-[230px] flex flex-col gap-[24px]">
+            <div
+              className="pointer-events-none absolute inset-x-0 top-[-14px] bottom-[-14px] rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.025)_0%,rgba(255,255,255,0)_100%)]"
+              aria-hidden
+            />
             {FEATURES.map((row) => (
-              <div key={row.title} className="flex items-start gap-3">
+              <div key={row.title} className="relative flex items-start gap-3">
                 <div className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-wallet-surface-icon">
                   <img src={row.icon} alt="" className="size-5 max-w-none object-contain" />
                 </div>
