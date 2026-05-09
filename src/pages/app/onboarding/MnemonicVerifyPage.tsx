@@ -118,7 +118,7 @@ export const MnemonicVerifyPage: FC = () => {
 
         <form className="flex flex-col" onSubmit={onSubmit}>
           <div className="flex flex-col px-5 pb-44 pt-2">
-            <div className="relative flex border-b border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] pl-0.5">
+            <div className="relative flex border-b border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] pl-px">
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.22),rgba(255,255,255,0))]"
                 aria-hidden
@@ -127,7 +127,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('random')}
                 className={clsx(
-                  'relative -mb-px w-[76px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
+                  'relative -mb-px w-[74px] border-b-2 pb-[11px] text-[15px] font-semibold transition-colors',
                   tab === 'random'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -136,7 +136,7 @@ export const MnemonicVerifyPage: FC = () => {
                 随机验证
                 {tab === 'random' ? (
                   <span
-                    className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-11 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
+                    className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-10 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
                     aria-hidden
                   />
                 ) : null}
@@ -145,7 +145,7 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('full')}
                 className={clsx(
-                  'relative -mb-px ml-6 w-[76px] border-b-2 pb-3 text-[15px] font-semibold transition-colors',
+                  'relative -mb-px ml-[22px] w-[74px] border-b-2 pb-[11px] text-[15px] font-semibold transition-colors',
                   tab === 'full'
                     ? 'border-white text-wallet-text'
                     : 'border-transparent text-wallet-text-muted',
@@ -154,7 +154,7 @@ export const MnemonicVerifyPage: FC = () => {
                 完整验证
                 {tab === 'full' ? (
                   <span
-                    className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-11 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
+                    className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-10 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
                     aria-hidden
                   />
                 ) : null}
@@ -168,7 +168,7 @@ export const MnemonicVerifyPage: FC = () => {
                     className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
                   />
-                  <div className="flex flex-col gap-6.5">
+                  <div className="flex flex-col gap-6">
                     {randomVerifyIndices.map((i) => (
                       <div key={i} className="flex flex-col gap-3">
                         <p className="text-[15px] font-semibold leading-5 text-wallet-text">
@@ -210,7 +210,7 @@ export const MnemonicVerifyPage: FC = () => {
                     className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
                   />
-                  <div className="flex flex-col gap-3.5">
+                  <div className="flex flex-col gap-[13px]">
                     {Array.from({ length: 6 }, (_, row) => (
                       <div key={row} className="flex gap-3">
                         {[0, 1].map((col) => {
@@ -218,13 +218,13 @@ export const MnemonicVerifyPage: FC = () => {
                           return (
                             <div
                               key={idx}
-                              className="relative flex h-[46px] flex-1 items-center gap-2.5 overflow-hidden rounded-[12px] border-[0.5px] border-wallet-border-strong bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0.01)_100%)] px-2.5"
+                              className="relative flex h-[46px] flex-1 items-center gap-2 overflow-hidden rounded-[12px] border-[0.5px] border-wallet-border-strong bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.008)_100%)] px-2.5"
                             >
                               <div
                                 className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.18),rgba(255,255,255,0))]"
                                 aria-hidden
                               />
-                              <span className="w-7 shrink-0 text-center text-sm text-wallet-text-muted">
+                              <span className="w-[26px] shrink-0 text-center text-sm text-wallet-text-muted">
                                 {String(idx + 1).padStart(2, '0')}
                               </span>
                               <div className="h-4 w-px shrink-0 bg-white/20" aria-hidden />
@@ -233,7 +233,7 @@ export const MnemonicVerifyPage: FC = () => {
                                 spellCheck={false}
                                 inputMode="text"
                                 aria-label={`第 ${idx + 1} 个单词`}
-                                className="min-w-0 flex-1 bg-transparent text-[15px] font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
+                                className="min-w-0 flex-1 bg-transparent pt-px text-[15px] font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
                                 placeholder=""
                                 value={fullInputs[idx] ?? ''}
                                 onChange={(ev) =>
@@ -263,7 +263,7 @@ export const MnemonicVerifyPage: FC = () => {
 
           <div className="fixed bottom-0 left-0 right-0 z-10 flex flex-col items-center bg-wallet-canvas pb-[env(safe-area-inset-bottom)] pt-3">
             <div
-              className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-[linear-gradient(180deg,rgba(19,19,19,0.02)_0%,rgba(19,19,19,0.92)_100%)]"
+              className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-[linear-gradient(180deg,rgba(19,19,19,0.02)_0%,rgba(19,19,19,0.94)_100%)]"
               aria-hidden
             />
             <div
@@ -271,7 +271,7 @@ export const MnemonicVerifyPage: FC = () => {
               aria-hidden
             />
             <div
-              className="pointer-events-none absolute left-1/2 top-0 h-14 w-[248px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.055),rgba(255,255,255,0)_72%)] blur-[20px]"
+              className="pointer-events-none absolute left-1/2 top-0 h-12 w-[236px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05),rgba(255,255,255,0)_72%)] blur-[18px]"
               aria-hidden
             />
             <button
