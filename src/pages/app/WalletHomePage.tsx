@@ -248,32 +248,30 @@ export const WalletHomePage: FC = () => {
 
         <div className="relative z-[1] flex min-h-screen flex-col pb-[calc(110px+env(safe-area-inset-bottom))]">
           {/* Top bar — wallet + message (no fake iOS status bar in Mini App). */}
-          <header className="flex h-11 items-center justify-between px-5 pt-1">
+          <header className="flex h-11 items-center justify-between px-5 pt-1.5">
             <button
               type="button"
-              className="flex items-center gap-1 rounded-[50px] text-[19px] font-semibold text-white"
+              className="flex items-center gap-0.5 rounded-[50px] text-[19px] font-semibold leading-none text-white"
             >
-              Wallet 1
-              <span className="flex size-4 rotate-90 items-center justify-center">
-                <img src={WALLET_HOME_ASSETS.walletChevron} alt="" className="size-4 max-w-none" />
-              </span>
-            </button>
-            <button type="button" className="relative size-6 text-white" aria-label="消息">
-              <span className="absolute left-1/2 top-1 h-[17px] w-[18px] -translate-x-1/2">
+              <span className="translate-y-[-0.5px]">Wallet 1</span>
+              <span className="flex size-4 translate-y-px rotate-90 items-center justify-center">
                 <img
-                  src={WALLET_HOME_ASSETS.messageBubble}
+                  src={WALLET_HOME_ASSETS.walletChevron}
                   alt=""
-                  className="size-full max-w-none object-contain"
+                  className="size-4 max-w-none opacity-90"
                 />
               </span>
-              <span className="absolute left-1/2 top-[10px] flex translate-x-[-50%] gap-[1.5px]">
-                <span className="size-0.5 rounded-[1px] bg-white" />
-                <span className="size-0.5 rounded-[1px] bg-white" />
-                <span className="size-0.5 rounded-[1px] bg-white" />
-              </span>
-              <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-[40px] bg-[#257cff] px-1 font-[Poppins,sans-serif] text-[10px] leading-none text-white">
-                9
-              </span>
+            </button>
+            <button
+              type="button"
+              className="relative flex h-7 w-[29px] items-center justify-center text-white"
+              aria-label="消息"
+            >
+              <img
+                src={WALLET_HOME_ASSETS.messageBubble}
+                alt=""
+                className="h-7 w-[29px] max-w-none object-contain"
+              />
             </button>
           </header>
 
@@ -286,43 +284,43 @@ export const WalletHomePage: FC = () => {
           </div>
 
           {/* Assets + quick actions — Figma 476:12571 */}
-          <section className="flex flex-col items-center gap-8 px-5 pb-2 pt-[22px]">
-            <div className="relative flex w-full flex-col items-center gap-4">
+          <section className="flex flex-col items-center gap-[30px] px-5 pb-2 pt-[22px]">
+            <div className="relative flex w-full flex-col items-center gap-[18px]">
               <div
-                className="pointer-events-none absolute left-1/2 top-[-14px] h-[172px] w-[252px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.1),rgba(255,255,255,0)_60%)] blur-[34px]"
+                className="pointer-events-none absolute left-1/2 top-[-18px] h-[180px] w-[260px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.11),rgba(255,255,255,0)_60%)] blur-[36px]"
                 aria-hidden
               />
               <div
-                className="pointer-events-none absolute left-1/2 top-[8px] h-[96px] w-[214px] -translate-x-1/2 rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_48%,rgba(255,255,255,0)_100%)]"
+                className="pointer-events-none absolute left-1/2 top-[4px] h-[102px] w-[214px] -translate-x-1/2 rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.055)_0%,rgba(255,255,255,0.012)_48%,rgba(255,255,255,0)_100%)]"
                 aria-hidden
               />
               <div
-                className="pointer-events-none absolute left-1/2 top-[8px] h-px w-[174px] -translate-x-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.28),rgba(255,255,255,0))]"
+                className="pointer-events-none absolute left-1/2 top-[4px] h-px w-[174px] -translate-x-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.28),rgba(255,255,255,0))]"
                 aria-hidden
               />
-              <div className="relative flex w-[214px] flex-col items-center gap-2 pt-[2px]">
-                <p className="text-[16px] leading-4 text-white/60">全部资产</p>
+              <div className="relative flex w-[214px] flex-col items-center gap-[9px] pt-[2px]">
+                <p className="text-[16px] leading-[18px] text-white/60">全部资产</p>
                 <button
                   type="button"
-                  className="flex items-end gap-1 text-left"
+                  className="flex items-end gap-1.5 text-left"
                   aria-label="查看全部资产"
                 >
-                  <span className="text-[32px] font-semibold leading-none tracking-tight text-white">
+                  <span className="text-[32px] font-semibold leading-none tracking-[-0.02em] text-white">
                     48,293.86
                   </span>
-                  <span className="flex h-7 items-center gap-0.5 pb-0.5">
-                    <span className="text-base font-bold text-white">USD</span>
+                  <span className="flex h-7 items-center gap-0.5 pb-[2px]">
+                    <span className="text-[16px] font-bold leading-none text-white">USD</span>
                     <img
                       src={WALLET_HOME_ASSETS.balanceChevron}
                       alt=""
-                      className="size-3 max-w-none opacity-80"
+                      className="mt-px size-3 max-w-none opacity-80"
                     />
                   </span>
                 </button>
               </div>
-              <div className="relative flex items-center gap-0.5">
+              <div className="relative flex items-center gap-1">
                 <ShieldCongratsIcon />
-                <p className="text-[14px]" style={{ color: HOME_GREEN_MSG }}>
+                <p className="text-[14px] leading-[18px]" style={{ color: HOME_GREEN_MSG }}>
                   恭喜！你的所有资产均已安全。
                 </p>
               </div>
