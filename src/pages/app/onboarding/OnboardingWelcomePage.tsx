@@ -64,9 +64,13 @@ export const OnboardingWelcomePage: FC = () => {
           className="pointer-events-none absolute left-1/2 top-[52px] h-[196px] w-[256px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.085),rgba(255,255,255,0)_72%)] blur-[42px]"
           aria-hidden
         />
+        <div
+          className="pointer-events-none absolute left-1/2 top-[104px] h-[108px] w-[220px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.04),rgba(255,255,255,0)_74%)] blur-[22px]"
+          aria-hidden
+        />
 
         <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[74px]">
-          <div className="relative flex flex-col items-center gap-[25px]">
+          <div className="relative flex flex-col items-center gap-6">
             <div
               className="pointer-events-none absolute left-1/2 top-[4px] h-[96px] w-[96px] -translate-x-1/2 rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.055)_0%,rgba(255,255,255,0)_100%)]"
               aria-hidden
@@ -94,7 +98,7 @@ export const OnboardingWelcomePage: FC = () => {
             </p>
           </div>
 
-          <div className="relative mt-[198px] flex flex-col gap-[22px] px-0.5">
+          <div className="relative mt-[194px] flex flex-col gap-5 px-0.5">
             <div
               className="pointer-events-none absolute inset-x-[-4px] top-[-18px] bottom-[-18px] rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0.012)_24%,rgba(255,255,255,0)_100%)]"
               aria-hidden
@@ -103,10 +107,14 @@ export const OnboardingWelcomePage: FC = () => {
               className="pointer-events-none absolute left-0 right-0 top-[-24px] mx-auto h-[84px] w-[250px] rounded-[999px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),rgba(255,255,255,0)_70%)] blur-[28px]"
               aria-hidden
             />
+            <div
+              className="pointer-events-none absolute inset-x-6 top-[-2px] h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.14),rgba(255,255,255,0))]"
+              aria-hidden
+            />
             {FEATURES.map((row) => (
               <div
                 key={row.title}
-                className="relative flex items-start gap-3 rounded-[14px] px-0.5"
+                className="relative flex items-start gap-3 rounded-[14px] px-0.5 py-px"
               >
                 <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-wallet-surface-icon">
                   <div
@@ -127,7 +135,7 @@ export const OnboardingWelcomePage: FC = () => {
             ))}
           </div>
 
-          <div className="relative mt-auto flex flex-col gap-[14px] pt-[30px]">
+          <div className="relative mt-auto flex flex-col gap-[14px] pt-7">
             <div
               className="pointer-events-none absolute inset-x-[-4px] top-0 bottom-[-12px] rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.006)_38%,rgba(255,255,255,0)_100%)]"
               aria-hidden
@@ -162,9 +170,13 @@ export const OnboardingWelcomePage: FC = () => {
             ) : null}
           </div>
 
-          <div className="relative mx-auto mt-5 max-w-[248px] px-1">
+          <div className="relative mx-auto mt-[18px] max-w-[248px] px-1.5">
             <div
-              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.12),rgba(255,255,255,0))]"
+              className="pointer-events-none absolute inset-x-9 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.12),rgba(255,255,255,0))]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute left-1/2 top-0 h-8 w-[180px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.035),rgba(255,255,255,0)_72%)] blur-[14px]"
               aria-hidden
             />
             <p className="pt-3 text-center text-xs leading-[17px] text-wallet-text-secondary">
