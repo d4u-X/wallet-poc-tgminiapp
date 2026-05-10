@@ -127,10 +127,10 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('random')}
                 className={clsx(
-                  'relative -mb-px w-[74px] border-b-2 pb-[11px] text-[15px] font-semibold transition-colors',
+                  'relative -mb-px w-[74px] border-b-2 pb-[11px] text-[15px] font-semibold transition-[color,opacity] duration-150 focus-visible:outline-none focus-visible:opacity-100',
                   tab === 'random'
                     ? 'border-white text-wallet-text'
-                    : 'border-transparent text-wallet-text-muted',
+                    : 'border-transparent text-wallet-text-muted hover:text-wallet-text-secondary',
                 )}
               >
                 随机验证
@@ -145,10 +145,10 @@ export const MnemonicVerifyPage: FC = () => {
                 type="button"
                 onClick={() => setTab('full')}
                 className={clsx(
-                  'relative -mb-px ml-[22px] w-[74px] border-b-2 pb-[11px] text-[15px] font-semibold transition-colors',
+                  'relative -mb-px ml-[22px] w-[74px] border-b-2 pb-[11px] text-[15px] font-semibold transition-[color,opacity] duration-150 focus-visible:outline-none focus-visible:opacity-100',
                   tab === 'full'
                     ? 'border-white text-wallet-text'
-                    : 'border-transparent text-wallet-text-muted',
+                    : 'border-transparent text-wallet-text-muted hover:text-wallet-text-secondary',
                 )}
               >
                 完整验证
@@ -186,10 +186,10 @@ export const MnemonicVerifyPage: FC = () => {
                                 }))
                               }
                               className={clsx(
-                                'relative min-h-[44px] flex-1 overflow-hidden rounded-[11px] border px-2 py-2.5 text-center text-[15px] font-semibold capitalize transition-colors',
+                                'relative min-h-[44px] flex-1 overflow-hidden rounded-[11px] border px-2 py-2.5 text-center text-[15px] font-semibold capitalize transition-[transform,background-color,border-color,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20',
                                 randomPicks[i] === opt
-                                  ? 'border-white bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] text-wallet-text shadow-[0_8px_20px_rgba(255,255,255,0.025)]'
-                                  : 'border-wallet-choice-border bg-[rgba(255,255,255,0.02)] text-wallet-text',
+                                  ? 'border-white bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] text-wallet-text shadow-[0_8px_20px_rgba(255,255,255,0.025)] active:scale-[0.985]'
+                                  : 'border-wallet-choice-border bg-[rgba(255,255,255,0.02)] text-wallet-text hover:bg-[rgba(255,255,255,0.04)] active:scale-[0.985]',
                               )}
                             >
                               <span
@@ -218,7 +218,7 @@ export const MnemonicVerifyPage: FC = () => {
                           return (
                             <div
                               key={idx}
-                              className="relative flex h-[46px] flex-1 items-center gap-2 overflow-hidden rounded-[12px] border-[0.5px] border-wallet-border-strong bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.008)_100%)] px-2.5"
+                              className="group relative flex h-[46px] flex-1 items-center gap-2 overflow-hidden rounded-[12px] border-[0.5px] border-wallet-border-strong bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.008)_100%)] px-2.5 transition-[border-color,background-color,box-shadow] duration-150 focus-within:border-white/35 focus-within:bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.012)_100%)] focus-within:shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_0_18px_rgba(255,255,255,0.04)]"
                             >
                               <div
                                 className="pointer-events-none absolute inset-x-2 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.18),rgba(255,255,255,0))]"
@@ -278,9 +278,9 @@ export const MnemonicVerifyPage: FC = () => {
               type="submit"
               disabled={!canSubmit}
               className={clsx(
-                'relative flex h-12 w-full max-w-[303px] items-center justify-center rounded-[var(--radius-wallet-pill)] text-base font-semibold transition-colors',
+                'relative flex h-12 w-full max-w-[303px] items-center justify-center rounded-[var(--radius-wallet-pill)] text-base font-semibold transition-[transform,opacity,background-color,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
                 canSubmit
-                  ? 'bg-wallet-primary-btn text-wallet-primary-btn-text shadow-[0_14px_34px_rgba(255,255,255,0.05)]'
+                  ? 'bg-wallet-primary-btn text-wallet-primary-btn-text shadow-[0_14px_34px_rgba(255,255,255,0.05)] hover:brightness-[1.02] active:scale-[0.985] active:opacity-95'
                   : 'cursor-not-allowed bg-white/5 text-[rgba(255,255,255,0.2)]',
               )}
             >
