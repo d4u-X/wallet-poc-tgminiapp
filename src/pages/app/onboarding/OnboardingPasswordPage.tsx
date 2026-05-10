@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/Page.tsx';
+import { WalletHomeIndicator } from '@/components/wallet/WalletHomeIndicator.tsx';
 import { WalletInfoBanner } from '@/components/wallet/WalletInfoBanner.tsx';
 import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 import { WalletPrimaryButton } from '@/components/wallet/WalletPrimaryButton.tsx';
@@ -105,7 +106,7 @@ export const OnboardingPasswordPage: FC = () => {
               </WalletInfoBanner>
             </div>
 
-            <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center bg-wallet-canvas px-9 pb-[max(24px,env(safe-area-inset-bottom))] pt-3">
+            <div className="fixed bottom-0 left-0 right-0 z-10 flex flex-col items-center bg-wallet-canvas px-9 pb-[env(safe-area-inset-bottom)] pt-3">
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-[linear-gradient(180deg,rgba(19,19,19,0.01)_0%,rgba(19,19,19,0.94)_100%)]"
                 aria-hidden
@@ -124,6 +125,7 @@ export const OnboardingPasswordPage: FC = () => {
               >
                 创建钱包
               </WalletPrimaryButton>
+              <WalletHomeIndicator />
             </div>
           </form>
         </div>
