@@ -95,7 +95,7 @@ export const MnemonicBackupPage: FC = () => {
           <button
             type="button"
             onClick={() => setHidden((v) => !v)}
-            className="mt-4 flex h-8 w-[84px] items-center justify-center gap-1 rounded-[40px] border border-[rgba(255,255,255,0.08)] bg-wallet-surface-muted px-2 text-sm font-semibold text-wallet-text shadow-[0_8px_18px_rgba(255,255,255,0.015)]"
+            className="mt-4 flex h-8 w-[84px] items-center justify-center gap-1 rounded-[40px] border border-[rgba(255,255,255,0.08)] bg-wallet-surface-muted px-2 text-sm font-semibold text-wallet-text shadow-[0_8px_18px_rgba(255,255,255,0.015)] transition-[transform,background-color,box-shadow] duration-150 ease-out hover:bg-[rgba(255,255,255,0.08)] active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
           >
             <img src={FIGMA_WELCOME.eye} alt="" className="size-4 object-contain" />
             {hidden ? '显示' : '隐藏'}

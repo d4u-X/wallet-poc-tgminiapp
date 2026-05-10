@@ -183,7 +183,7 @@ export const OnboardingWelcomePage: FC = () => {
               <span>继续即表示您同意我们的</span>{' '}
               <button
                 type="button"
-                className="text-wallet-text underline decoration-solid underline-offset-2"
+                className="rounded-[6px] text-wallet-text underline decoration-solid underline-offset-2 transition-opacity duration-150 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
                 onClick={() => openLink('https://telegram.org/tos')}
               >
                 服务条款
@@ -191,7 +191,7 @@ export const OnboardingWelcomePage: FC = () => {
               <span>和</span>{' '}
               <button
                 type="button"
-                className="text-wallet-text underline decoration-solid underline-offset-2"
+                className="rounded-[6px] text-wallet-text underline decoration-solid underline-offset-2 transition-opacity duration-150 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
                 onClick={() => openLink('https://telegram.org/privacy')}
               >
                 隐私政策

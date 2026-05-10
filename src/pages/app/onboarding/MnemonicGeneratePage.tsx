@@ -57,7 +57,7 @@ export const MnemonicGeneratePage: FC = () => {
               setRevealed(true);
               revealMnemonic();
             }}
-            className="relative mt-4 flex min-h-[310px] w-full flex-col items-center justify-center overflow-hidden rounded-[14px] border border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0.008)_32%,rgba(255,255,255,0)_100%)]"
+            className="relative mt-4 flex min-h-[310px] w-full flex-col items-center justify-center overflow-hidden rounded-[14px] border border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0.008)_32%,rgba(255,255,255,0)_100%)] transition-[transform,border-color,box-shadow] duration-150 ease-out hover:border-white/18 active:scale-[0.995] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
           >
             <div
               className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_36%)]"
