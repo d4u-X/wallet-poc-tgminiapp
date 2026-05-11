@@ -46,10 +46,12 @@ alwaysApply: true
 
 - Wallet onboarding is a gated flow: password -> reveal mnemonic -> backup -> verify -> home.
 - Backup is mandatory in the current product design.
-- Current milestone is high-fidelity UI plus mock state; do not invent real wallet logic unless requested.
+- Current milestone is high-fidelity UI plus local encrypted vault (IndexedDB + Argon2id + AES-GCM). Network/RPC/transactions can remain mock unless requested.
+- Do not introduce signing, broadcasting, or any server-side custody unless explicitly requested.
 
 ## Quality Rules
 
 - No unused imports or variables.
 - Handle async errors explicitly.
 - Run formatting, lint, type-check, and build after substantive edits.
+- External links should go through the shared `Link` component (or a safe wrapper) to work both inside Telegram and in browser preview.

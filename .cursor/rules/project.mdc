@@ -18,14 +18,15 @@ alwaysApply: true
 ## Product vs demo code
 - **Production UI** lives under `src/pages/app/` (Figma-driven screens). Register routes in `src/navigation/routes.tsx`.
 - **Archived template demo** lives under `src/pages/demo/` at **`/demo/*`** only.
-- **Runtime** is always a Telegram Mini App (`init.ts`: viewport, back button, `openLink`, etc.). **Visual theme for product screens uses the wallet design system from Figma**, not Telegram host palette (`--tg-theme-*`).
+- **Target runtime** is Telegram Mini App (`init.ts`: viewport, back button, `openLink`, etc.), but browser preview must not crash if Telegram APIs are unavailable.
+- **Visual theme for product screens uses the wallet design system from Figma**, not Telegram host palette (`--tg-theme-*`).
 
 ## Closed loop A (wallet creation) — product decisions
 - Single **design token theme** (CSS variables + Tailwind); reuse across all app pages.
 - Steps **5 and 6** are one screen: **two tabs** (random verify vs full verify).
 - Step **3**: mnemonic hidden until user action → **click to reveal**.
 - **Backup is mandatory** (no skip in design); flow **4 → verify → 7**.
-- **Early milestone**: UI + **mock** state only; real crypto/storage comes later.
+- **Current milestone**: high-fidelity UI + local encrypted vault. Network/RPC/transactions can remain mock unless requested.
 
 ## File & component rules
 - One named export per file; no default exports
@@ -48,6 +49,7 @@ alwaysApply: true
 - No unused variables or imports (TS `noUnusedLocals` + `noUnusedParameters`)
 - No `console.log` in production code (use `console.info`/`warn` with clear context)
 - All async functions must handle errors (never swallow exceptions silently)
+- External links should go through the shared `Link` component (or a safe wrapper) so they work both inside Telegram and in browser preview
 
 ## Commit messages (Conventional Commits)
 `feat` | `fix` | `refactor` | `chore` | `docs` | `test` | `perf` | `style`
