@@ -31,6 +31,14 @@ const FEATURES = [
   },
 ] as const;
 
+function safeOpenLink(url: string) {
+  try {
+    openLink(url);
+  } catch {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+}
+
 export const OnboardingWelcomePage: FC = () => {
   const navigate = useNavigate();
   const { beginOnboarding } = useOnboardingMock();
@@ -178,7 +186,7 @@ export const OnboardingWelcomePage: FC = () => {
               <button
                 type="button"
                 className="rounded-[6px] text-wallet-text underline decoration-solid underline-offset-2 transition-opacity duration-150 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
-                onClick={() => openLink('https://telegram.org/tos')}
+                onClick={() => safeOpenLink('https://telegram.org/tos')}
               >
                 服务条款
               </button>{' '}
@@ -186,7 +194,7 @@ export const OnboardingWelcomePage: FC = () => {
               <button
                 type="button"
                 className="rounded-[6px] text-wallet-text underline decoration-solid underline-offset-2 transition-opacity duration-150 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
-                onClick={() => openLink('https://telegram.org/privacy')}
+                onClick={() => safeOpenLink('https://telegram.org/privacy')}
               >
                 隐私政策
               </button>

@@ -34,5 +34,16 @@ try {
     );
   });
 } catch {
-  root.render(<EnvUnsupported />);
+  const hasTelegramWebApp = Boolean(
+    (window as unknown as { Telegram?: { WebApp?: unknown } }).Telegram?.WebApp,
+  );
+  if (hasTelegramWebApp) {
+    root.render(<EnvUnsupported />);
+  } else {
+    root.render(
+      <StrictMode>
+        <Root />
+      </StrictMode>,
+    );
+  }
 }
