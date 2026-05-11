@@ -1,6 +1,6 @@
 import { openLink } from '@tma.js/sdk-react';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/Page.tsx';
@@ -36,7 +36,6 @@ const FEATURES = [
 export const OnboardingWelcomePage: FC = () => {
   const navigate = useNavigate();
   const { beginOnboarding } = useOnboardingMock();
-  const [importHint, setImportHint] = useState(false);
 
   useEffect(() => {
     if (readOnboardingCompleteFlag()) {
@@ -156,18 +155,11 @@ export const OnboardingWelcomePage: FC = () => {
             <WalletSecondaryButton
               className="relative h-12 rounded-[40px] border border-[rgba(255,255,255,0.1)] bg-wallet-surface-icon text-base font-semibold"
               onClick={() => {
-                setImportHint(true);
+                navigate('/onboarding/import');
               }}
             >
               导入已有钱包
             </WalletSecondaryButton>
-            {importHint ? (
-              <div className="rounded-[12px] border border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft px-3 py-2.5">
-                <p className="text-center text-xs leading-[17px] text-wallet-text-muted">
-                  导入流程即将开放（Mock）
-                </p>
-              </div>
-            ) : null}
           </div>
 
           <div className="relative mx-auto mt-[18px] max-w-[248px] px-1.5">

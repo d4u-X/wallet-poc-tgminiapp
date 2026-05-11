@@ -46,6 +46,7 @@ interface OnboardingMockContextValue {
   mnemonicBackedUp: boolean;
   onboardingComplete: boolean;
   beginOnboarding: () => void;
+  importWallet: (password: string) => void;
   savePassword: (value: string) => void;
   /** Indices (0-based) for “random word” verification tab; stable after generation. */
   randomVerifyIndices: readonly number[];
@@ -128,6 +129,18 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
     [updateState],
   );
 
+  const importWallet = useCallback(
+    (_password: string) => {
+      // Import flow is still mocked; this only marks the product path as completed.
+      updateState((prev) => ({
+        ...prev,
+        passwordSet: true,
+        onboardingComplete: true,
+      }));
+    },
+    [updateState],
+  );
+
   const ensureMnemonic = useCallback(() => {
     updateState((prev) => ({
       ...prev,
@@ -172,6 +185,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
       mnemonicBackedUp: state.mnemonicBackedUp,
       onboardingComplete: state.onboardingComplete,
       beginOnboarding,
+      importWallet,
       savePassword,
       randomVerifyIndices: state.randomVerifyIndices,
       ensureMnemonic,
@@ -183,6 +197,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
     [
       state,
       beginOnboarding,
+      importWallet,
       savePassword,
       ensureMnemonic,
       revealMnemonic,

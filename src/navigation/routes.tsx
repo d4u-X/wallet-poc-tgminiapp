@@ -10,6 +10,11 @@ const OnboardingPasswordPage = lazy(() =>
     default: m.OnboardingPasswordPage,
   })),
 );
+const OnboardingImportPage = lazy(() =>
+  import('@/pages/app/onboarding/OnboardingImportPage.tsx').then((m) => ({
+    default: m.OnboardingImportPage,
+  })),
+);
 const MnemonicGeneratePage = lazy(() =>
   import('@/pages/app/onboarding/MnemonicGeneratePage.tsx').then((m) => ({
     default: m.MnemonicGeneratePage,
@@ -58,6 +63,7 @@ interface Route {
 export const routes: Route[] = [
   { path: '/', Component: OnboardingWelcomePage },
   { path: '/home', Component: WalletHomePage },
+  { path: '/onboarding/import', Component: OnboardingImportPage },
   { path: '/onboarding/password', Component: OnboardingPasswordPage },
   { path: '/onboarding/mnemonic/generate', Component: MnemonicGeneratePage },
   { path: '/onboarding/mnemonic/backup', Component: MnemonicBackupPage },
