@@ -11,7 +11,7 @@ import globals from 'globals';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', 'bot'] },
+  { ignores: ['dist', 'node_modules'] },
 
   // Base JS rules
   js.configs.recommended,
