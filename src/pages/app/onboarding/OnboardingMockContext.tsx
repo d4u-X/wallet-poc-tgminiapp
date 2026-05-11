@@ -10,29 +10,16 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const STORAGE_KEY = 'wallet-onboarding-state-v1';
+import { createMnemonicWords, validateMnemonicWords } from '@/wallet-core/mnemonic/bip39.ts';
+import { getPrimaryVaultRecord, saveVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
+import { createVaultRecord } from '@/wallet-core/vault/vaultService.ts';
 
-/** Fixed mock mnemonic — replace with real BIP39 generation in production. */
-export const MOCK_MNEMONIC_WORDS = [
-  'apple',
-  'bridge',
-  'canyon',
-  'delta',
-  'ember',
-  'forest',
-  'galaxy',
-  'harbor',
-  'ivory',
-  'jungle',
-  'kernel',
-  'lotus',
-] as const;
+const STORAGE_KEY = 'wallet-onboarding-state-v2';
 
 type OnboardingGate = 'password' | 'generate' | 'backup' | 'verify' | 'home';
 
 interface PersistedOnboardingState {
   passwordSet: boolean;
-  mnemonicGenerated: boolean;
   randomVerifyIndices: readonly number[];
   mnemonicRevealed: boolean;
   mnemonicBackedUp: boolean;
@@ -40,20 +27,21 @@ interface PersistedOnboardingState {
 }
 
 interface OnboardingMockContextValue {
+  ready: boolean;
   mnemonic: readonly string[] | null;
   passwordSet: boolean;
   mnemonicRevealed: boolean;
   mnemonicBackedUp: boolean;
   onboardingComplete: boolean;
   beginOnboarding: () => void;
-  importWallet: (password: string) => void;
+  importWallet: (params: { mnemonicWords: string[]; password: string }) => Promise<void>;
   savePassword: (value: string) => void;
   /** Indices (0-based) for “random word” verification tab; stable after generation. */
   randomVerifyIndices: readonly number[];
   ensureMnemonic: () => void;
   revealMnemonic: () => void;
   markMnemonicBackedUp: () => void;
-  markOnboardingComplete: () => void;
+  markOnboardingComplete: () => Promise<void>;
   resetOnboarding: () => void;
 }
 
@@ -61,7 +49,6 @@ const OnboardingMockContext = createContext<OnboardingMockContextValue | null>(n
 
 const INITIAL_STATE: PersistedOnboardingState = {
   passwordSet: false,
-  mnemonicGenerated: false,
   randomVerifyIndices: [],
   mnemonicRevealed: false,
   mnemonicBackedUp: false,
@@ -106,6 +93,10 @@ function pickThreeDistinctIndices(): number[] {
 
 export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<PersistedOnboardingState>(() => readStoredState());
+  const [ready, setReady] = useState(false);
+  const [hasPersistedVault, setHasPersistedVault] = useState(false);
+  const [mnemonic, setMnemonic] = useState<readonly string[] | null>(null);
+  const [pendingPassword, setPendingPassword] = useState<string | null>(null);
 
   const updateState = useCallback(
     (updater: (prev: PersistedOnboardingState) => PersistedOnboardingState) => {
@@ -114,43 +105,111 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
     [],
   );
 
+  useEffect(() => {
+    let cancelled = false;
+
+    getPrimaryVaultRecord()
+      .then((record) => {
+        if (cancelled) {
+          return;
+        }
+
+        const hasVault = Boolean(record);
+        setHasPersistedVault(hasVault);
+        if (hasVault) {
+          setState((prev) =>
+            persistState({
+              ...prev,
+              onboardingComplete: true,
+            }),
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setReady(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ready) {
+      return;
+    }
+
+    if (state.passwordSet && !state.onboardingComplete && (!pendingPassword || !mnemonic)) {
+      setState(() => persistState(INITIAL_STATE));
+    }
+  }, [mnemonic, pendingPassword, ready, state.onboardingComplete, state.passwordSet]);
+
   const beginOnboarding = useCallback(() => {
     setState(() => persistState(INITIAL_STATE));
+    setMnemonic(null);
+    setPendingPassword(null);
   }, []);
 
   const savePassword = useCallback(
-    (_value: string) => {
-      // In production this should hand off to secure wallet creation logic instead of local state.
+    (value: string) => {
+      const nextMnemonic = createMnemonicWords(12);
+      setPendingPassword(value);
+      setMnemonic(nextMnemonic);
       updateState((prev) => ({
         ...prev,
         passwordSet: true,
+        randomVerifyIndices:
+          prev.randomVerifyIndices.length >= 3
+            ? prev.randomVerifyIndices
+            : pickThreeDistinctIndices(),
       }));
     },
     [updateState],
   );
 
   const importWallet = useCallback(
-    (_password: string) => {
-      // Import flow is still mocked; this only marks the product path as completed.
+    async ({ mnemonicWords, password }: { mnemonicWords: string[]; password: string }) => {
+      if (!validateMnemonicWords(mnemonicWords)) {
+        throw new Error('助记词格式无效，请检查单词内容和顺序。');
+      }
+
+      const record = await createVaultRecord({
+        mnemonic: mnemonicWords.join(' '),
+        password,
+        addresses: [],
+        imported: true,
+      });
+      await saveVaultRecord(record);
+      setHasPersistedVault(true);
+      setMnemonic(null);
+      setPendingPassword(null);
       updateState((prev) => ({
         ...prev,
         passwordSet: true,
         onboardingComplete: true,
+        mnemonicRevealed: false,
+        mnemonicBackedUp: false,
+        randomVerifyIndices: [],
       }));
     },
     [updateState],
   );
 
   const ensureMnemonic = useCallback(() => {
+    if (!pendingPassword || !mnemonic) {
+      return;
+    }
+
     updateState((prev) => ({
       ...prev,
-      mnemonicGenerated: true,
       randomVerifyIndices:
         prev.randomVerifyIndices.length >= 3
           ? prev.randomVerifyIndices
           : pickThreeDistinctIndices(),
     }));
-  }, [updateState]);
+  }, [mnemonic, pendingPassword, updateState]);
 
   const revealMnemonic = useCallback(() => {
     updateState((prev) => ({
@@ -167,23 +226,42 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [updateState]);
 
   const markOnboardingComplete = useCallback(() => {
-    updateState((prev) => ({
-      ...prev,
-      onboardingComplete: true,
-    }));
-  }, [updateState]);
+    return (async () => {
+      if (!mnemonic || !pendingPassword) {
+        throw new Error('当前创建流程已失效，请重新设置密码并生成助记词。');
+      }
+
+      const record = await createVaultRecord({
+        mnemonic: mnemonic.join(' '),
+        password: pendingPassword,
+        addresses: [],
+        imported: false,
+      });
+      await saveVaultRecord(record);
+      setHasPersistedVault(true);
+      setMnemonic(null);
+      setPendingPassword(null);
+      updateState((prev) => ({
+        ...prev,
+        onboardingComplete: true,
+      }));
+    })();
+  }, [mnemonic, pendingPassword, updateState]);
 
   const resetOnboarding = useCallback(() => {
     setState(() => persistState(INITIAL_STATE));
+    setMnemonic(null);
+    setPendingPassword(null);
   }, []);
 
   const value = useMemo(
     () => ({
-      mnemonic: state.mnemonicGenerated ? MOCK_MNEMONIC_WORDS : null,
+      ready,
+      mnemonic,
       passwordSet: state.passwordSet,
       mnemonicRevealed: state.mnemonicRevealed,
       mnemonicBackedUp: state.mnemonicBackedUp,
-      onboardingComplete: state.onboardingComplete,
+      onboardingComplete: state.onboardingComplete || hasPersistedVault,
       beginOnboarding,
       importWallet,
       savePassword,
@@ -195,7 +273,10 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
       resetOnboarding,
     }),
     [
+      ready,
+      mnemonic,
       state,
+      hasPersistedVault,
       beginOnboarding,
       importWallet,
       savePassword,
@@ -230,9 +311,18 @@ function resolveGateRedirect(
   gate: OnboardingGate,
   state: Pick<
     OnboardingMockContextValue,
-    'passwordSet' | 'mnemonic' | 'mnemonicRevealed' | 'mnemonicBackedUp' | 'onboardingComplete'
+    | 'ready'
+    | 'passwordSet'
+    | 'mnemonic'
+    | 'mnemonicRevealed'
+    | 'mnemonicBackedUp'
+    | 'onboardingComplete'
   >,
 ): string | null {
+  if (!state.ready) {
+    return null;
+  }
+
   if (state.onboardingComplete) {
     return gate === 'home' ? null : '/home';
   }
@@ -254,7 +344,7 @@ function resolveGateRedirect(
   }
 
   if (!state.mnemonic) {
-    return '/onboarding/mnemonic/generate';
+    return '/onboarding/password';
   }
 
   if (!state.mnemonicRevealed) {
@@ -274,11 +364,12 @@ function resolveGateRedirect(
 
 export function useOnboardingGuard(gate: OnboardingGate): void {
   const navigate = useNavigate();
-  const { passwordSet, mnemonic, mnemonicRevealed, mnemonicBackedUp, onboardingComplete } =
+  const { ready, passwordSet, mnemonic, mnemonicRevealed, mnemonicBackedUp, onboardingComplete } =
     useOnboardingMock();
 
   useEffect(() => {
     const redirect = resolveGateRedirect(gate, {
+      ready,
       passwordSet,
       mnemonic,
       mnemonicRevealed,
@@ -292,6 +383,7 @@ export function useOnboardingGuard(gate: OnboardingGate): void {
   }, [
     gate,
     navigate,
+    ready,
     passwordSet,
     mnemonic,
     mnemonicRevealed,

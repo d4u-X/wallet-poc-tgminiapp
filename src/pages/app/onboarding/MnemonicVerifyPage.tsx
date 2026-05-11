@@ -47,6 +47,7 @@ export const MnemonicVerifyPage: FC = () => {
   const [randomPicks, setRandomPicks] = useState<Record<number, string>>({});
   const [fullInputs, setFullInputs] = useState<string[]>(() => Array(12).fill(''));
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     setRandomPicks({});
@@ -66,7 +67,7 @@ export const MnemonicVerifyPage: FC = () => {
 
   const canSubmit = tab === 'random' ? randomFilled : fullFilled;
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -94,7 +95,18 @@ export const MnemonicVerifyPage: FC = () => {
       }
     }
 
-    markOnboardingComplete();
+    try {
+      setSubmitting(true);
+      await markOnboardingComplete();
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error ? submitError.message : '创建钱包失败，请返回上一步重新开始。',
+      );
+      return;
+    } finally {
+      setSubmitting(false);
+    }
+
     navigate('/home', { replace: true });
   };
 
@@ -276,10 +288,10 @@ export const MnemonicVerifyPage: FC = () => {
             />
             <button
               type="submit"
-              disabled={!canSubmit}
+              disabled={!canSubmit || submitting}
               className={clsx(
                 'relative flex h-12 w-full max-w-[303px] items-center justify-center rounded-[var(--radius-wallet-pill)] text-base font-semibold transition-[transform,opacity,background-color,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
-                canSubmit
+                canSubmit && !submitting
                   ? 'bg-wallet-primary-btn text-wallet-primary-btn-text shadow-[0_14px_34px_rgba(255,255,255,0.05)] hover:brightness-[1.02] active:scale-[0.985] active:opacity-95'
                   : 'cursor-not-allowed bg-white/5 text-[rgba(255,255,255,0.2)]',
               )}

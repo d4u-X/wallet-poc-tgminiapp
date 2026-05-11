@@ -11,10 +11,7 @@ import { WalletScreenHeader } from '@/components/wallet/WalletScreenHeader.tsx';
 import { WalletTextField } from '@/components/wallet/WalletTextField.tsx';
 import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
 import { useOnboardingMock } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
-
-function normalizeMnemonic(value: string): string[] {
-  return value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-}
+import { normalizeMnemonicWords, validateMnemonicWords } from '@/wallet-core/mnemonic/bip39.ts';
 
 export const OnboardingImportPage: FC = () => {
   const navigate = useNavigate();
@@ -23,6 +20,8 @@ export const OnboardingImportPage: FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showErrors, setShowErrors] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (onboardingComplete) {
@@ -30,25 +29,34 @@ export const OnboardingImportPage: FC = () => {
     }
   }, [navigate, onboardingComplete]);
 
-  const mnemonicWords = useMemo(() => normalizeMnemonic(mnemonicInput), [mnemonicInput]);
+  const mnemonicWords = useMemo(() => normalizeMnemonicWords(mnemonicInput), [mnemonicInput]);
   const mnemonicError =
-    showErrors && mnemonicWords.length !== 12 && mnemonicWords.length !== 24
-      ? '请输入 12 或 24 个助记词'
+    showErrors && !validateMnemonicWords(mnemonicWords)
+      ? '请输入有效的 12 或 24 个英文助记词'
       : undefined;
   const passwordError = showErrors && password.length < 8 ? '密码至少需要 8 位字符' : undefined;
   const confirmError =
     showErrors && password !== confirmPassword ? '两次输入的密码不一致' : undefined;
 
   const canSubmit =
-    (mnemonicWords.length === 12 || mnemonicWords.length === 24) &&
-    password.length >= 8 &&
-    password === confirmPassword;
+    validateMnemonicWords(mnemonicWords) && password.length >= 8 && password === confirmPassword;
 
-  const onSubmit = (event: FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setShowErrors(true);
+    setSubmitError(null);
     if (!canSubmit) return;
-    importWallet(password);
+
+    try {
+      setSubmitting(true);
+      await importWallet({ mnemonicWords, password });
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : '导入钱包失败，请稍后重试。');
+      return;
+    } finally {
+      setSubmitting(false);
+    }
+
     navigate('/home', { replace: true });
   };
 
@@ -62,7 +70,7 @@ export const OnboardingImportPage: FC = () => {
             className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_28px_rgba(255,255,255,0.018)]"
             textClassName="text-[12px] leading-[17px]"
           >
-            当前先接通导入交互与产品流程。真实助记词校验、解密与链上钱包恢复将在后续接入。
+            助记词将在本地完成校验并写入加密金库。请确认周围环境安全，不要复制到不可信应用。
           </WalletInfoBanner>
 
           <div className="relative mt-8 flex flex-col gap-[9px]">
@@ -119,7 +127,7 @@ export const OnboardingImportPage: FC = () => {
                   </p>
                 ) : (
                   <p className="text-xs leading-[17px] text-wallet-text-muted">
-                    当前版本支持 12 或 24 个单词的导入占位流程。
+                    仅支持英文 BIP39 助记词，使用空格分隔单词。
                   </p>
                 )}
               </div>
@@ -161,8 +169,13 @@ export const OnboardingImportPage: FC = () => {
                 className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
                 textClassName="text-[12px] leading-[17px]"
               >
-                导入成功后会直接进入首页；当前版本仅打通产品路径，不会执行真实的助记词恢复。
+                导入成功后会直接进入首页；当前版本会完成真实助记词校验和本地加密存储。
               </WalletInfoBanner>
+              {submitError ? (
+                <p className="mt-3 text-sm text-wallet-danger" role="alert">
+                  {submitError}
+                </p>
+              ) : null}
             </div>
           </div>
 
@@ -179,7 +192,11 @@ export const OnboardingImportPage: FC = () => {
               className="pointer-events-none absolute left-1/2 top-0 h-12 w-[236px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.045),rgba(255,255,255,0)_72%)] blur-[18px]"
               aria-hidden
             />
-            <WalletPrimaryButton type="submit" className="max-w-[303px]" disabled={!canSubmit}>
+            <WalletPrimaryButton
+              type="submit"
+              className="max-w-[303px]"
+              disabled={!canSubmit || submitting}
+            >
               导入钱包
             </WalletPrimaryButton>
             <WalletHomeIndicator />

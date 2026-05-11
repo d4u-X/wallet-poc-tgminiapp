@@ -10,10 +10,7 @@ import { WalletSecondaryButton } from '@/components/wallet/WalletSecondaryButton
 import { Link } from '@/components/Link/Link.tsx';
 
 import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
-import {
-  readOnboardingCompleteFlag,
-  useOnboardingMock,
-} from '@/pages/app/onboarding/OnboardingMockContext.tsx';
+import { useOnboardingMock } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
 
 const FEATURES = [
   {
@@ -35,13 +32,13 @@ const FEATURES = [
 
 export const OnboardingWelcomePage: FC = () => {
   const navigate = useNavigate();
-  const { beginOnboarding } = useOnboardingMock();
+  const { beginOnboarding, onboardingComplete, ready } = useOnboardingMock();
 
   useEffect(() => {
-    if (readOnboardingCompleteFlag()) {
+    if (ready && onboardingComplete) {
       navigate('/home', { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, onboardingComplete, ready]);
 
   return (
     <Page back={false}>
