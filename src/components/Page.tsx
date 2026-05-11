@@ -14,13 +14,17 @@ export function Page({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (back) {
-      backButton.show();
-      return backButton.onClick(() => {
-        navigate(-1);
-      });
+    try {
+      if (back) {
+        backButton.show();
+        return backButton.onClick(() => {
+          navigate(-1);
+        });
+      }
+      backButton.hide();
+    } catch {
+      return;
     }
-    backButton.hide();
   }, [back, navigate]);
 
   return <>{children}</>;

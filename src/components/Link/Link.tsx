@@ -23,7 +23,11 @@ export const Link: FC<LinkProps> = ({ className, onClick: propsOnClick, to, ...r
 
       if (isExternal) {
         e.preventDefault();
-        openLink(targetUrl.toString());
+        try {
+          openLink(targetUrl.toString());
+        } catch {
+          window.open(targetUrl.toString(), '_blank', 'noopener,noreferrer');
+        }
       }
     },
     [to, propsOnClick],
