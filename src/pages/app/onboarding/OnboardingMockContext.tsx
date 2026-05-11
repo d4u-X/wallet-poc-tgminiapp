@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { createMnemonicWords, validateMnemonicWords } from '@/wallet-core/mnemonic/bip39.ts';
 import { getPrimaryVaultRecord, saveVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
 import { createVaultRecord } from '@/wallet-core/vault/vaultService.ts';
+import { deriveDefaultAddresses } from '@/wallet-core/derivation/deriveDefaultAddresses.ts';
 import { useWalletSession } from '@/state/wallet/WalletSessionContext.tsx';
 
 const STORAGE_KEY = 'wallet-onboarding-state-v2';
@@ -177,10 +178,12 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
         throw new Error('助记词格式无效，请检查单词内容和顺序。');
       }
 
+      const mnemonicText = mnemonicWords.join(' ');
+      const addresses = deriveDefaultAddresses({ mnemonic: mnemonicText });
       const record = await createVaultRecord({
-        mnemonic: mnemonicWords.join(' '),
+        mnemonic: mnemonicText,
         password,
-        addresses: [],
+        addresses,
         imported: true,
       });
       await saveVaultRecord(record);
@@ -237,7 +240,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
       const record = await createVaultRecord({
         mnemonic: mnemonic.join(' '),
         password: pendingPassword,
-        addresses: [],
+        addresses: deriveDefaultAddresses({ mnemonic: mnemonic.join(' ') }),
         imported: false,
       });
       await saveVaultRecord(record);
