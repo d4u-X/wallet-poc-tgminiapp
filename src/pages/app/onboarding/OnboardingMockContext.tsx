@@ -174,6 +174,10 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const importWallet = useCallback(
     async ({ mnemonicWords, password }: { mnemonicWords: string[]; password: string }) => {
+      const existing = await getPrimaryVaultRecord();
+      if (existing) {
+        throw new Error('本地已存在钱包，请先清除后再导入。');
+      }
       if (!validateMnemonicWords(mnemonicWords)) {
         throw new Error('助记词格式无效，请检查单词内容和顺序。');
       }
@@ -191,16 +195,9 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
       setHasPersistedVault(true);
       setMnemonic(null);
       setPendingPassword(null);
-      updateState((prev) => ({
-        ...prev,
-        passwordSet: true,
-        onboardingComplete: true,
-        mnemonicRevealed: false,
-        mnemonicBackedUp: false,
-        randomVerifyIndices: [],
-      }));
+      setState(() => persistState(INITIAL_STATE));
     },
-    [unlock, updateState],
+    [unlock],
   );
 
   const ensureMnemonic = useCallback(() => {
@@ -237,6 +234,11 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
         throw new Error('当前创建流程已失效，请重新设置密码并生成助记词。');
       }
 
+      const existing = await getPrimaryVaultRecord();
+      if (existing) {
+        throw new Error('本地已存在钱包，请先清除后再创建。');
+      }
+
       const record = await createVaultRecord({
         mnemonic: mnemonic.join(' '),
         password: pendingPassword,
@@ -248,12 +250,9 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
       setHasPersistedVault(true);
       setMnemonic(null);
       setPendingPassword(null);
-      updateState((prev) => ({
-        ...prev,
-        onboardingComplete: true,
-      }));
+      setState(() => persistState(INITIAL_STATE));
     })();
-  }, [mnemonic, pendingPassword, unlock, updateState]);
+  }, [mnemonic, pendingPassword, unlock]);
 
   const resetOnboarding = useCallback(() => {
     setState(() => persistState(INITIAL_STATE));

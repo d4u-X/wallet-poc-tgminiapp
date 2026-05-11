@@ -1,5 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import { clsx } from 'clsx';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/Page.tsx';
@@ -8,10 +9,14 @@ import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 
 import { useWalletSession, useWalletSessionGuard } from '@/state/wallet/WalletSessionContext.tsx';
 import { WALLET_HOME_ASSETS } from '@/pages/app/walletHomeFigmaAssets.ts';
+import { getPrimaryVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
+import type { SupportedChain, VaultAddressRecord } from '@/wallet-core/vault/vaultTypes.ts';
 
 /** Matches Figma home greens (#17e19d / #17e29d). */
 const HOME_GREEN = '#17e19d';
 const HOME_GREEN_MSG = '#17e29d';
+
+const CHAIN_ORDER: SupportedChain[] = ['eth', 'bsc', 'tron'];
 
 type TagSpec =
   | { variant: 'blue'; text: string }
@@ -32,6 +37,39 @@ interface TxRowData {
   subtitle: string;
   amount: string;
   unit: string;
+}
+
+function formatAddressShort(address: string): string {
+  if (address.startsWith('0x') && address.length > 12) {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }
+  if (address.length > 10) {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }
+  return address;
+}
+
+function chainLabel(chain: SupportedChain): string {
+  if (chain === 'eth') return 'ETH';
+  if (chain === 'bsc') return 'BSC';
+  return 'TRON';
+}
+
+async function copyToClipboard(text: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const el = document.createElement('textarea');
+  el.value = text;
+  el.setAttribute('readonly', 'true');
+  el.style.position = 'fixed';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
 }
 
 const MOCK_TX: TxRowData[] = [
@@ -225,6 +263,81 @@ export const WalletHomePage: FC = () => {
 
   useWalletSessionGuard();
 
+  const [addresses, setAddresses] = useState<VaultAddressRecord[]>([]);
+  const [activeChain, setActiveChain] = useState<SupportedChain>('eth');
+  const [addressesLoaded, setAddressesLoaded] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState<'idle' | 'copied' | 'error'>('idle');
+  const copiedTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    getPrimaryVaultRecord()
+      .then((record) => {
+        if (cancelled) return;
+        setAddresses(record?.addresses ?? []);
+        setAddressesLoaded(true);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setAddresses([]);
+        setAddressesLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (copiedTimerRef.current !== null) {
+        window.clearTimeout(copiedTimerRef.current);
+      }
+    };
+  }, []);
+
+  const addressByChain = useMemo(() => {
+    const out: Partial<Record<SupportedChain, string>> = {};
+    for (const row of addresses) {
+      out[row.chain] = row.address;
+    }
+    return out;
+  }, [addresses]);
+
+  const currentAddress = addressByChain[activeChain] ?? '';
+
+  const cycleChain = () => {
+    const available = new Set<SupportedChain>(Object.keys(addressByChain) as SupportedChain[]);
+    setActiveChain((prev) => {
+      if (available.size === 0) return prev;
+      const startIndex = CHAIN_ORDER.indexOf(prev);
+      const baseIndex = startIndex >= 0 ? startIndex : 0;
+      for (let i = 1; i <= CHAIN_ORDER.length; i += 1) {
+        const next = CHAIN_ORDER[(baseIndex + i) % CHAIN_ORDER.length];
+        if (next && available.has(next)) return next;
+      }
+      return prev;
+    });
+  };
+
+  const onCopy = async () => {
+    if (!currentAddress) return;
+    try {
+      await copyToClipboard(currentAddress);
+      setCopyFeedback('copied');
+      if (copiedTimerRef.current !== null) {
+        window.clearTimeout(copiedTimerRef.current);
+      }
+      copiedTimerRef.current = window.setTimeout(() => setCopyFeedback('idle'), 1200);
+    } catch {
+      setCopyFeedback('error');
+      if (copiedTimerRef.current !== null) {
+        window.clearTimeout(copiedTimerRef.current);
+      }
+      copiedTimerRef.current = window.setTimeout(() => setCopyFeedback('idle'), 1200);
+    }
+  };
+
   const resetDev = async () => {
     await clearVault();
     navigate('/', { replace: true });
@@ -249,19 +362,48 @@ export const WalletHomePage: FC = () => {
         <div className="relative z-[1] flex min-h-screen flex-col pb-[calc(110px+env(safe-area-inset-bottom))]">
           {/* Top bar — wallet + message (no fake iOS status bar in Mini App). */}
           <header className="flex h-11 items-center justify-between px-5 pt-1.5">
-            <button
-              type="button"
-              className="flex items-center gap-0.5 rounded-[50px] text-[19px] font-semibold leading-none text-white"
-            >
-              <span className="translate-y-[-0.5px]">Wallet 1</span>
-              <span className="flex size-4 translate-y-px rotate-90 items-center justify-center">
-                <img
-                  src={WALLET_HOME_ASSETS.walletChevron}
-                  alt=""
-                  className="size-4 max-w-none opacity-90"
-                />
-              </span>
-            </button>
+            <div className="flex min-w-0 items-center gap-2">
+              <button
+                type="button"
+                className="flex min-w-0 items-center gap-1 rounded-[50px] text-white"
+                onClick={cycleChain}
+              >
+                <div className="flex min-w-0 flex-col items-start">
+                  <span className="text-[19px] font-semibold leading-none">Wallet 1</span>
+                  <span className="mt-1 truncate text-[12px] leading-none text-[rgba(255,255,255,0.7)]">
+                    {!addressesLoaded
+                      ? '加载地址中…'
+                      : currentAddress
+                        ? `${chainLabel(activeChain)} · ${formatAddressShort(currentAddress)}`
+                        : '该链暂无地址'}
+                  </span>
+                </div>
+                <span className="flex size-4 translate-y-px rotate-90 items-center justify-center">
+                  <img
+                    src={WALLET_HOME_ASSETS.walletChevron}
+                    alt=""
+                    className="size-4 max-w-none opacity-90"
+                  />
+                </span>
+              </button>
+              <button
+                type="button"
+                className={clsx(
+                  'flex h-7 items-center justify-center rounded-[40px] border px-2 text-[12px] font-semibold leading-none transition-[transform,background-color,opacity] duration-150 ease-out active:scale-[0.985]',
+                  currentAddress
+                    ? 'border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.06)] text-white hover:bg-[rgba(255,255,255,0.08)]'
+                    : 'cursor-not-allowed border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-[rgba(255,255,255,0.35)]',
+                )}
+                onClick={onCopy}
+                disabled={!currentAddress}
+              >
+                {copyFeedback === 'copied'
+                  ? '已复制'
+                  : copyFeedback === 'error'
+                    ? '复制失败'
+                    : '复制'}
+              </button>
+            </div>
             <button
               type="button"
               className="relative flex h-7 w-[29px] items-center justify-center text-white"
