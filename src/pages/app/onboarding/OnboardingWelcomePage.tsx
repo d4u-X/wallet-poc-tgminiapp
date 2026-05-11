@@ -11,6 +11,7 @@ import { Link } from '@/components/Link/Link.tsx';
 
 import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
 import { useOnboardingMock } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
+import { useWalletSession } from '@/state/wallet/WalletSessionContext.tsx';
 
 const FEATURES = [
   {
@@ -32,13 +33,17 @@ const FEATURES = [
 
 export const OnboardingWelcomePage: FC = () => {
   const navigate = useNavigate();
-  const { beginOnboarding, onboardingComplete, ready } = useOnboardingMock();
+  const { beginOnboarding } = useOnboardingMock();
+  const { status } = useWalletSession();
 
   useEffect(() => {
-    if (ready && onboardingComplete) {
+    if (status === 'unlocked') {
       navigate('/home', { replace: true });
     }
-  }, [navigate, onboardingComplete, ready]);
+    if (status === 'locked') {
+      navigate('/unlock', { replace: true });
+    }
+  }, [navigate, status]);
 
   return (
     <Page back={false}>

@@ -1,14 +1,12 @@
 import type { FC, ReactNode } from 'react';
 import { clsx } from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/Page.tsx';
 import { WalletHomeIndicator } from '@/components/wallet/WalletHomeIndicator.tsx';
 import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 
-import {
-  useOnboardingGuard,
-  useOnboardingMock,
-} from '@/pages/app/onboarding/OnboardingMockContext.tsx';
+import { useWalletSession, useWalletSessionGuard } from '@/state/wallet/WalletSessionContext.tsx';
 import { WALLET_HOME_ASSETS } from '@/pages/app/walletHomeFigmaAssets.ts';
 
 /** Matches Figma home greens (#17e19d / #17e29d). */
@@ -222,12 +220,14 @@ function QuickAction({ label, children }: { label: string; children: ReactNode }
 }
 
 export const WalletHomePage: FC = () => {
-  const { resetOnboarding } = useOnboardingMock();
+  const navigate = useNavigate();
+  const { clearVault } = useWalletSession();
 
-  useOnboardingGuard('home');
+  useWalletSessionGuard();
 
-  const resetDev = () => {
-    resetOnboarding();
+  const resetDev = async () => {
+    await clearVault();
+    navigate('/', { replace: true });
   };
 
   return (

@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, HashRouter } from 'react-router-dom';
 
 import { routes } from '@/navigation/routes.tsx';
 import { OnboardingMockProvider } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
+import { WalletSessionProvider } from '@/state/wallet/WalletSessionContext.tsx';
 
 function RouteFallback() {
   return (
@@ -19,16 +20,18 @@ export function App() {
   return (
     <div className="min-h-screen bg-wallet-canvas">
       <HashRouter>
-        <OnboardingMockProvider>
-          <Suspense fallback={<RouteFallback />}>
-            <Routes>
-              {routes.map(({ path, Component }) => (
-                <Route key={path} path={path} element={<Component />} />
-              ))}
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </Suspense>
-        </OnboardingMockProvider>
+        <WalletSessionProvider>
+          <OnboardingMockProvider>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                {routes.map(({ path, Component }) => (
+                  <Route key={path} path={path} element={<Component />} />
+                ))}
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Suspense>
+          </OnboardingMockProvider>
+        </WalletSessionProvider>
       </HashRouter>
     </div>
   );

@@ -33,6 +33,9 @@ const MnemonicVerifyPage = lazy(() =>
 const WalletHomePage = lazy(() =>
   import('@/pages/app/WalletHomePage.tsx').then((m) => ({ default: m.WalletHomePage })),
 );
+const UnlockPage = lazy(() =>
+  import('@/pages/app/unlock/UnlockPage.tsx').then((m) => ({ default: m.UnlockPage })),
+);
 
 const DemoHubPage = lazy(() =>
   import('@/pages/demo/IndexPage/DemoHubPage.tsx').then((m) => ({ default: m.DemoHubPage })),
@@ -63,6 +66,7 @@ interface Route {
 export const routes: Route[] = [
   { path: '/', Component: OnboardingWelcomePage },
   { path: '/home', Component: WalletHomePage },
+  { path: '/unlock', Component: UnlockPage },
   { path: '/onboarding/import', Component: OnboardingImportPage },
   { path: '/onboarding/password', Component: OnboardingPasswordPage },
   { path: '/onboarding/mnemonic/generate', Component: MnemonicGeneratePage },

@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { createMnemonicWords, validateMnemonicWords } from '@/wallet-core/mnemonic/bip39.ts';
 import { getPrimaryVaultRecord, saveVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
 import { createVaultRecord } from '@/wallet-core/vault/vaultService.ts';
+import { useWalletSession } from '@/state/wallet/WalletSessionContext.tsx';
 
 const STORAGE_KEY = 'wallet-onboarding-state-v2';
 
@@ -92,6 +93,7 @@ function pickThreeDistinctIndices(): number[] {
 }
 
 export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { unlock } = useWalletSession();
   const [state, setState] = useState<PersistedOnboardingState>(() => readStoredState());
   const [ready, setReady] = useState(false);
   const [hasPersistedVault, setHasPersistedVault] = useState(false);
@@ -182,6 +184,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
         imported: true,
       });
       await saveVaultRecord(record);
+      await unlock({ password, record });
       setHasPersistedVault(true);
       setMnemonic(null);
       setPendingPassword(null);
@@ -194,7 +197,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
         randomVerifyIndices: [],
       }));
     },
-    [updateState],
+    [unlock, updateState],
   );
 
   const ensureMnemonic = useCallback(() => {
@@ -238,6 +241,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
         imported: false,
       });
       await saveVaultRecord(record);
+      await unlock({ password: pendingPassword, record });
       setHasPersistedVault(true);
       setMnemonic(null);
       setPendingPassword(null);
@@ -246,7 +250,7 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
         onboardingComplete: true,
       }));
     })();
-  }, [mnemonic, pendingPassword, updateState]);
+  }, [mnemonic, pendingPassword, unlock, updateState]);
 
   const resetOnboarding = useCallback(() => {
     setState(() => persistState(INITIAL_STATE));
