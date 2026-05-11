@@ -6,6 +6,10 @@
 - Telegram UI（[@telegram-apps/telegram-ui](https://github.com/Telegram-Mini-Apps/TelegramUI)）
 - TON Connect（[@tonconnect/ui-react](https://docs.ton.org/develop/dapps/ton-connect/overview)）
 
+相关文档：
+
+- [真实多链钱包开发计划](./docs/真实钱包开发计划.md)
+
 下面按新手最关心的 4 个问题整理：如何部署到自己的 Bot、代码核心结构、如何开发调试、如何添加页面与业务逻辑。
 
 ---
@@ -79,7 +83,7 @@ pnpm run build
 - 在 BotFather 中进入你的 Bot 的 Mini App 管理（官方流程会引导设置：App 名称、描述、图标、URL、域名等）
 - URL 填写你部署后的 HTTPS 地址（例如 `https://miniapp.example.com/`）
 
-参考官方：创建 Mini App 的指南  
+参考官方：创建 Mini App 的指南
 https://docs.telegram-mini-apps.com/platform/creating-new-app
 
 2. 用 Bot 菜单按钮打开 Web App（适合你只想先跑起来）
