@@ -4,9 +4,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { clsx } from 'clsx';
 
 import { Page } from '@/components/Page.tsx';
-import { WalletHomeIndicator } from '@/components/wallet/WalletHomeIndicator.tsx';
 import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 import { WalletScreenHeader } from '@/components/wallet/WalletScreenHeader.tsx';
+import { useI18n } from '@/i18n/I18nProvider.tsx';
 
 import {
   useOnboardingGuard,
@@ -48,6 +48,7 @@ export const MnemonicVerifyPage: FC = () => {
   const [fullInputs, setFullInputs] = useState<string[]>(() => Array(12).fill(''));
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     setRandomPicks({});
@@ -74,14 +75,14 @@ export const MnemonicVerifyPage: FC = () => {
     if (!canSubmit) return;
 
     if (words.length !== 12) {
-      setError('助记词未就绪，请返回上一步重试。');
+      setError(t('verify.notReadyError'));
       return;
     }
 
     if (tab === 'random') {
       for (const i of randomVerifyIndices) {
         if ((randomPicks[i] ?? '').toLowerCase() !== words[i]) {
-          setError('随机验证未通过，请重新选择对应位置的单词。');
+          setError(t('verify.randomFailedError'));
           return;
         }
       }
@@ -89,7 +90,7 @@ export const MnemonicVerifyPage: FC = () => {
       for (let i = 0; i < 12; i++) {
         const v = (fullInputs[i] ?? '').trim().toLowerCase();
         if (v !== words[i]) {
-          setError('完整验证未通过，请按顺序核对全部单词。');
+          setError(t('verify.fullFailedError'));
           return;
         }
       }
@@ -99,9 +100,7 @@ export const MnemonicVerifyPage: FC = () => {
       setSubmitting(true);
       await markOnboardingComplete();
     } catch (submitError) {
-      setError(
-        submitError instanceof Error ? submitError.message : '创建钱包失败，请返回上一步重新开始。',
-      );
+      setError(submitError instanceof Error ? submitError.message : t('verify.submitError'));
       return;
     } finally {
       setSubmitting(false);
@@ -113,28 +112,12 @@ export const MnemonicVerifyPage: FC = () => {
   return (
     <Page>
       <WalletLayout>
-        <WalletScreenHeader
-          title="助记词验证"
-          rightSlotClassName="min-w-[44px]"
-          rightSlot={
-            <button
-              type="button"
-              disabled
-              className="select-none text-[16px] font-semibold leading-none text-wallet-text-muted opacity-80"
-              aria-disabled="true"
-            >
-              跳过
-            </button>
-          }
-        />
+        <WalletScreenHeader title={t('verify.header')} rightSlotClassName="min-w-[44px]" />
 
         <form className="flex flex-col" onSubmit={onSubmit}>
-          <div className="flex flex-col px-5 pb-44 pt-2">
-            <div className="relative flex border-b border-wallet-border bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] pl-px">
-              <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.22),rgba(255,255,255,0))]"
-                aria-hidden
-              />
+          <div className="flex flex-col px-5 pb-44 pt-[1.6875rem]">
+            <div className="relative flex border-b border-wallet-border pl-px">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px " aria-hidden />
               <button
                 type="button"
                 onClick={() => setTab('random')}
@@ -145,7 +128,7 @@ export const MnemonicVerifyPage: FC = () => {
                     : 'border-transparent text-wallet-text-muted hover:text-wallet-text-secondary',
                 )}
               >
-                随机验证
+                {t('verify.randomTab')}
                 {tab === 'random' ? (
                   <span
                     className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-10 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
@@ -163,7 +146,7 @@ export const MnemonicVerifyPage: FC = () => {
                     : 'border-transparent text-wallet-text-muted hover:text-wallet-text-secondary',
                 )}
               >
-                完整验证
+                {t('verify.fullTab')}
                 {tab === 'full' ? (
                   <span
                     className="pointer-events-none absolute bottom-[-2px] left-1/2 h-[2px] w-10 -translate-x-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.18)]"
@@ -175,7 +158,7 @@ export const MnemonicVerifyPage: FC = () => {
 
             <div className="mt-6 flex flex-col gap-6">
               {tab === 'random' ? (
-                <div className="relative rounded-[18px] bg-[linear-gradient(180deg,rgba(255,255,255,0.026)_0%,rgba(255,255,255,0)_100%)] px-2.5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+                <div className="relative rounded-[18px]  px-2.5 py-3.5 ">
                   <div
                     className="pointer-events-none absolute left-1/2 top-0 h-[42px] w-[204px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.075),rgba(255,255,255,0)_75%)] blur-[18px]"
                     aria-hidden
@@ -184,7 +167,7 @@ export const MnemonicVerifyPage: FC = () => {
                     {randomVerifyIndices.map((i) => (
                       <div key={i} className="flex flex-col gap-3">
                         <p className="text-[15px] font-semibold leading-5 text-wallet-text">
-                          第{i + 1}个单词
+                          {t('verify.wordLabel', { index: i + 1 })}
                         </p>
                         <div className="flex gap-2.5">
                           {(randomOptions[i] ?? []).map((opt) => (
@@ -244,7 +227,7 @@ export const MnemonicVerifyPage: FC = () => {
                                 autoComplete="off"
                                 spellCheck={false}
                                 inputMode="text"
-                                aria-label={`第 ${idx + 1} 个单词`}
+                                aria-label={t('verify.wordAriaLabel', { index: idx + 1 })}
                                 className="min-w-0 flex-1 bg-transparent pt-px text-[15px] font-semibold capitalize text-wallet-text outline-none placeholder:text-wallet-text-muted"
                                 placeholder=""
                                 value={fullInputs[idx] ?? ''}
@@ -273,19 +256,7 @@ export const MnemonicVerifyPage: FC = () => {
             </div>
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 z-10 flex flex-col items-center bg-wallet-canvas pb-[env(safe-area-inset-bottom)] pt-3">
-            <div
-              className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-[linear-gradient(180deg,rgba(19,19,19,0.02)_0%,rgba(19,19,19,0.94)_100%)]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.12),rgba(255,255,255,0))]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute left-1/2 top-0 h-12 w-[236px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05),rgba(255,255,255,0)_72%)] blur-[18px]"
-              aria-hidden
-            />
+          <div className="fixed bottom-10 left-0 right-0 z-10 flex flex-col items-center bg-wallet-canvas pb-[env(safe-area-inset-bottom)] pt-3">
             <button
               type="submit"
               disabled={!canSubmit || submitting}
@@ -296,9 +267,8 @@ export const MnemonicVerifyPage: FC = () => {
                   : 'cursor-not-allowed bg-white/5 text-[rgba(255,255,255,0.2)]',
               )}
             >
-              完成验证，进入钱包
+              {t('verify.submit')}
             </button>
-            <WalletHomeIndicator />
           </div>
         </form>
       </WalletLayout>

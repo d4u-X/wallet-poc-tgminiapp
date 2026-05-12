@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react';
 
 import { Link } from '@/components/Link/Link.tsx';
 import { Page } from '@/components/Page.tsx';
+import { useI18n } from '@/i18n/I18nProvider.tsx';
 
 import tonSvg from './ton.svg';
 
@@ -53,11 +54,13 @@ const NavCell: FC<NavCellProps> = ({ to, title, subtitle, icon, isLast }) => (
 
 /** Template demo hub — kept under `/demo` while product UI is built from Figma. */
 export const DemoHubPage: FC = () => {
+  const { t } = useI18n();
+
   return (
     <Page back={false}>
       <div className="space-y-6 py-4">
         <p className="px-4 text-center text-[12px] text-tg-hint">
-          模板 Demo · 路由前缀 <code className="text-tg-text">/demo</code>
+          {t('demo.hubTitle')} <code className="text-tg-text">/demo</code>
         </p>
         <section>
           <p className="px-4 pb-1.5 text-[13px] font-medium uppercase tracking-wide text-tg-subtitle">

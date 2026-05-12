@@ -7,6 +7,7 @@ import { Page } from '@/components/Page.tsx';
 import { WalletHomeIndicator } from '@/components/wallet/WalletHomeIndicator.tsx';
 import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 
+import { useI18n } from '@/i18n/I18nProvider.tsx';
 import { useWalletSession, useWalletSessionGuard } from '@/state/wallet/WalletSessionContext.tsx';
 import { WALLET_HOME_ASSETS } from '@/pages/app/walletHomeFigmaAssets.ts';
 import { getPrimaryVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
@@ -19,10 +20,10 @@ const HOME_GREEN_MSG = '#17e29d';
 const CHAIN_ORDER: SupportedChain[] = ['eth', 'bsc', 'tron'];
 
 type TagSpec =
-  | { variant: 'blue'; text: string }
-  | { variant: 'neutral'; text: string }
-  | { variant: 'yellow'; text: string }
-  | { variant: 'red'; text: string };
+  | { variant: 'blue'; textKey: string }
+  | { variant: 'neutral'; textKey: string }
+  | { variant: 'yellow'; textKey: string }
+  | { variant: 'red'; textKey: string };
 
 type TxIconKind =
   | { kind: 'progress'; label: string }
@@ -32,9 +33,10 @@ type TxIconKind =
 interface TxRowData {
   id: string;
   icon: TxIconKind;
-  title: string;
+  titleKey: string;
   tags: TagSpec[];
-  subtitle: string;
+  subtitleKey?: string;
+  subtitleText?: string;
   amount: string;
   unit: string;
 }
@@ -76,57 +78,57 @@ const MOCK_TX: TxRowData[] = [
   {
     id: '1',
     icon: { kind: 'progress', label: '2/3' },
-    title: '收款',
-    tags: [{ variant: 'blue', text: 'KYT 监测中' }],
-    subtitle: 'Just now. Done in 3s.',
+    titleKey: 'home.tx.receive',
+    tags: [{ variant: 'blue', textKey: 'home.tx.kytChecking' }],
+    subtitleText: 'Just now. Done in 3s.',
     amount: '2,000,00',
     unit: ' USDT',
   },
   {
     id: '2',
     icon: { kind: 'arrow', dir: 'out' },
-    title: '支付',
-    tags: [{ variant: 'neutral', text: '安全' }],
-    subtitle: '今天14:32',
+    titleKey: 'home.tx.pay',
+    tags: [{ variant: 'neutral', textKey: 'home.tx.safe' }],
+    subtitleKey: 'home.tx.today1432',
     amount: '2,000,00',
     unit: '0x742d...bEb',
   },
   {
     id: '3',
     icon: { kind: 'arrow', dir: 'in' },
-    title: '收款',
-    tags: [{ variant: 'neutral', text: '隐私支付' }],
-    subtitle: '昨天09:15',
+    titleKey: 'home.tx.receive',
+    tags: [{ variant: 'neutral', textKey: 'home.tx.privatePay' }],
+    subtitleKey: 'home.tx.yesterday0915',
     amount: '2,000,00',
     unit: '0x8ba1...3e8C',
   },
   {
     id: '4',
     icon: { kind: 'warning', tone: 'yellow' },
-    title: '支付',
-    tags: [{ variant: 'yellow', text: '待审核' }],
-    subtitle: '今天14:32',
+    titleKey: 'home.tx.pay',
+    tags: [{ variant: 'yellow', textKey: 'home.tx.pendingReview' }],
+    subtitleKey: 'home.tx.today1432',
     amount: '2,000,00',
     unit: '0x8ba1...3e8C',
   },
   {
     id: '5',
     icon: { kind: 'warning', tone: 'red' },
-    title: '支付',
+    titleKey: 'home.tx.pay',
     tags: [
-      { variant: 'red', text: '已隔离' },
-      { variant: 'red', text: '黑U' },
+      { variant: 'red', textKey: 'home.tx.quarantined' },
+      { variant: 'red', textKey: 'home.tx.blackToken' },
     ],
-    subtitle: '今天14:32',
+    subtitleKey: 'home.tx.today1432',
     amount: '2,000,00',
     unit: '0x8ba1...3e8C',
   },
   {
     id: '6',
     icon: { kind: 'arrow', dir: 'out' },
-    title: '支付',
+    titleKey: 'home.tx.pay',
     tags: [],
-    subtitle: '今天14:32',
+    subtitleKey: 'home.tx.today1432',
     amount: '2,000,00',
     unit: '0x742d...bEb',
   },
@@ -188,7 +190,7 @@ function TxLeadIcon({ icon }: { icon: TxIconKind }) {
   );
 }
 
-function TagPill({ spec }: { spec: TagSpec }) {
+function TagPill({ spec, text }: { spec: TagSpec; text: string }) {
   const cls =
     spec.variant === 'blue'
       ? 'border-[0.5px] border-[#257cff] bg-[rgba(37,124,255,0.1)] text-[#257cff]'
@@ -205,7 +207,7 @@ function TagPill({ spec }: { spec: TagSpec }) {
         cls,
       )}
     >
-      {spec.text}
+      {text}
     </span>
   );
 }
@@ -260,6 +262,7 @@ function QuickAction({ label, children }: { label: string; children: ReactNode }
 export const WalletHomePage: FC = () => {
   const navigate = useNavigate();
   const { clearVault } = useWalletSession();
+  const { t } = useI18n();
 
   useWalletSessionGuard();
 
@@ -372,10 +375,10 @@ export const WalletHomePage: FC = () => {
                   <span className="text-[19px] font-semibold leading-none">Wallet 1</span>
                   <span className="mt-1 truncate text-[12px] leading-none text-[rgba(255,255,255,0.7)]">
                     {!addressesLoaded
-                      ? '加载地址中…'
+                      ? t('home.addressLoading')
                       : currentAddress
                         ? `${chainLabel(activeChain)} · ${formatAddressShort(currentAddress)}`
-                        : '该链暂无地址'}
+                        : t('home.noAddress')}
                   </span>
                 </div>
                 <span className="flex size-4 translate-y-px rotate-90 items-center justify-center">
@@ -398,16 +401,16 @@ export const WalletHomePage: FC = () => {
                 disabled={!currentAddress}
               >
                 {copyFeedback === 'copied'
-                  ? '已复制'
+                  ? t('common.copied')
                   : copyFeedback === 'error'
-                    ? '复制失败'
-                    : '复制'}
+                    ? t('common.copyFailed')
+                    : t('common.copy')}
               </button>
             </div>
             <button
               type="button"
               className="relative flex h-7 w-[29px] items-center justify-center text-white"
-              aria-label="消息"
+              aria-label={t('home.messagesAria')}
             >
               <img
                 src={WALLET_HOME_ASSETS.messageBubble}
@@ -421,7 +424,7 @@ export const WalletHomePage: FC = () => {
           <div className="mt-2 flex h-9 w-full items-center justify-center gap-2 bg-gradient-to-r from-[rgba(23,225,157,0)] via-[rgba(23,225,157,0.2)] to-[rgba(23,225,157,0)] px-3">
             <ShieldBannerIcon />
             <span className="text-[14px] leading-normal" style={{ color: HOME_GREEN }}>
-              安全保护中
+              {t('home.protecting')}
             </span>
           </div>
 
@@ -441,11 +444,11 @@ export const WalletHomePage: FC = () => {
                 aria-hidden
               />
               <div className="relative flex w-[214px] flex-col items-center gap-[9px] pt-[2px]">
-                <p className="text-[16px] leading-[18px] text-white/60">全部资产</p>
+                <p className="text-[16px] leading-[18px] text-white/60">{t('home.totalAssets')}</p>
                 <button
                   type="button"
                   className="flex items-end gap-1.5 text-left"
-                  aria-label="查看全部资产"
+                  aria-label={t('home.viewAllAssetsAria')}
                 >
                   <span className="text-[32px] font-semibold leading-none tracking-[-0.02em] text-white">
                     48,293.86
@@ -463,30 +466,30 @@ export const WalletHomePage: FC = () => {
               <div className="relative flex items-center gap-1">
                 <ShieldCongratsIcon />
                 <p className="text-[14px] leading-[18px]" style={{ color: HOME_GREEN_MSG }}>
-                  恭喜！你的所有资产均已安全。
+                  {t('home.allAssetsSafe')}
                 </p>
               </div>
             </div>
 
             <div className="flex w-full gap-[13px]">
-              <QuickAction label="收款">
+              <QuickAction label={t('home.action.receive')}>
                 <TransferArrowIcon dir="in" />
               </QuickAction>
-              <QuickAction label="支付">
+              <QuickAction label={t('home.action.pay')}>
                 <img
                   src={WALLET_HOME_ASSETS.quickTransfer}
                   alt=""
                   className="size-6 object-contain"
                 />
               </QuickAction>
-              <QuickAction label="邀请">
+              <QuickAction label={t('home.action.invite')}>
                 <img
                   src={WALLET_HOME_ASSETS.quickInvite}
                   alt=""
                   className="size-6 object-contain"
                 />
               </QuickAction>
-              <QuickAction label="客服">
+              <QuickAction label={t('home.action.support')}>
                 <img
                   src={WALLET_HOME_ASSETS.quickSupport}
                   alt=""
@@ -498,7 +501,7 @@ export const WalletHomePage: FC = () => {
 
           {/* Transactions — flat rows like Figma 476:12609 */}
           <section className="flex flex-col gap-7 px-5 py-4">
-            <h2 className="text-lg font-semibold text-white">最近交易</h2>
+            <h2 className="text-lg font-semibold text-white">{t('home.recentTransactions')}</h2>
             <ul className="flex flex-col gap-[22px]">
               {MOCK_TX.map((tx) => (
                 <li key={tx.id} className="flex min-h-10 items-center justify-between gap-3">
@@ -507,14 +510,14 @@ export const WalletHomePage: FC = () => {
                     <div className="flex min-w-0 flex-col gap-1">
                       <div className="flex flex-wrap items-center gap-1">
                         <span className="text-[15px] font-medium leading-5 text-white">
-                          {tx.title}
+                          {t(tx.titleKey)}
                         </span>
-                        {tx.tags.map((t) => (
-                          <TagPill key={t.text} spec={t} />
+                        {tx.tags.map((tag) => (
+                          <TagPill key={tag.textKey} spec={tag} text={t(tag.textKey)} />
                         ))}
                       </div>
                       <p className="text-[12px] leading-4 text-[rgba(255,255,255,0.6)]">
-                        {tx.subtitle}
+                        {tx.subtitleKey ? t(tx.subtitleKey) : tx.subtitleText}
                       </p>
                     </div>
                   </div>
@@ -535,7 +538,7 @@ export const WalletHomePage: FC = () => {
               onClick={resetDev}
               className="mx-5 mt-4 py-2 text-center text-xs text-white/40 underline"
             >
-              重置创建流程（仅开发）
+              {t('home.resetDev')}
             </button>
           ) : null}
         </div>
@@ -544,7 +547,7 @@ export const WalletHomePage: FC = () => {
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center bg-wallet-canvas">
           <nav
             className="pointer-events-auto relative mb-2 flex h-[60px] w-[295px] max-w-[calc(100%-40px)] items-center justify-between overflow-hidden rounded-[170px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] px-3.5 backdrop-blur-[7px]"
-            aria-label="主导航"
+            aria-label={t('home.mainNavAria')}
           >
             <div
               className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.02)_100%)]"
@@ -554,9 +557,17 @@ export const WalletHomePage: FC = () => {
               className="pointer-events-none absolute inset-x-8 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
               aria-hidden
             />
-            <TabButton active icon={WALLET_HOME_ASSETS.tabHomeActive} label="首页" />
-            <TabButton active={false} icon={WALLET_HOME_ASSETS.tabOrders} label="订单" />
-            <TabButton active={false} icon={WALLET_HOME_ASSETS.tabProfile} label="个人" />
+            <TabButton active icon={WALLET_HOME_ASSETS.tabHomeActive} label={t('home.tab.home')} />
+            <TabButton
+              active={false}
+              icon={WALLET_HOME_ASSETS.tabOrders}
+              label={t('home.tab.orders')}
+            />
+            <TabButton
+              active={false}
+              icon={WALLET_HOME_ASSETS.tabProfile}
+              label={t('home.tab.profile')}
+            />
           </nav>
           <div className="pointer-events-auto w-full">
             <WalletHomeIndicator />

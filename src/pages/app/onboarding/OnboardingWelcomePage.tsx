@@ -7,26 +7,26 @@ import { Page } from '@/components/Page.tsx';
 import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 import { WalletPrimaryButton } from '@/components/wallet/WalletPrimaryButton.tsx';
 import { WalletSecondaryButton } from '@/components/wallet/WalletSecondaryButton.tsx';
-import { Link } from '@/components/Link/Link.tsx';
 
+import { useI18n } from '@/i18n/I18nProvider.tsx';
 import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
 import { useOnboardingMock } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
 import { useWalletSession } from '@/state/wallet/WalletSessionContext.tsx';
 
 const FEATURES = [
   {
-    title: '非托管钱包',
-    subtitle: '私钥自持，资产自己掌控',
+    titleKey: 'welcome.feature.nonCustodial.title',
+    subtitleKey: 'welcome.feature.nonCustodial.subtitle',
     icon: FIGMA_WELCOME.featureIcons[0],
   },
   {
-    title: '安全收款',
-    subtitle: '智能检测风险，收款无忧',
+    titleKey: 'welcome.feature.safeReceive.title',
+    subtitleKey: 'welcome.feature.safeReceive.subtitle',
     icon: FIGMA_WELCOME.featureIcons[1],
   },
   {
-    title: '隐私支付',
-    subtitle: '匿名交易，隐私全程保护',
+    titleKey: 'welcome.feature.privatePay.title',
+    subtitleKey: 'welcome.feature.privatePay.subtitle',
     icon: FIGMA_WELCOME.featureIcons[2],
   },
 ] as const;
@@ -43,6 +43,7 @@ export const OnboardingWelcomePage: FC = () => {
   const navigate = useNavigate();
   const { beginOnboarding } = useOnboardingMock();
   const { status } = useWalletSession();
+  const { t } = useI18n();
 
   useEffect(() => {
     if (status === 'unlocked') {
@@ -55,164 +56,88 @@ export const OnboardingWelcomePage: FC = () => {
 
   return (
     <Page back={false}>
-      <WalletLayout className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -left-[54px] -top-[126px] h-[585px] w-[482px] opacity-60">
-          <div className="relative h-full w-full">
-            <img
-              src={FIGMA_WELCOME.heroDecoration}
-              alt=""
-              className="absolute inset-0 h-full w-full max-w-none object-cover"
-            />
-            <div
-              className="absolute inset-0 bg-[radial-gradient(circle_at_55%_38%,rgba(19,19,19,0)_0%,rgba(19,19,19,0.16)_40%,#131313_78%)]"
-              aria-hidden
-            />
-          </div>
-        </div>
+      <WalletLayout className="pb-0 pt-0">
         <div
-          className="pointer-events-none absolute left-1/2 top-[52px] h-[196px] w-[256px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.085),rgba(255,255,255,0)_72%)] blur-[42px]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute left-1/2 top-[104px] h-[108px] w-[220px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.04),rgba(255,255,255,0)_74%)] blur-[22px]"
-          aria-hidden
-        />
-
-        <div className="relative flex min-h-screen flex-col px-5 pb-8 pt-[74px]">
-          <div className="relative flex flex-col items-center gap-6">
-            <div
-              className="pointer-events-none absolute left-1/2 top-[4px] h-[96px] w-[96px] -translate-x-1/2 rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.055)_0%,rgba(255,255,255,0)_100%)]"
-              aria-hidden
-            />
-            <div className="relative flex flex-col items-center gap-5">
-              <div className="relative flex h-16 w-16 items-center justify-center rounded-[20px]">
-                <div
-                  className="pointer-events-none absolute inset-0 rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_100%)]"
-                  aria-hidden
-                />
-                <img
-                  src={FIGMA_WELCOME.logoMark}
-                  alt=""
-                  className="relative h-16 w-16 object-contain"
-                />
-              </div>
+          className="flex min-h-dvh w-full flex-col overflow-hidden bg-wallet-canvas px-5"
+          style={{
+            backgroundImage: `url(${FIGMA_WELCOME.heroDecoration})`,
+            backgroundPosition: 'left -54px top -126px',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '483px 585px',
+          }}
+        >
+          <div className="mx-auto mt-20 flex w-[218px] flex-col items-center gap-6">
+            <div className="flex w-[65px] flex-col items-center gap-5">
+              <img src={FIGMA_WELCOME.logoMark} alt="" className="h-16 w-[65px] object-contain" />
               <img
                 src={FIGMA_WELCOME.logoWordmark}
-                alt=""
-                className="h-[22px] w-16 object-contain"
+                alt="D4U"
+                className="h-[22px] w-[65px] object-contain"
               />
             </div>
-            <p className="max-w-[218px] text-center text-base font-normal leading-[22px] text-wallet-text-secondary">
-              安全、去中心化的多链钱包
+            <p className="w-[218px] text-center text-base font-normal leading-normal text-wallet-text-secondary">
+              {t('welcome.tagline')}
             </p>
           </div>
 
-          <div className="relative mt-[194px] flex flex-col gap-5 px-0.5">
-            <div
-              className="pointer-events-none absolute inset-x-[-4px] top-[-18px] bottom-[-18px] rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0.012)_24%,rgba(255,255,255,0)_100%)]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute left-0 right-0 top-[-24px] mx-auto h-[84px] w-[250px] rounded-[999px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),rgba(255,255,255,0)_70%)] blur-[28px]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-x-6 top-[-2px] h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.14),rgba(255,255,255,0))]"
-              aria-hidden
-            />
+          <div className="mt-[65px] flex w-full flex-col gap-6">
             {FEATURES.map((row) => (
-              <div
-                key={row.title}
-                className="relative flex items-start gap-3 rounded-[14px] px-0.5 py-px"
-              >
-                <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-wallet-surface-icon">
-                  <div
-                    className="pointer-events-none absolute inset-x-1 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.24),rgba(255,255,255,0))]"
-                    aria-hidden
-                  />
+              <div key={row.titleKey} className="flex items-center gap-[11px]">
+                <div className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-wallet-surface-icon">
                   <img src={row.icon} alt="" className="size-5 max-w-none object-contain" />
                 </div>
-                <div className="flex min-w-0 flex-col gap-1 pt-0.5">
-                  <p className="text-base font-medium leading-[22px] text-wallet-text">
-                    {row.title}
+                <div className="flex min-w-0 flex-col justify-center gap-1">
+                  <p className="text-base font-medium leading-normal text-wallet-text">
+                    {t(row.titleKey)}
                   </p>
                   <p className="text-xs leading-[17px] text-wallet-text-secondary">
-                    {row.subtitle}
+                    {t(row.subtitleKey)}
                   </p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="relative mt-auto flex flex-col gap-[14px] pt-7">
-            <div
-              className="pointer-events-none absolute inset-x-[-4px] top-0 bottom-[-12px] rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.024)_0%,rgba(255,255,255,0.006)_38%,rgba(255,255,255,0)_100%)]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.16),rgba(255,255,255,0))]"
-              aria-hidden
-            />
+          <div className="mt-[72px] flex flex-col gap-4">
             <WalletPrimaryButton
-              className="relative h-12 rounded-[40px] text-base font-semibold shadow-[0_12px_32px_rgba(255,255,255,0.05)]"
+              className="h-12 rounded-[40px] text-base font-semibold shadow-none"
               onClick={() => {
                 beginOnboarding();
                 navigate('/onboarding/password');
               }}
             >
-              创建新钱包
+              {t('welcome.create')}
             </WalletPrimaryButton>
             <WalletSecondaryButton
-              className="relative h-12 rounded-[40px] border border-[rgba(255,255,255,0.1)] bg-wallet-surface-icon text-base font-semibold"
+              className="h-12 rounded-[40px] bg-wallet-surface-icon text-base font-semibold shadow-none"
               onClick={() => {
                 navigate('/onboarding/import');
               }}
             >
-              导入已有钱包
+              {t('welcome.import')}
             </WalletSecondaryButton>
           </div>
 
-          <div className="relative mx-auto mt-[18px] max-w-[248px] px-1.5">
-            <div
-              className="pointer-events-none absolute inset-x-9 top-0 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.12),rgba(255,255,255,0))]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute left-1/2 top-0 h-8 w-[180px] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.035),rgba(255,255,255,0)_72%)] blur-[14px]"
-              aria-hidden
-            />
-            <p className="pt-3 text-center text-xs leading-[17px] text-wallet-text-secondary">
-              <span>继续即表示您同意我们的</span>{' '}
+          <div className="mx-auto mt-[50px] pb-8">
+            <p className="text-center text-xs leading-normal text-wallet-text-secondary">
+              <span>{t('welcome.termsPrefix')}</span>{' '}
               <button
                 type="button"
                 className="rounded-[6px] text-wallet-text underline decoration-solid underline-offset-2 transition-opacity duration-150 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
                 onClick={() => safeOpenLink('https://telegram.org/tos')}
               >
-                服务条款
+                {t('welcome.terms')}
               </button>{' '}
-              <span>和</span>{' '}
+              <span>{t('welcome.and')}</span>{' '}
               <button
                 type="button"
                 className="rounded-[6px] text-wallet-text underline decoration-solid underline-offset-2 transition-opacity duration-150 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
                 onClick={() => safeOpenLink('https://telegram.org/privacy')}
               >
-                隐私政策
+                {t('welcome.privacy')}
               </button>
             </p>
           </div>
-
-          {import.meta.env.DEV ? (
-            <Link
-              to="/demo"
-              className="mt-4 block text-center text-xs text-wallet-text-muted underline"
-            >
-              开发者：旧版 TMA Demo
-            </Link>
-          ) : null}
-        </div>
-
-        <div className="pointer-events-none flex h-[34px] w-full items-end justify-center pb-2">
-          <div className="h-[5px] w-[134px] rounded-full bg-[#676767]" aria-hidden />
         </div>
       </WalletLayout>
     </Page>

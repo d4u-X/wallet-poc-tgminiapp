@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { translate } from '@/i18n/I18nProvider.tsx';
 import { createMnemonicWords, validateMnemonicWords } from '@/wallet-core/mnemonic/bip39.ts';
 import { getPrimaryVaultRecord, saveVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
 import { createVaultRecord } from '@/wallet-core/vault/vaultService.ts';
@@ -176,10 +177,10 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
     async ({ mnemonicWords, password }: { mnemonicWords: string[]; password: string }) => {
       const existing = await getPrimaryVaultRecord();
       if (existing) {
-        throw new Error('本地已存在钱包，请先清除后再导入。');
+        throw new Error(translate('errors.walletExistsImport'));
       }
       if (!validateMnemonicWords(mnemonicWords)) {
-        throw new Error('助记词格式无效，请检查单词内容和顺序。');
+        throw new Error(translate('errors.invalidMnemonic'));
       }
 
       const mnemonicText = mnemonicWords.join(' ');
@@ -231,12 +232,12 @@ export const OnboardingMockProvider: FC<PropsWithChildren> = ({ children }) => {
   const markOnboardingComplete = useCallback(() => {
     return (async () => {
       if (!mnemonic || !pendingPassword) {
-        throw new Error('当前创建流程已失效，请重新设置密码并生成助记词。');
+        throw new Error(translate('errors.createFlowExpired'));
       }
 
       const existing = await getPrimaryVaultRecord();
       if (existing) {
-        throw new Error('本地已存在钱包，请先清除后再创建。');
+        throw new Error(translate('errors.walletExistsCreate'));
       }
 
       const record = await createVaultRecord({

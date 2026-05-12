@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { translate } from '@/i18n/I18nProvider.tsx';
 import { decryptVaultSecret } from '@/wallet-core/vault/vaultService.ts';
 import { clearVaultRecords, getPrimaryVaultRecord } from '@/wallet-core/vault/vaultRepository.ts';
 import type { WalletVaultRecord } from '@/wallet-core/vault/vaultTypes.ts';
@@ -64,13 +65,13 @@ export const WalletSessionProvider: FC<PropsWithChildren> = ({ children }) => {
       const target = record ?? (await getPrimaryVaultRecord());
       if (!target) {
         setStatus('no_wallet');
-        throw new Error('本地未发现钱包，请先创建或导入。');
+        throw new Error(translate('errors.noWallet'));
       }
 
       try {
         await decryptVaultSecret({ record: target, password });
       } catch {
-        throw new Error('密码错误，请重试。');
+        throw new Error(translate('errors.wrongPassword'));
       }
 
       lastActiveAtRef.current = Date.now();

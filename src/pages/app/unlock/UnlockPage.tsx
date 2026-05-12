@@ -9,6 +9,7 @@ import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 import { WalletPrimaryButton } from '@/components/wallet/WalletPrimaryButton.tsx';
 import { WalletScreenHeader } from '@/components/wallet/WalletScreenHeader.tsx';
 import { WalletTextField } from '@/components/wallet/WalletTextField.tsx';
+import { useI18n } from '@/i18n/I18nProvider.tsx';
 import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
 import { useWalletSession } from '@/state/wallet/WalletSessionContext.tsx';
 
@@ -19,6 +20,7 @@ export const UnlockPage: FC = () => {
   const [showErrors, setShowErrors] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (status === 'unlocked') {
@@ -29,7 +31,8 @@ export const UnlockPage: FC = () => {
     }
   }, [navigate, status]);
 
-  const passwordError = showErrors && password.length < 8 ? '密码至少需要 8 位字符' : undefined;
+  const passwordError =
+    showErrors && password.length < 8 ? t('common.passwordMinError') : undefined;
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -42,7 +45,7 @@ export const UnlockPage: FC = () => {
       await unlock({ password });
       navigate('/home', { replace: true });
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : '解锁失败，请稍后重试。');
+      setSubmitError(error instanceof Error ? error.message : t('unlock.submitError'));
     } finally {
       setSubmitting(false);
     }
@@ -51,14 +54,14 @@ export const UnlockPage: FC = () => {
   return (
     <Page>
       <WalletLayout>
-        <WalletScreenHeader title="解锁钱包" />
+        <WalletScreenHeader title={t('unlock.header')} />
         <form className="flex min-h-[calc(100vh-44px)] flex-col px-5 pb-8 pt-2" onSubmit={onSubmit}>
           <WalletInfoBanner
             iconSrc={FIGMA_WELCOME.warning}
             className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_28px_rgba(255,255,255,0.018)]"
             textClassName="text-[12px] leading-[17px]"
           >
-            钱包密码仅用于本地解密金库，不会上传到任何服务器。
+            {t('unlock.notice')}
           </WalletInfoBanner>
 
           <div className="relative mt-8 flex flex-col gap-[9px]">
@@ -67,10 +70,10 @@ export const UnlockPage: FC = () => {
               aria-hidden
             />
             <h2 className="text-[32px] font-semibold leading-[34px] text-wallet-text">
-              输入钱包密码
+              {t('unlock.title')}
             </h2>
             <p className="max-w-[280px] text-sm leading-5 text-wallet-text-secondary">
-              切到后台会自动锁定，需要再次输入密码解锁。
+              {t('unlock.subtitle')}
             </p>
           </div>
 
@@ -86,10 +89,10 @@ export const UnlockPage: FC = () => {
               />
 
               <WalletTextField
-                label="钱包密码"
+                label={t('unlock.passwordLabel')}
                 type="password"
                 autoComplete="current-password"
-                placeholder="请输入密码"
+                placeholder={t('unlock.passwordPlaceholder')}
                 labelClassName="text-[16px] leading-5"
                 inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
                 value={password}
@@ -114,7 +117,7 @@ export const UnlockPage: FC = () => {
                 className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
                 textClassName="text-[12px] leading-[17px]"
               >
-                如果忘记密码，将无法解密本地金库。请妥善保管。
+                {t('unlock.warning')}
               </WalletInfoBanner>
             </div>
           </div>
@@ -137,7 +140,7 @@ export const UnlockPage: FC = () => {
               className="max-w-[303px]"
               disabled={password.length < 8 || submitting || status !== 'locked'}
             >
-              解锁钱包
+              {t('unlock.submit')}
             </WalletPrimaryButton>
             <WalletHomeIndicator />
           </div>

@@ -2,6 +2,8 @@ import type { FC, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
+import { useI18n } from '@/i18n/I18nProvider.tsx';
+
 interface WalletScreenHeaderProps {
   title: string;
   onBack?: () => void;
@@ -18,6 +20,7 @@ export const WalletScreenHeader: FC<WalletScreenHeaderProps> = ({
   titleClassName,
 }) => {
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   const handleBack = () => {
     if (onBack) {
@@ -28,12 +31,12 @@ export const WalletScreenHeader: FC<WalletScreenHeaderProps> = ({
   };
 
   return (
-    <header className="relative flex h-11 shrink-0 items-center justify-between px-5">
+    <header className="grid h-11 shrink-0 grid-cols-[32px_1fr_32px] items-center gap-2 px-5">
       <button
         type="button"
         onClick={handleBack}
-        className="z-[1] flex size-8 items-center justify-center rounded-full text-wallet-text active:bg-white/5"
-        aria-label="返回"
+        className="flex size-8 items-center justify-center rounded-full text-wallet-text active:bg-white/5"
+        aria-label={t('common.back')}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
@@ -46,13 +49,13 @@ export const WalletScreenHeader: FC<WalletScreenHeaderProps> = ({
       </button>
       <h1
         className={clsx(
-          'pointer-events-none absolute left-1/2 top-1/2 max-w-[180px] -translate-x-1/2 -translate-y-1/2 truncate text-center text-[18px] font-semibold leading-none text-wallet-text',
+          'min-w-0 truncate text-center text-[18px] font-semibold leading-none text-wallet-text',
           titleClassName,
         )}
       >
         {title}
       </h1>
-      <div className={clsx('z-[1] flex min-w-8 items-center justify-end', rightSlotClassName)}>
+      <div className={clsx('flex min-w-8 items-center justify-end', rightSlotClassName)}>
         {rightSlot}
       </div>
     </header>

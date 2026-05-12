@@ -9,6 +9,7 @@ import { WalletLayout } from '@/components/wallet/WalletLayout.tsx';
 import { WalletPrimaryButton } from '@/components/wallet/WalletPrimaryButton.tsx';
 import { WalletScreenHeader } from '@/components/wallet/WalletScreenHeader.tsx';
 import { WalletTextField } from '@/components/wallet/WalletTextField.tsx';
+import { useI18n } from '@/i18n/I18nProvider.tsx';
 import { FIGMA_WELCOME } from '@/pages/app/onboarding/figmaAssets.ts';
 import { useOnboardingMock } from '@/pages/app/onboarding/OnboardingMockContext.tsx';
 import { normalizeMnemonicWords, validateMnemonicWords } from '@/wallet-core/mnemonic/bip39.ts';
@@ -22,6 +23,7 @@ export const OnboardingImportPage: FC = () => {
   const [showErrors, setShowErrors] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (onboardingComplete) {
@@ -31,12 +33,11 @@ export const OnboardingImportPage: FC = () => {
 
   const mnemonicWords = useMemo(() => normalizeMnemonicWords(mnemonicInput), [mnemonicInput]);
   const mnemonicError =
-    showErrors && !validateMnemonicWords(mnemonicWords)
-      ? '请输入有效的 12 或 24 个英文助记词'
-      : undefined;
-  const passwordError = showErrors && password.length < 8 ? '密码至少需要 8 位字符' : undefined;
+    showErrors && !validateMnemonicWords(mnemonicWords) ? t('import.mnemonicError') : undefined;
+  const passwordError =
+    showErrors && password.length < 8 ? t('common.passwordMinError') : undefined;
   const confirmError =
-    showErrors && password !== confirmPassword ? '两次输入的密码不一致' : undefined;
+    showErrors && password !== confirmPassword ? t('common.passwordMismatchError') : undefined;
 
   const canSubmit =
     validateMnemonicWords(mnemonicWords) && password.length >= 8 && password === confirmPassword;
@@ -51,7 +52,7 @@ export const OnboardingImportPage: FC = () => {
       setSubmitting(true);
       await importWallet({ mnemonicWords, password });
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : '导入钱包失败，请稍后重试。');
+      setSubmitError(error instanceof Error ? error.message : t('import.submitError'));
       return;
     } finally {
       setSubmitting(false);
@@ -63,14 +64,14 @@ export const OnboardingImportPage: FC = () => {
   return (
     <Page>
       <WalletLayout>
-        <WalletScreenHeader title="导入钱包" />
+        <WalletScreenHeader title={t('import.header')} />
         <form className="flex min-h-[calc(100vh-44px)] flex-col px-5 pb-8 pt-2" onSubmit={onSubmit}>
           <WalletInfoBanner
             iconSrc={FIGMA_WELCOME.warning}
             className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_28px_rgba(255,255,255,0.018)]"
             textClassName="text-[12px] leading-[17px]"
           >
-            助记词将在本地完成校验并写入加密金库。请确认周围环境安全，不要复制到不可信应用。
+            {t('import.notice')}
           </WalletInfoBanner>
 
           <div className="relative mt-8 flex flex-col gap-[9px]">
@@ -79,10 +80,10 @@ export const OnboardingImportPage: FC = () => {
               aria-hidden
             />
             <h2 className="text-[32px] font-semibold leading-[34px] text-wallet-text">
-              导入已有钱包
+              {t('import.title')}
             </h2>
             <p className="max-w-[280px] text-sm leading-5 text-wallet-text-secondary">
-              输入助记词并设置钱包密码，完成后将直接进入首页。
+              {t('import.subtitle')}
             </p>
           </div>
 
@@ -99,7 +100,7 @@ export const OnboardingImportPage: FC = () => {
 
               <div className="flex flex-col gap-3">
                 <label htmlFor="import-mnemonic" className="text-[16px] leading-5 text-wallet-text">
-                  助记词
+                  {t('import.mnemonicLabel')}
                 </label>
                 <div className="group relative">
                   <div
@@ -117,7 +118,7 @@ export const OnboardingImportPage: FC = () => {
                     spellCheck={false}
                     value={mnemonicInput}
                     onChange={(event) => setMnemonicInput(event.target.value)}
-                    placeholder="请输入 12 或 24 个助记词，使用空格分隔"
+                    placeholder={t('import.mnemonicPlaceholder')}
                     className="relative min-h-[116px] w-full resize-none rounded-[16px] border border-wallet-border bg-wallet-surface-muted px-4 py-3 text-[15px] leading-6 text-wallet-text outline-none transition-[border-color,background-color] duration-150 placeholder:text-wallet-text-muted focus:border-wallet-border-strong focus:bg-[rgba(255,255,255,0.06)]"
                   />
                 </div>
@@ -127,17 +128,17 @@ export const OnboardingImportPage: FC = () => {
                   </p>
                 ) : (
                   <p className="text-xs leading-[17px] text-wallet-text-muted">
-                    仅支持英文 BIP39 助记词，使用空格分隔单词。
+                    {t('import.mnemonicHint')}
                   </p>
                 )}
               </div>
 
               <WalletTextField
                 className="mt-8"
-                label="设置密码"
+                label={t('password.setLabel')}
                 type="password"
                 autoComplete="new-password"
-                placeholder="至少8位字符"
+                placeholder={t('password.setPlaceholder')}
                 labelClassName="text-[16px] leading-5"
                 inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
                 value={password}
@@ -147,10 +148,10 @@ export const OnboardingImportPage: FC = () => {
 
               <WalletTextField
                 className="mt-8"
-                label="确认密码"
+                label={t('password.confirmLabel')}
                 type="password"
                 autoComplete="new-password"
-                placeholder="再次输入密码"
+                placeholder={t('password.confirmPlaceholder')}
                 labelClassName="text-[16px] leading-5"
                 inputClassName="h-12 rounded-[14px] px-4 text-[16px]"
                 value={confirmPassword}
@@ -169,7 +170,7 @@ export const OnboardingImportPage: FC = () => {
                 className="border-[rgba(255,255,255,0.08)] bg-wallet-surface-soft shadow-[0_-8px_32px_rgba(255,255,255,0.02)]"
                 textClassName="text-[12px] leading-[17px]"
               >
-                导入成功后会直接进入首页；当前版本会完成真实助记词校验和本地加密存储。
+                {t('import.successHint')}
               </WalletInfoBanner>
               {submitError ? (
                 <p className="mt-3 text-sm text-wallet-danger" role="alert">
@@ -197,7 +198,7 @@ export const OnboardingImportPage: FC = () => {
               className="max-w-[303px]"
               disabled={!canSubmit || submitting}
             >
-              导入钱包
+              {t('import.submit')}
             </WalletPrimaryButton>
             <WalletHomeIndicator />
           </div>

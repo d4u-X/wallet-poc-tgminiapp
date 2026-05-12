@@ -20,11 +20,11 @@ const MnemonicGeneratePage = lazy(() =>
     default: m.MnemonicGeneratePage,
   })),
 );
-const MnemonicBackupPage = lazy(() =>
-  import('@/pages/app/onboarding/MnemonicBackupPage.tsx').then((m) => ({
-    default: m.MnemonicBackupPage,
-  })),
-);
+// const MnemonicBackupPage = lazy(() =>
+//   import('@/pages/app/onboarding/MnemonicBackupPage.tsx').then((m) => ({
+//     default: m.MnemonicBackupPage,
+//   })),
+// );
 const MnemonicVerifyPage = lazy(() =>
   import('@/pages/app/onboarding/MnemonicVerifyPage.tsx').then((m) => ({
     default: m.MnemonicVerifyPage,
@@ -70,7 +70,7 @@ export const routes: Route[] = [
   { path: '/onboarding/import', Component: OnboardingImportPage },
   { path: '/onboarding/password', Component: OnboardingPasswordPage },
   { path: '/onboarding/mnemonic/generate', Component: MnemonicGeneratePage },
-  { path: '/onboarding/mnemonic/backup', Component: MnemonicBackupPage },
+  // { path: '/onboarding/mnemonic/backup', Component: MnemonicBackupPage },
   { path: '/onboarding/mnemonic/verify', Component: MnemonicVerifyPage },
   { path: '/demo', Component: DemoHubPage },
   { path: '/demo/init-data', Component: InitDataPage, title: 'Init Data' },
